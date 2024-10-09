@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Typography, Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ErrorIcon from "@mui/icons-material/Error";
-import { login } from "../api/auth";
+import { login } from "../../api/auth";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -32,7 +32,6 @@ const Login = () => {
             display: "none",
           },
         }}
-        
       />
 
       {/* Right side with black background and login content */}
@@ -134,6 +133,5 @@ const inputStyles = {
     maxWidth: "none",
   },
 };
-
 
 export default Login;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Typography, Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ErrorIcon from "@mui/icons-material/Error";
-import { signup } from "../api/auth";
+import { signup } from "../../api/auth";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -27,15 +27,15 @@ const SignUp = () => {
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
-  }
+  };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  }
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-  }
+  };
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>

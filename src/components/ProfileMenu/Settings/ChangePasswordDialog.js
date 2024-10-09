@@ -7,7 +7,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { changePassword } from "../../api/auth";
+import { changePassword } from "../../../api/auth";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   const [currentPassword, setCurrentPassword] = useState("");

@@ -5,15 +5,16 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
 import { getProfile } from "../../api/profile";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import CreateTripDialog from "./CreateTripDialog";
 
 const darkTheme = createTheme({
   palette: {
@@ -25,8 +26,17 @@ const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState("");
+  const [openCreateTripDialog, setOpenCreateTripDialog] = useState(false);
   const [user, setUser] = useState("");
   const navigate = useNavigate();
+
+  const handleOpenCreateTripDialog = () => {
+    setOpenCreateTripDialog(true);
+  }
+
+  const handleCloseCreateTripDialog = () => {
+    setOpenCreateTripDialog(false);
+  }
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,21 +49,6 @@ const NavBar = () => {
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
-
-  const handleNavigateToHome = () => {
-    navigate("/home");
-    setMenuOpen(false);
-  };
-
-  const handleNavigateToTrips = () => {
-    navigate("/trips");
-    setMenuOpen(false);
-  }
-
-  const handleNavigateToMap = () => {
-    navigate("/map");
-    setMenuOpen(false);
-  }
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -69,6 +64,11 @@ const NavBar = () => {
 
     fetchProfile();
   }, []);
+
+  const handleNavigateToHome = () => {
+    // Navigate to the home page
+    navigate("/home");
+  }
   
 
 
@@ -85,20 +85,18 @@ const NavBar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1, cursor: "pointer" }}
+            onClick={handleNavigateToHome}
+          >
             TrailMates
           </Typography>
-          <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}>
-            <Button color='inherit' onClick={handleNavigateToHome}>
-              Home
-            </Button>
-            <Button color='inherit' onClick={handleNavigateToTrips}>
-              Trips
-            </Button>
-            <Button color='inherit' onClick={handleNavigateToMap}>
-              Map
-            </Button>
-          </Box>
+          <Button variant='contained' color='primary' sx={{ marginRight: 2 }} onClick={handleOpenCreateTripDialog}>
+            Create Trip
+          </Button>
+          <CreateTripDialog open={openCreateTripDialog} onClose={handleCloseCreateTripDialog} />
           <IconButton
             edge='end'
             color='inherit'
@@ -127,8 +125,6 @@ const NavBar = () => {
           }}
         >
           <MenuItem onClick={handleNavigateToHome}>Home</MenuItem>
-          <MenuItem onClick={() => setMenuOpen(false)}>Trips</MenuItem>
-          <MenuItem onClick={() => setMenuOpen(false)}>Map</MenuItem>
         </Box>
       </Collapse>
     </ThemeProvider>

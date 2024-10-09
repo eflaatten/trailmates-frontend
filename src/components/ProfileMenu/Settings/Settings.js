@@ -1,20 +1,30 @@
 import React, { useState } from "react";
-import NavBar from "../Navigation/NavBar";
+import NavBar from "../../Navigation/NavBar";
 import { Paper, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ChangePasswordDialog from "./ChangePasswordDialog";
+import DeleteAccountDialog from "./DeleteAccountDialog";
 
 const Settings = () => {
   const [openChangePasswordDialog, setOpenChangePasswordDialog] = useState(false);
+  const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
 
   const handleOpenChangePasswordDialog = () => {
     setOpenChangePasswordDialog(true);
-  }
+  };
 
   const handleCloseChangePasswordDialog = () => {
     setOpenChangePasswordDialog(false);
+  };
+
+  const handleOpenDeleteAccountDialog = () => {
+    setOpenDeleteAccountDialog(true);
+  }
+
+  const handleCloseDeleteAccountDialog = () => {
+    setOpenDeleteAccountDialog(false);
   }
 
   const handleChangePassword = () => {
@@ -42,7 +52,7 @@ const Settings = () => {
         </StyledButton>
         <DeleteButton
           variant='contained'
-          onClick={handleDeleteAccount}
+          onClick={handleOpenDeleteAccountDialog}
           startIcon={<DeleteIcon />}
         >
           Delete Account
@@ -52,6 +62,11 @@ const Settings = () => {
         open={openChangePasswordDialog}
         onClose={handleCloseChangePasswordDialog}
         onSubmit={handleChangePassword}
+      />
+      <DeleteAccountDialog
+        open={openDeleteAccountDialog}
+        onClose={handleCloseDeleteAccountDialog}
+        onSubmit={handleDeleteAccount}
       />
     </>
   );
@@ -63,9 +78,9 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   width: "90%",
   margin: "20px auto",
   padding: theme.spacing(3),
-  backgroundColor: "#1e1e1e", 
-  color: "#ffffff", 
-  [theme.breakpoints.down('sm')]: {
+  backgroundColor: "#1e1e1e",
+  color: "#ffffff",
+  [theme.breakpoints.down("sm")]: {
     width: "85%",
     margin: "50px auto",
     padding: theme.spacing(2),
@@ -74,9 +89,9 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
-  [theme.breakpoints.down('sm')]: {
+  [theme.breakpoints.down("sm")]: {
     margin: theme.spacing(0.5),
-  }
+  },
 }));
 
 const DeleteButton = styled(Button)(({ theme }) => ({
@@ -87,4 +102,3 @@ const DeleteButton = styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.error.dark,
   },
 }));
-
