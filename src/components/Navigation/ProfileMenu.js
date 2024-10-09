@@ -7,6 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import { logout } from '../../api/auth';
 
 const ProfileMenu = ({ anchorEl, handleClose }) => {
   const open = Boolean(anchorEl);
@@ -23,7 +24,7 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    logout();
     navigate("/login");
   }
 

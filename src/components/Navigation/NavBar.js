@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -9,9 +9,11 @@ import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
+import { getProfile } from "../../api/profile";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,6 +24,8 @@ const darkTheme = createTheme({
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profilePicture, setProfilePicture] = useState("");
+  const [user, setUser] = useState("");
   const navigate = useNavigate();
 
   const handleProfileMenuOpen = (event) => {
@@ -51,6 +55,23 @@ const NavBar = () => {
     setMenuOpen(false);
   }
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profileData = await getProfile();
+        setUser(profileData.username);
+        // If you have a profile picture field
+        setProfilePicture(profileData.profile_picture);
+      } catch (error) {
+        console.error("Failed to fetch profile data:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+  
+
+
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar position='static'>
@@ -68,16 +89,27 @@ const NavBar = () => {
             TrailMates
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}>
-            <Button color='inherit' onClick={handleNavigateToHome}>Home</Button>
-            <Button color='inherit' onClick={handleNavigateToTrips}>Trips</Button>
-            <Button color='inherit' onClick={handleNavigateToMap}>Map</Button>
+            <Button color='inherit' onClick={handleNavigateToHome}>
+              Home
+            </Button>
+            <Button color='inherit' onClick={handleNavigateToTrips}>
+              Trips
+            </Button>
+            <Button color='inherit' onClick={handleNavigateToMap}>
+              Map
+            </Button>
           </Box>
           <IconButton
             edge='end'
             color='inherit'
             onClick={handleProfileMenuOpen}
           >
-            <Avatar alt='Profile' src='/static/images/avatar/1.jpg' />
+            <Avatar
+              src={profilePicture} // Set the profile picture as the source
+              alt={user || "User Avatar"} // Use the username or a fallback
+            >
+              {!profilePicture && <PersonIcon />}
+            </Avatar>
           </IconButton>
           <ProfileMenu
             anchorEl={anchorEl}
@@ -94,15 +126,9 @@ const NavBar = () => {
             paddingBottom: "15px",
           }}
         >
-          <MenuItem onClick={handleNavigateToHome}>
-            Home
-          </MenuItem>
-          <MenuItem onClick={() => setMenuOpen(false)}>
-            Trips
-          </MenuItem>
-          <MenuItem onClick={() => setMenuOpen(false)}>
-            Map
-          </MenuItem>
+          <MenuItem onClick={handleNavigateToHome}>Home</MenuItem>
+          <MenuItem onClick={() => setMenuOpen(false)}>Trips</MenuItem>
+          <MenuItem onClick={() => setMenuOpen(false)}>Map</MenuItem>
         </Box>
       </Collapse>
     </ThemeProvider>

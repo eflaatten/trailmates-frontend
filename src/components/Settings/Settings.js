@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../Navigation/NavBar";
 import { Paper, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 const Settings = () => {
+  const [openChangePasswordDialog, setOpenChangePasswordDialog] = useState(false);
+
+  const handleOpenChangePasswordDialog = () => {
+    setOpenChangePasswordDialog(true);
+  }
+
+  const handleCloseChangePasswordDialog = () => {
+    setOpenChangePasswordDialog(false);
+  }
+
   const handleChangePassword = () => {
     // Handle change password logic here
     console.log("Change Password Clicked");
@@ -24,7 +35,7 @@ const Settings = () => {
         <StyledButton
           variant='contained'
           color='primary'
-          onClick={handleChangePassword}
+          onClick={handleOpenChangePasswordDialog}
           startIcon={<LockIcon />}
         >
           Change Password
@@ -37,6 +48,11 @@ const Settings = () => {
           Delete Account
         </DeleteButton>
       </StyledPaper>
+      <ChangePasswordDialog
+        open={openChangePasswordDialog}
+        onClose={handleCloseChangePasswordDialog}
+        onSubmit={handleChangePassword}
+      />
     </>
   );
 };
