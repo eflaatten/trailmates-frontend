@@ -12,13 +12,26 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    try {
-      const response = await signup(username, password);
-      localStorage.setItem("user", JSON.stringify(response.user));
-      navigate("/home");
-    } catch (error) {
-      setError("Please fill out all fields");
+    // Check if the fields are empty
+    if (!username || !email || !password) {
+      setError("All fields are required.");
+      return; // Exit the function if any field is empty
     }
+
+    try {
+      const response = await signup(username, email, password);
+      if (response.user) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message;
+        setError(errorMessage);
+      } else {
+        setError("An error occurred during signup.");
+      }
+    }
+    window.location.reload();
   };
 
   const handleLogin = () => {
@@ -44,9 +57,15 @@ const SignUp = () => {
         sx={{
           width: "50%",
           background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+          backgroundSize: "400% 400%",
+          animation: "gradient-animation 15s ease infinite",
+          position: "relative",
           "@media (max-width: 600px)": {
             display: "none",
           },
+        }}
+        style={{
+          animation: "gradient-animation 15s ease infinite",
         }}
       />
 
@@ -99,16 +118,6 @@ const SignUp = () => {
           value={password}
           required
         />
-        <TextField
-          label='Confirm Password'
-          type='password'
-          variant='outlined'
-          margin='normal'
-          sx={inputStyles}
-          required
-          onChange={handlePasswordChange}
-          value={password}
-        />
         {error && (
           <Box
             sx={{
@@ -126,12 +135,18 @@ const SignUp = () => {
         )}
         <Button
           variant='contained'
-          color='primary'
-          size='large'
-          sx={{ mt: 2 }}
+          sx={{
+            marginTop: 3,
+            backgroundColor: "#2196F3", // Original button color
+            color: "white", // Text color
+            "&:hover": {
+              backgroundColor: "#1976D2", // Darker blue on hover
+              opacity: 0.9, // Slightly change opacity for a better effect
+            },
+          }}
           onClick={handleSignup}
         >
-          Sign Up
+          SIGN UP
         </Button>
         <Typography variant='body2' sx={{ mt: 2 }}>
           Already have an account?{" "}
@@ -143,6 +158,9 @@ const SignUp = () => {
     </Box>
   );
 };
+
+
+export default SignUp;
 
 const inputStyles = {
   width: "80%",
@@ -170,5 +188,3 @@ const inputStyles = {
     maxWidth: "none",
   },
 };
-
-export default SignUp;

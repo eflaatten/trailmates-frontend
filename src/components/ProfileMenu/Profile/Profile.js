@@ -93,11 +93,23 @@ const UserProfile = () => {
             value={email}
           />
           <Box sx={buttonContainerStyle}>
-            <Button variant='outlined' color='secondary' sx={{ mr: 2 }} >
-              Cancel
+            <Button variant='outlined' color='secondary' sx={{ mr: 2 }}>
+              CANCEL
             </Button>
-            <Button variant='contained' color='primary' onClick={handleSaveChanges}>
-              Save Changes
+            <Button
+              variant='contained'
+              sx={{
+                marginRight: 2,
+                backgroundColor: "#2196F3", // Original button color
+                color: "white", // Text color
+                "&:hover": {
+                  backgroundColor: "#1976D2", // Darker blue on hover
+                  opacity: 0.9, // Slightly change opacity for a better effect
+                },
+              }}
+              onClick={handleSaveChanges}
+            >
+              SAVE
             </Button>
           </Box>
         </form>

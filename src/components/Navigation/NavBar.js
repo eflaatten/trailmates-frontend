@@ -4,10 +4,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import MenuItem from "@mui/material/MenuItem";
-import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProfileMenu from "./ProfileMenu";
@@ -24,7 +20,6 @@ const darkTheme = createTheme({
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState("");
   const [openCreateTripDialog, setOpenCreateTripDialog] = useState(false);
   const [user, setUser] = useState("");
@@ -44,10 +39,6 @@ const NavBar = () => {
 
   const handleProfileMenuClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
   };
 
   useEffect(() => {
@@ -76,15 +67,6 @@ const NavBar = () => {
     <ThemeProvider theme={darkTheme}>
       <AppBar position='static'>
         <Toolbar>
-          <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='menu'
-            sx={{ display: { xs: "block", md: "none" } }}
-            onClick={handleMenuToggle}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant='h6'
             component='div'
@@ -93,10 +75,25 @@ const NavBar = () => {
           >
             TrailMates
           </Typography>
-          <Button variant='contained' color='primary' sx={{ marginRight: 2 }} onClick={handleOpenCreateTripDialog}>
+          <Button
+            variant='contained'
+            sx={{
+              marginRight: 2,
+              backgroundColor: "#2196F3", // Original button color
+              color: "white", // Text color
+              "&:hover": {
+                backgroundColor: "#1976D2", // Darker blue on hover
+                opacity: 0.9, // Slightly change opacity for a better effect
+              },
+            }}
+            onClick={handleOpenCreateTripDialog}
+          >
             Create Trip
           </Button>
-          <CreateTripDialog open={openCreateTripDialog} onClose={handleCloseCreateTripDialog} />
+          <CreateTripDialog
+            open={openCreateTripDialog}
+            onClose={handleCloseCreateTripDialog}
+          />
           <IconButton
             edge='end'
             color='inherit'
@@ -115,7 +112,7 @@ const NavBar = () => {
           />
         </Toolbar>
       </AppBar>
-      <Collapse in={menuOpen} timeout='auto' unmountOnExit>
+      {/* <Collapse in={menuOpen} timeout='auto' unmountOnExit>
         <Box
           sx={{
             width: "100%",
@@ -126,7 +123,7 @@ const NavBar = () => {
         >
           <MenuItem onClick={handleNavigateToHome}>Home</MenuItem>
         </Box>
-      </Collapse>
+      </Collapse> */}
     </ThemeProvider>
   );
 };

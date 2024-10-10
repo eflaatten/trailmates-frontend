@@ -28,9 +28,15 @@ const Login = () => {
         sx={{
           width: "50%",
           background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+          backgroundSize: "400% 400%",
+          animation: "gradient-animation 15s ease infinite",
+          position: "relative",
           "@media (max-width: 600px)": {
             display: "none",
           },
+        }}
+        style={{
+          animation: "gradient-animation 15s ease infinite",
         }}
       />
 
@@ -89,12 +95,18 @@ const Login = () => {
         )}
         <Button
           variant='contained'
-          color='primary'
-          size='large'
-          sx={{ mt: 2 }}
+          sx={{
+            marginTop: 3,
+            backgroundColor: "#2196F3", // Original button color
+            color: "white", // Text color
+            "&:hover": {
+              backgroundColor: "#1976D2", // Darker blue on hover
+              opacity: 0.9, // Slightly change opacity for a better effect
+            },
+          }}
           onClick={handleLogin}
         >
-          Log In
+          LOGIN
         </Button>
         <Typography variant='body2' sx={{ mt: 2 }}>
           Don't have an account?{" "}

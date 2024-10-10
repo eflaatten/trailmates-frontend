@@ -6,13 +6,13 @@ const getToken = () => {
   return localStorage.getItem("token");
 };
 
-export const signup = async (username, password) => {
+export const signup = async (username, email, password) => {
   const response = await axios.post(`${BASE_URL}/auth/signup`, {
     username,
+    email,
     password,
   });
   localStorage.setItem("token", response.data.token);
-  window.location.reload();
   return response.data;
 };
 

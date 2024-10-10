@@ -20,7 +20,7 @@ const Router = () => {
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path='/settings' element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path='/login' element={auth.isAuthenticated ? <Navigate to='/home' replace /> : <Login />} />
-        <Route path='/signup' element={<SignUp />} />
+        <Route path='/signup' element={auth.isAuthenticated ? <Navigate to='/home' replace /> : <SignUp /> } />
       </Routes>
     </AuthContext.Provider>
   );

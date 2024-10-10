@@ -44,6 +44,15 @@ const Settings = () => {
         <h2>Settings</h2>
         <StyledButton
           variant='contained'
+          sx={{
+            marginRight: 2,
+            backgroundColor: "#2196F3", // Original button color
+            color: "white", // Text color
+            "&:hover": {
+              backgroundColor: "#1976D2", // Darker blue on hover
+              opacity: 0.9, // Slightly change opacity for a better effect
+            },
+          }}
           color='primary'
           onClick={handleOpenChangePasswordDialog}
           startIcon={<LockIcon />}
