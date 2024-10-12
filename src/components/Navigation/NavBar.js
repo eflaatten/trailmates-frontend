@@ -10,7 +10,7 @@ import ProfileMenu from "./ProfileMenu";
 import { getProfile } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import CreateTripDialog from "./CreateTripDialog";
+import CreateTripDialog from "../Home/CreateTripDialog";
 
 const darkTheme = createTheme({
   palette: {
@@ -27,11 +27,11 @@ const NavBar = () => {
 
   const handleOpenCreateTripDialog = () => {
     setOpenCreateTripDialog(true);
-  }
+  };
 
   const handleCloseCreateTripDialog = () => {
     setOpenCreateTripDialog(false);
-  }
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,9 +59,7 @@ const NavBar = () => {
   const handleNavigateToHome = () => {
     // Navigate to the home page
     navigate("/home");
-  }
-  
-
+  };
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -112,18 +110,6 @@ const NavBar = () => {
           />
         </Toolbar>
       </AppBar>
-      {/* <Collapse in={menuOpen} timeout='auto' unmountOnExit>
-        <Box
-          sx={{
-            width: "100%",
-            bgcolor: "background.paper",
-            color: "text.primary",
-            paddingBottom: "15px",
-          }}
-        >
-          <MenuItem onClick={handleNavigateToHome}>Home</MenuItem>
-        </Box>
-      </Collapse> */}
     </ThemeProvider>
   );
 };

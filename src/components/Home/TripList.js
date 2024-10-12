@@ -4,7 +4,7 @@ const TripList = () => {
   return (
     <div>
       <h1>Trips</h1>
-      <p>Here will be list of trips </p>
+      <p>No trips added so far. </p>
     </div>
   );
 }
