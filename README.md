@@ -1,6 +1,5 @@
-
 # TrailMates
 
-![TrailMates Logo](./assets/TrailMates(bg).png)
+<img src="./assets/TrailMates(bg).png" alt="TrailMates Logo" width="200"/>
 
-Capstone App for Austin Coding Academy 
+Capstone App for Austin Coding Academy
