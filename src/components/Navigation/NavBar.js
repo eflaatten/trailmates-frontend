@@ -46,7 +46,6 @@ const NavBar = () => {
       try {
         const profileData = await getProfile();
         setUser(profileData.username);
-        // If you have a profile picture field
         setProfilePicture(profileData.profile_picture);
       } catch (error) {
         console.error("Failed to fetch profile data:", error);
@@ -57,18 +56,26 @@ const NavBar = () => {
   }, []);
 
   const handleNavigateToHome = () => {
-    // Navigate to the home page
     navigate("/home");
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar position='static'>
-        <Toolbar>
+        <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
           <Typography
             variant='h6'
             component='div'
-            sx={{ flexGrow: 1, cursor: "pointer" }}
+            sx={{
+              flexGrow: 1,
+              transition: "0.2s",
+              cursor: "pointer",
+              "&:hover": {
+                color: "skyblue",
+                transition: "0.2s",
+                opacity: 0.6,
+              }
+            }}
             onClick={handleNavigateToHome}
           >
             TrailMates
@@ -77,11 +84,11 @@ const NavBar = () => {
             variant='contained'
             sx={{
               marginRight: 2,
-              backgroundColor: "#2196F3", // Original button color
-              color: "white", // Text color
+              backgroundColor: "#2196F3",
+              color: "white",
               "&:hover": {
-                backgroundColor: "#1976D2", // Darker blue on hover
-                opacity: 0.9, // Slightly change opacity for a better effect
+                backgroundColor: "#1976D2", 
+                opacity: 0.9, 
               },
             }}
             onClick={handleOpenCreateTripDialog}
@@ -98,8 +105,8 @@ const NavBar = () => {
             onClick={handleProfileMenuOpen}
           >
             <Avatar
-              src={profilePicture} // Set the profile picture as the source
-              alt={user || "User Avatar"} // Use the username or a fallback
+              src={profilePicture}
+              alt={user || "User Avatar"} 
             >
               {!profilePicture && <PersonIcon />}
             </Avatar>

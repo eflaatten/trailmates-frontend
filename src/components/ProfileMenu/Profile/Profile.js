@@ -5,6 +5,8 @@ import {
   TextField,
   Box,
   Button,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import NavBar from "../../Navigation/NavBar";
@@ -12,11 +14,18 @@ import ProfileMenu from "../../Navigation/ProfileMenu";
 import { getProfile, updateUsername, updateEmail } from "../../../api/profile";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EditIcon from "@mui/icons-material/Edit";
+import ChangeProfilePicture from "./ChangeProfilePicture";
+import { removeProfilePicture } from "../../../api/profile";
+
+
 
 const UserProfile = () => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false); 
 
   const handleSetUser = (e) => {
     setUser(e.target.value);
@@ -30,13 +39,27 @@ const UserProfile = () => {
     try {
       updateUsername(user);
       updateEmail(email);
-      toast.success("Profile updated successfully", {...toastOptions});
+      toast.success("Profile updated successfully", { ...toastOptions });
     } catch (error) {
       console.log("Failed to update profile:", error);
-      toast.error("Failed to update profile", {...toastOptions});
+      toast.error("Failed to update profile", { ...toastOptions });
     }
+  };
+
+  const handleOpenChangePicture = () => {
+    setOpen(true);
   }
 
+  const handleRemovePicture = async () => {
+    try {
+      await removeProfilePicture();
+      setProfilePicture("");
+      toast.success("Profile picture removed successfully", { ...toastOptions });
+    } catch (error) {
+      console.error("Failed to remove profile picture:", error);
+      toast.error("Failed to remove profile picture", { ...toastOptions });
+    }
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -69,6 +92,52 @@ const UserProfile = () => {
             >
               {!profilePicture && <PersonIcon sx={avatarIconStyle} />}
             </Avatar>
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                bgcolor: "#2e2e2e", // Retaining the background for the wrapper
+                borderRadius: "50%",
+                p: 0.4,
+                cursor: "pointer",
+              }}
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+            >
+              <EditIcon sx={{ color: "#ffffff", opacity: 1 }} />
+            </Box>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+              PaperProps={{
+                sx: {
+                  backgroundColor: "#000000", // Menu background color
+                  color: "#ffffff", // Menu text color
+                },
+              }}
+            >
+              <MenuItem
+                onClick={handleOpenChangePicture}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#333333", // Dark gray hover effect
+                  },
+                }}
+              >
+                Change picture
+              </MenuItem>
+              <MenuItem
+                onClick={handleRemovePicture}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#333333", // Dark gray hover effect
+                  },
+                }}
+              >
+                Remove Picture
+              </MenuItem>
+            </Menu>
           </Box>
         </Box>
         <form style={formStyle}>
@@ -114,6 +183,7 @@ const UserProfile = () => {
           </Box>
         </form>
       </Paper>
+      <ChangeProfilePicture open={open} onClose={() => setOpen(false)} />
     </>
   );
 };

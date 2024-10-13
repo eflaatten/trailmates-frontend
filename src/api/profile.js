@@ -93,3 +93,70 @@ export const updateEmail = async (email) => {
     throw error;
   }
 }
+
+export const changeProfilePicture = async (profilePicture) => {
+  const token = getToken();
+  if (!token) {
+    console.error("No token found, user might not be logged in");
+    throw new Error("No token found, user might not be logged in");
+  }
+
+  const formData = new FormData();
+  formData.append("profile_picture", profilePicture); // Append the file to the FormData
+
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/profile/changeProfilePicture`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Set content type for FormData
+        },
+      }
+    );
+
+    console.log("Change profile picture response:", response);
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Unexpected response status:", response.status);
+      throw new Error(`Unexpected response status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(
+      "Change profile picture error details:",
+      error.response?.data?.message || error.message
+    );
+    throw error;
+  }
+};
+
+export const removeProfilePicture = async () => {
+  const token = getToken();
+  if (!token) {
+    console.error("No token found, user might not be logged in");
+    throw new Error("No token found, user might not be logged in");
+  }
+
+  try {
+    const response = await axios.delete(`${BASE_URL}/profile/removeProfilePicture`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Remove profile picture response:", response);
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.error("Unexpected response status:", response.status);
+      throw new Error(`Unexpected response status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Remove profile picture error details:", error);
+    throw error;
+  }
+}

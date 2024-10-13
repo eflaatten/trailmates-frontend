@@ -67,7 +67,6 @@ const CreateTripDialog = ({ open, onClose }) => {
                 label='Start Date'
                 value={startDate}
                 onChange={(date) => setStartDate(date)}
-                renderInput={(params) => <TextField {...params} style={{ flex: 1 }} />}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -77,7 +76,6 @@ const CreateTripDialog = ({ open, onClose }) => {
                 label='End Date'
                 value={endDate}
                 onChange={(date) => setEndDate(date)}
-                renderInput={(params) => <TextField {...params} style={{ flex: 1 }} />}
                 />
               </DemoContainer>
             </LocalizationProvider>
