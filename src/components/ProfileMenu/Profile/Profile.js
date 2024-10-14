@@ -12,7 +12,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import NavBar from "../../Navigation/NavBar";
 import ProfileMenu from "../../Navigation/ProfileMenu";
 import { getProfile, updateUsername, updateEmail } from "../../../api/profile";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditIcon from "@mui/icons-material/Edit";
 import ChangeProfilePicture from "./ChangeProfilePicture";
@@ -48,6 +48,7 @@ const UserProfile = () => {
 
   const handleOpenChangePicture = () => {
     setOpen(true);
+    setAnchorEl(null);
   }
 
   const handleRemovePicture = async () => {
@@ -55,6 +56,7 @@ const UserProfile = () => {
       await removeProfilePicture();
       setProfilePicture("");
       toast.success("Profile picture removed successfully", { ...toastOptions });
+      setAnchorEl(null);
     } catch (error) {
       console.error("Failed to remove profile picture:", error);
       toast.error("Failed to remove profile picture", { ...toastOptions });
@@ -79,7 +81,6 @@ const UserProfile = () => {
 
   return (
     <>
-      <ToastContainer />
       <NavBar />
       <ProfileMenu />
       <Paper elevation={3} sx={paperStyle}>
@@ -169,11 +170,11 @@ const UserProfile = () => {
               variant='contained'
               sx={{
                 marginRight: 2,
-                backgroundColor: "#2196F3", // Original button color
-                color: "white", // Text color
+                backgroundColor: "#2196F3", 
+                color: "white", 
                 "&:hover": {
-                  backgroundColor: "#1976D2", // Darker blue on hover
-                  opacity: 0.9, // Slightly change opacity for a better effect
+                  backgroundColor: "#1976D2", 
+                  opacity: 0.9, 
                 },
               }}
               onClick={handleSaveChanges}
@@ -183,7 +184,13 @@ const UserProfile = () => {
           </Box>
         </form>
       </Paper>
-      <ChangeProfilePicture open={open} onClose={() => setOpen(false)} />
+      <ChangeProfilePicture
+        open={open}
+        onClose={() => {
+          setOpen(false);
+          setAnchorEl(null); 
+        }}
+      />
     </>
   );
 };

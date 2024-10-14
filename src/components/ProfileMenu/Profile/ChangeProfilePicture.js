@@ -13,7 +13,7 @@ import {
 import { styled } from "@mui/system";
 import { useDropzone } from "react-dropzone";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
 import { changeProfilePicture } from "../../../api/profile";
 
@@ -44,14 +44,15 @@ const ChangeProfilePicture = ({ open, onClose }) => {
     if (file) {
       try {
         await changeProfilePicture(file); 
-        toast.success("Profile picture uploaded successfully!");
         onClose();
+        toast.success("Profile picture uploaded successfully!", { ...toastOptions });
+        
       } catch (error) {
         console.error("Upload failed:", error);
-        toast.error("Failed to upload profile picture!");
+        toast.error("Failed to upload profile picture!", { ...toastOptions });
       }
     } else {
-      toast.warn("Please select a file to upload!"); 
+      toast.warn("Please select a file to upload!", { ...toastOptions }); 
     }
   };
 
@@ -136,14 +137,6 @@ const ChangeProfilePicture = ({ open, onClose }) => {
           Upload
         </Button>
       </DialogActions>
-      <ToastContainer
-        position='top-right'
-        autoClose={2500} 
-        hideProgressBar={false} 
-        closeOnClick
-        pauseOnHover={false}
-        theme='dark' 
-      />
     </Dialog>
   );
 };
@@ -185,3 +178,17 @@ const TrashIconButton = styled(IconButton)({
     backgroundColor: "#333",
   },
 });
+
+const toastOptions = {
+  position: "top-right",
+  autoClose: 3000,
+  closeOnClick: true,
+  pauseOnHover: false,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+  style: {
+    background: "#000000",
+    color: "#ffffff",
+  },
+};

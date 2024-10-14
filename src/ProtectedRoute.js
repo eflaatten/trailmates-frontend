@@ -6,21 +6,29 @@ const AuthContext = createContext();
 const isTokenExpired = (token) => {
   if (!token) return true;
 
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  const expiry = (payload.iat + 48 * 3600) * 1000;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
 
-  return Date.now() > expiry;
+    if (!payload.exp) return true;
+
+    const expiry = payload.exp * 1000;
+
+    return Date.now() > expiry;
+  } catch (error) {
+    return true;
+  }
 };
+
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token && !isTokenExpired(token)) {
       setIsAuthenticated(true);
     } else {
-      // Token is expired or not available, logout
       localStorage.removeItem("token");
       setIsAuthenticated(false);
     }
@@ -38,6 +46,7 @@ const useAuth = () => {
 
   return { isAuthenticated, login, logout };
 };
+
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);

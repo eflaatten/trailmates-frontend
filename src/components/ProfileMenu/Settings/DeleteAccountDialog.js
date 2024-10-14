@@ -6,8 +6,14 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import { deleteAccount } from "../../../api/auth";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
+
+  const handleDeleteAccount = () => {
+    deleteAccount();
+    //window.location.reload();
+  }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -21,7 +27,7 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
         <Button onClick={onClose} style={buttonStyle}>
           CANCEL
         </Button>
-        <Button style={submitButtonStyle}>
+        <Button style={submitButtonStyle} onClick={handleDeleteAccount}>
           YES, I WANT TO DELETE MY ACCOUNT
         </Button>
       </DialogActions>

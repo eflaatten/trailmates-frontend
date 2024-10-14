@@ -3,6 +3,7 @@ import { Button, Typography, Box, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ErrorIcon from "@mui/icons-material/Error";
 import { login } from "../../api/auth";
+import LOGIN_BG_IMAGE from "../../assets/LOGIN_BG2.jpg";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,43 +23,37 @@ const Login = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      {/* Left side with color pattern */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundImage: `url(${LOGIN_BG_IMAGE})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Dark gray box for the form */}
       <Box
         sx={{
-          width: "50%",
-          background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-          backgroundSize: "400% 400%",
-          animation: "gradient-animation 15s ease infinite",
-          position: "relative",
-          "@media (max-width: 600px)": {
-            display: "none",
-          },
-        }}
-        style={{
-          animation: "gradient-animation 15s ease infinite",
-        }}
-      />
-
-      {/* Right side with black background and login content */}
-      <Box
-        sx={{
-          width: "50%",
-          backgroundColor: "black",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white",
-          "@media (max-width: 600px)": {
-            width: "100%",
-          },
+          backgroundColor: "rgba(0, 0, 0, 0.7)", 
+          padding: "40px",
+          borderRadius: "8px",
+          width: "100%",
+          maxWidth: "400px",
+          textAlign: "center",
         }}
       >
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography
+          variant='h4'
+          component='h1'
+          gutterBottom
+          sx={{ color: "white" }}
+        >
           Welcome
         </Typography>
-        <Typography variant='body1' paragraph>
+        <Typography variant='body1' paragraph sx={{ color: "white" }}>
           Please log in to access your dashboard.
         </Typography>
         <TextField
@@ -68,6 +63,7 @@ const Login = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          fullWidth
           sx={inputStyles}
         />
         <TextField
@@ -78,6 +74,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          fullWidth
           sx={inputStyles}
         />
         {error && (
@@ -87,28 +84,32 @@ const Login = () => {
               alignItems: "center",
               mt: 2,
               color: "error.main",
+              justifyContent: "center",
             }}
           >
             <ErrorIcon sx={{ mr: 1 }} />
-            <Typography variant='body2'>{error}</Typography>
+            <Typography variant='body2' color='error'>
+              {error}
+            </Typography>
           </Box>
         )}
         <Button
           variant='contained'
+          fullWidth
           sx={{
             marginTop: 3,
-            backgroundColor: "#2196F3", // Original button color
-            color: "white", // Text color
+            backgroundColor: "#2196F3",
+            color: "white",
             "&:hover": {
-              backgroundColor: "#1976D2", // Darker blue on hover
-              opacity: 0.9, // Slightly change opacity for a better effect
+              backgroundColor: "#1976D2",
+              opacity: 0.9,
             },
           }}
           onClick={handleLogin}
         >
           LOGIN
         </Button>
-        <Typography variant='body2' sx={{ mt: 2 }}>
+        <Typography variant='body2' sx={{ mt: 2, color: "white" }}>
           Don't have an account?{" "}
           <Button color='primary' onClick={() => navigate("/signup")}>
             Sign up
@@ -120,8 +121,6 @@ const Login = () => {
 };
 
 const inputStyles = {
-  width: "80%",
-  maxWidth: "300px",
   "& .MuiOutlinedInput-root": {
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     "& fieldset": {
@@ -139,10 +138,6 @@ const inputStyles = {
   },
   "& .MuiOutlinedInput-input": {
     color: "white",
-  },
-  "@media (max-width: 600px)": {
-    width: "70%",
-    maxWidth: "none",
   },
 };
 

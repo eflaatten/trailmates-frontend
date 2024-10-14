@@ -98,3 +98,33 @@ export const changePassword = async (currentPassword, newPassword) => {
     throw error;
   }
 }
+
+export const deleteAccount = async () => {
+  const token = getToken();
+  if (!token) {
+    console.error("No token found, user might not be logged in");
+    throw new Error("No token found, user might not be logged in");
+  }
+
+  try {
+    const response = await axios.post(`${BASE_URL}/auth/delete-account`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Delete account response:", response);
+
+    if (response.status === 200) {
+      localStorage.removeItem("token");
+      window.location.reload();
+      return response.data;
+    } else {
+      console.error("Unexpected response status:", response.status);
+      throw new Error(`Unexpected response status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Delete account error details:", error);
+    throw error;
+  }
+};

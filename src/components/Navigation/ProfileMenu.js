@@ -13,6 +13,7 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
+
   const handleNavigateToProfile = () => {
     navigate("/profile");
     handleClose();
