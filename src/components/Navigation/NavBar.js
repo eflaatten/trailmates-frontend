@@ -9,8 +9,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProfileMenu from "./ProfileMenu";
 import { getProfile } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import CreateTripDialog from "../Home/CreateTripDialog";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,17 +19,8 @@ const darkTheme = createTheme({
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [profilePicture, setProfilePicture] = useState("");
-  const [openCreateTripDialog, setOpenCreateTripDialog] = useState(false);
   const [user, setUser] = useState("");
   const navigate = useNavigate();
-
-  const handleOpenCreateTripDialog = () => {
-    setOpenCreateTripDialog(true);
-  };
-
-  const handleCloseCreateTripDialog = () => {
-    setOpenCreateTripDialog(false);
-  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -80,25 +69,7 @@ const NavBar = () => {
           >
             TrailMates
           </Typography>
-          <Button
-            variant='contained'
-            sx={{
-              marginRight: 2,
-              backgroundColor: "#2196F3",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#1976D2", 
-                opacity: 0.9, 
-              },
-            }}
-            onClick={handleOpenCreateTripDialog}
-          >
-            Create Trip
-          </Button>
-          <CreateTripDialog
-            open={openCreateTripDialog}
-            onClose={handleCloseCreateTripDialog}
-          />
+
           <IconButton
             edge='end'
             color='inherit'

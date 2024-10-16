@@ -1,34 +1,54 @@
-import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, createTheme, ThemeProvider } from '@mui/material';
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+  createTheme,
+  ThemeProvider,
+  Box,
+} from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
   },
 });
 
 const CreateTripDialog = ({ open, onClose }) => {
-  const [tripName, setTripName] = useState('');
-  const [description, setDescription] = useState('');
-  const [destination, setDestination] = useState('');
+  const [tripName, setTripName] = useState("");
+  const [description, setDescription] = useState("");
+  const [destination, setDestination] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
   const handleCreate = () => {
-    // Handle the create trip logic here
-    console.log('Trip Created:', { tripName, destination });
+    console.log("Trip Created:", { tripName, destination });
     onClose();
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth='md'
+        fullWidth
+        PaperProps={{
+          sx: {
+            padding: "15px",
+          },
+        }}
+      >
         <DialogTitle>Create New Trip</DialogTitle>
-        <DialogContent>
+        <DialogContent
+          sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
           <TextField
             autoFocus
             margin='dense'
@@ -60,26 +80,37 @@ const CreateTripDialog = ({ open, onClose }) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <div className='calendar-pickers' style={{calendarFieldsStyle}}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "4%", // Small gap between the date pickers
+              width: "100%",
+              "@media (max-width: 650px)": {
+                flexDirection: "column", // Stack date pickers on top of each other
+                gap: "20px", // Adjust gap for column layout
+              },
+            }}
+          >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
+              <DatePicker
                 label='Start Date'
                 value={startDate}
                 onChange={(date) => setStartDate(date)}
-                />
-              </DemoContainer>
+                renderInput={(params) => <TextField {...params} fullWidth />}
+                sx={{ width: { xs: "100%", md: "48%" } }} // Full width in mobile, 48% in larger screens
+              />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker 
+              <DatePicker
                 label='End Date'
                 value={endDate}
                 onChange={(date) => setEndDate(date)}
-                />
-              </DemoContainer>
+                renderInput={(params) => <TextField {...params} fullWidth />}
+                sx={{ width: { xs: "100%", md: "48%" } }} // Full width in mobile, 48% in larger screens
+              />
             </LocalizationProvider>
-          </div>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color='primary'>
@@ -95,12 +126,3 @@ const CreateTripDialog = ({ open, onClose }) => {
 };
 
 export default CreateTripDialog;
-
-const calendarFieldsStyle = {
-  display: "flex",
-  flexDirection: "row", 
-  gap: "10px", 
-  width: "100% !important",
-  marginTop: "10px",
-  justifyContent: "space-between", 
-};

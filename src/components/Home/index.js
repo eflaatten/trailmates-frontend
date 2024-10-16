@@ -8,10 +8,7 @@ const Index = () => {
     <div>
       <NavBar />
       <div className='trip-container'>
-        <div 
-        className='trip-list-full-width'
-        style={{ marginLeft: "40px", padding: "20px" }}
-        >
+        <div className='trip-list-full-width'>
           <TripList />
         </div>
       </div>

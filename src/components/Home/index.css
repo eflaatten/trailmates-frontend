@@ -6,7 +6,6 @@ body {
 }
 
 .trip-container {
-  display: flex;
   height: calc(100vh - 64px);
 }
 
@@ -14,6 +13,16 @@ body {
   flex: 1;
   padding: 16px;
   background-color: #0a0a0a;
+}
+
+.trip-list-full-width {
+  padding: 35px;
+}
+
+@media (max-width: 600px) {
+  .trip-list-full-width {
+    padding: 0;
+  }
 }
 
 .divider {
