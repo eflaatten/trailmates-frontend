@@ -9,6 +9,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProfileMenu from "./ProfileMenu";
 import { getProfile } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
+import tripMatesLogo from '../../assets/TrailMates(bg).png';
 
 const darkTheme = createTheme({
   palette: {
@@ -50,24 +51,38 @@ const NavBar = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar position='static'>
+      <AppBar
+      position='sticky'
+      sx={{
+        borderRadius: "18px",
+        width: "auto",
+        margin: "20px",
+        "@media (max-width: 600px)": {
+          margin: "0px",
+          width: "100%",
+          borderRadius: "0px",
+        }
+      }}
+        >
         <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
+          <img
+            src={tripMatesLogo}
+            alt="TripMates Logo"
+            style={{ height: "37px", marginRight: "10px", cursor: "pointer", borderRadius: "20%" }}
+            onClick={handleNavigateToHome}
+          />
           <Typography
             variant='h6'
             component='div'
             sx={{
               flexGrow: 1,
-              transition: "0.2s",
               cursor: "pointer",
-              "&:hover": {
-                color: "skyblue",
-                transition: "0.2s",
-                opacity: 0.6,
-              }
+              fontFamily: "'Comic Sans MS', 'Comic Sans', cursive",
+              fontSize: "1.2rem",
             }}
             onClick={handleNavigateToHome}
           >
-            TrailMates
+            TripMates
           </Typography>
 
           <IconButton
@@ -78,6 +93,7 @@ const NavBar = () => {
             <Avatar
               src={profilePicture}
               alt={user || "User Avatar"} 
+              sx={{ width: 30, height: 30 }}
             >
               {!profilePicture && <PersonIcon />}
             </Avatar>

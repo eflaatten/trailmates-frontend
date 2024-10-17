@@ -1,11 +1,14 @@
 import axios from "axios";
 
+// Base URL for the API
 const BASE_URL = "https://trailmates-backend.vercel.app/api";
 
+// Function to get the token from localStorage
 const getToken = () => {
   return localStorage.getItem("token");
 };
 
+// Function to get the user's profile
 export const getProfile = async () => {
   const token = getToken();
   if (!token) {
@@ -34,6 +37,7 @@ export const getProfile = async () => {
   }
 }
 
+// Function to update the user's username
 export const updateUsername = async (username) => {
   const token = getToken();
   if (!token) {
@@ -64,6 +68,7 @@ export const updateUsername = async (username) => {
   }
 }
 
+// Function to update the user's email
 export const updateEmail = async (email) => {
   const token = getToken();
   if (!token) {
@@ -94,6 +99,7 @@ export const updateEmail = async (email) => {
   }
 }
 
+// Function to change the user's profile picture
 export const changeProfilePicture = async (profilePicture) => {
   const token = getToken();
   if (!token) {
@@ -133,6 +139,7 @@ export const changeProfilePicture = async (profilePicture) => {
   }
 };
 
+// Function to remove the user's profile picture
 export const removeProfilePicture = async () => {
   const token = getToken();
   if (!token) {

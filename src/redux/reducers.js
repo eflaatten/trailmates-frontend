@@ -1,20 +1,31 @@
 import { combineReducers } from "redux";
+import { GET_TRIPS, CREATE_TRIP, ERROR } from "./actions";
+import initialState from "./state";
 
-export const showPassword = (state = [], action) => {
-  switch(action.type) {
-    case 'SHOW_PASSWORD':
+const tripsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_TRIPS:
       return {
         ...state,
-        showPassword: !state.showPassword,
-      }
-    case 'HIDE_PASSWORD':
+        trips: action.payload,
+        error: null,
+      };
+    case CREATE_TRIP:
       return {
         ...state,
-        showPassword: !state.showPassword,
-      }
+        trips: [...state.trips, action.payload],
+        error: null,
+      };
+    case ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
-}
+};
 
-export default combineReducers({ showPassword })
+export default combineReducers({
+  trips: tripsReducer,
+});

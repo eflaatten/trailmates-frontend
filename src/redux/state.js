@@ -1,5 +1,7 @@
-export const state = {
-  showPassword: false,
-}
+// state.js
+export const initialState = {
+  trips: [],
+  error: null,
+};
 
-export default state;
+export default initialState;

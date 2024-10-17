@@ -6,7 +6,7 @@ import { AuthContext, useAuth, ProtectedRoute } from "./ProtectedRoute";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import Home from "./components/Home";
-import TripDetails from "./components/TripDetails/TripDetails";
+import TripDetails from "./components/Trips/TripDetails";
 import Profile from "./components/ProfileMenu/Profile/Profile";
 import Settings from "./components/ProfileMenu/Settings/Settings";
 

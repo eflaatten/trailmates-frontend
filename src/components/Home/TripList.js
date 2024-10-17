@@ -1,9 +1,22 @@
-import React, { useState } from "react";
-import { Button, Divider, Box, Typography, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Button, Divider, Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserTrips } from "../../redux/actions";
 import CreateTripDialog from "../Home/CreateTripDialog";
+import TripItem from "../Home/TripItem";
 
 const TripList = () => {
   const [openCreateTripDialog, setOpenCreateTripDialog] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Fetch trips from state
+  const { trips = [], error } = useSelector((state) => state.trips);
+
+  useEffect(() => {
+    dispatch(getUserTrips());
+  }, [dispatch]);
 
   const handleOpenCreateTripDialog = () => {
     setOpenCreateTripDialog(true);
@@ -13,11 +26,16 @@ const TripList = () => {
     setOpenCreateTripDialog(false);
   };
 
+  const handleTripClick = (id) => {
+    if (id) {
+      navigate(`/trip/${id}`);
+    }
+  };
+
   return (
     <Box
       sx={{
         padding: 4,
-        backgroundColor: "#1a1a1a",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
@@ -26,11 +44,9 @@ const TripList = () => {
         "@media (max-width: 600px)": {
           padding: 2,
           borderRadius: 0,
-        }
+        },
       }}
     >
-
-      {/* Button to create a new trip */}
       <Box
         sx={{
           display: "flex",
@@ -55,41 +71,103 @@ const TripList = () => {
         </Button>
       </Box>
 
-      {/* Divider between button and trip list */}
       <Divider
         sx={{
-          backgroundColor: "#444",
+          backgroundColor: "#666",
           width: "100%",
+          height: "1px",
           marginBottom: 2,
         }}
       />
 
-      {/* Trip List Container */}
       <Box
         sx={{
           width: "100%",
-          maxWidth: "2100px",
-          backgroundColor: "#2C2C2C", // Slightly lighter dark gray
+          backgroundColor: "#1a1a1a",
           borderRadius: 2,
-          padding: 2,
+          padding: 4,
           minHeight: "200px",
-          overflowY: "auto", // Allow overflow inside the box
-          overflowX: "hidden", // Disable horizontal scrolling
-          maxHeight: "500px", // Set a max height for scrolling behavior
-          boxSizing: "border-box", // Ensure padding is included in width
-          marginTop: 6,
+          overflowY: "auto",
+          overflowX: "hidden",
+          maxHeight: "500px",
+          boxSizing: "border-box",
+          marginTop: 2,
           "@media (max-width: 600px)": {
             marginTop: 2,
-          }
+          },
         }}
       >
-        {/* No trips message */}
-        <Typography variant='body1' sx={{ color: "#888", textAlign: "center" }}>
-          No trips added so far.
-        </Typography>
+        {/* Labels */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr auto", // Add auto for actions column
+            gap: 2,
+            color: "#aaa",
+            paddingBottom: 2,
+          }}
+        >
+          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+            Name
+          </Typography>
+          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+            Destination
+          </Typography>
+          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+            Start Date
+          </Typography>
+          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+            End Date
+          </Typography>
+          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+            Actions
+          </Typography>
+        </Box>
+
+        <Divider
+          sx={{
+            backgroundColor: "#666",
+            width: "100%",
+            height: "1px",
+            marginBottom: 2,
+          }}
+        />
+
+        {error ? (
+          <Typography sx={{ color: "red" }}>{error}</Typography>
+        ) : trips.length > 0 ? (
+          trips.map((trip) => (
+            <Box
+              key={trip.tripId}
+              onClick={() => handleTripClick(trip.tripId)}
+              sx={{
+                cursor: "pointer",
+                "@media (max-width: 600px)": {
+                  gap: "10px",
+                },
+                "&:hover": {
+                  backgroundColor: "#444",
+                },
+              }}
+            >
+              <TripItem
+                tripName={trip.trip_name}
+                destination={trip.destination}
+                startDate={trip.start_date}
+                endDate={trip.end_date}
+              />
+            </Box>
+          ))
+        ) : (
+          <Typography
+            variant='body1'
+            sx={{ color: "#888", textAlign: "center" }}
+          >
+            No trips added so far.
+          </Typography>
+        )}
       </Box>
 
-      {/* Create Trip Dialog */}
       <CreateTripDialog
         open={openCreateTripDialog}
         onClose={handleCloseCreateTripDialog}

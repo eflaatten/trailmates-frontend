@@ -13,6 +13,11 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { toast } from "react-toastify"; // For toast notifications
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux"; // For dispatching actions
+import { createTrip } from "../../redux/actions"; // Your action for creating a trip
+import dayjs from "dayjs"; // For date formatting
 
 const darkTheme = createTheme({
   palette: {
@@ -27,9 +32,35 @@ const CreateTripDialog = ({ open, onClose }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const handleCreate = () => {
-    console.log("Trip Created:", { tripName, destination });
-    onClose();
+  const dispatch = useDispatch();
+
+  const handleCreate = async () => {
+    if (!tripName || !destination || !startDate || !endDate) {
+      toast.error("Please fill all fields!", {...toastOptions}); // Error toast if fields are empty
+      return;
+    }
+
+    const tripData = {
+      trip_name: tripName,
+      trip_description: description,
+      start_date: dayjs(startDate).format("YYYY-MM-DD"), 
+      end_date: dayjs(endDate).format("YYYY-MM-DD"),
+      destination,
+    };
+
+    console.log("Final trip data:", tripData);
+
+    try {
+      await dispatch(createTrip(tripData)); // Dispatch the action to create the trip
+
+      toast.success("Trip created successfully!", {...toastOptions}); // Success toast
+      onClose(); // Close the dialog
+      setTimeout(() => {
+        window.location.reload(); // Reload the page to show the new trip
+      }, 2960);
+    } catch (error) {
+      toast.error("Error creating trip. Please try again.", {...toastOptions}); // Error toast
+    }
   };
 
   return (
@@ -84,11 +115,11 @@ const CreateTripDialog = ({ open, onClose }) => {
             sx={{
               display: "flex",
               flexDirection: "row",
-              gap: "4%", // Small gap between the date pickers
+              gap: "4%",
               width: "100%",
               "@media (max-width: 650px)": {
-                flexDirection: "column", // Stack date pickers on top of each other
-                gap: "20px", // Adjust gap for column layout
+                flexDirection: "column", // Stack date pickers on smaller screens
+                gap: "20px",
               },
             }}
           >
@@ -98,7 +129,7 @@ const CreateTripDialog = ({ open, onClose }) => {
                 value={startDate}
                 onChange={(date) => setStartDate(date)}
                 renderInput={(params) => <TextField {...params} fullWidth />}
-                sx={{ width: { xs: "100%", md: "48%" } }} // Full width in mobile, 48% in larger screens
+                sx={{ width: { xs: "100%", md: "48%" } }} // Adjust width for responsiveness
               />
             </LocalizationProvider>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -107,7 +138,7 @@ const CreateTripDialog = ({ open, onClose }) => {
                 value={endDate}
                 onChange={(date) => setEndDate(date)}
                 renderInput={(params) => <TextField {...params} fullWidth />}
-                sx={{ width: { xs: "100%", md: "48%" } }} // Full width in mobile, 48% in larger screens
+                sx={{ width: { xs: "100%", md: "48%" } }}
               />
             </LocalizationProvider>
           </Box>
@@ -126,3 +157,17 @@ const CreateTripDialog = ({ open, onClose }) => {
 };
 
 export default CreateTripDialog;
+
+const toastOptions = {
+  position: "top-right",
+  autoClose: 3000,
+  closeOnClick: true,
+  pauseOnHover: false,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+  style: {
+    background: "#000000",
+    color: "#ffffff",
+  },
+};

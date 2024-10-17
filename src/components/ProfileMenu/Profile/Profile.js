@@ -163,13 +163,14 @@ const UserProfile = () => {
             value={email}
           />
           <Box sx={buttonContainerStyle}>
-            <Button variant='outlined' color='secondary' sx={{ mr: 2 }}>
+            {/* <Button variant='outlined' color='secondary' sx={{ mr: 2 }}>
               CANCEL
-            </Button>
+            </Button> */}
             <Button
               variant='contained'
               sx={{
-                marginRight: 2,
+                //marginRight: 2,
+                width: "100px",
                 backgroundColor: "#2196F3", 
                 color: "white", 
                 "&:hover": {
