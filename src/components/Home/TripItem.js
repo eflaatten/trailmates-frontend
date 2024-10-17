@@ -48,6 +48,9 @@ const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
           scale: 1.01, // Slightly larger on hover
           cursor: "pointer",
         },
+        "@media (max-width: 600px)": {
+          gridTemplateColumns: "1fr 1fr auto", // Hide start and end date on mobile
+        },
       }}
     >
       <Typography variant='body1' sx={{ color: "white" }}>
@@ -56,10 +59,16 @@ const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
       <Typography variant='body1' sx={{ color: "#ccc" }}>
         {destination}
       </Typography>
-      <Typography variant='body1' sx={{ color: "#ccc" }}>
+      <Typography
+        variant='body1'
+        sx={{ color: "#ccc", display: { xs: "none", sm: "block" } }} // Hide on mobile
+      >
         {formatDate(startDate)}
       </Typography>
-      <Typography variant='body1' sx={{ color: "#ccc" }}>
+      <Typography
+        variant='body1'
+        sx={{ color: "#ccc", display: { xs: "none", sm: "block" } }} // Hide on mobile
+      >
         {formatDate(endDate)}
       </Typography>
 
@@ -85,9 +94,9 @@ const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
         }}
         onClick={(e) => e.stopPropagation()} // Prevent click from propagating to parent
       >
-        <MenuItem onClick={handleDelete} sx={{ color: "red" }}>
+        <MenuItem onClick={handleDelete}>
           <DeleteIcon sx={{ color: "red", marginRight: "8px" }} />
-          Delete
+          <Typography sx={{ color: "#fff" }}>Delete</Typography>
         </MenuItem>
       </Menu>
     </Box>

@@ -21,7 +21,15 @@ const TripDetails = () => {
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#0a0a0a", color: "#fff" }}>
       <NavBar />
-      <Box sx={{ padding: 4, margin: "20px" }}>
+      <Box sx={{
+        padding: 4,
+        margin: "20px",
+        "@media (max-width: 600px)": {
+          padding: 2,
+          margin: "0",
+        }
+      }}
+      >
         {/* Back Arrow */}
         <IconButton
           onClick={handleBack}
@@ -33,6 +41,10 @@ const TripDetails = () => {
             "&:hover": {
               transform: "translateX(-5px)",
             },
+            "@media (max-width: 600px)": {
+              marginBottom: 6,
+              display: "none"
+            }
           }}
         >
           <ArrowBackIosNewIcon />

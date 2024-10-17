@@ -7,27 +7,26 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import { logout } from '../../api/auth';
+import { logout } from "../../api/auth";
 
 const ProfileMenu = ({ anchorEl, handleClose }) => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
-
   const handleNavigateToProfile = () => {
     navigate("/profile");
     handleClose();
-  }
+  };
 
   const handleNavigateToSettings = () => {
     navigate("/settings");
     handleClose();
-  }
+  };
 
   const handleLogout = () => {
     logout();
     navigate("/login");
-  }
+  };
 
   return (
     <Menu
@@ -39,23 +38,23 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         "aria-labelledby": "basic-button",
       }}
     >
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleNavigateToProfile}>
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>
-        <ListItemText primary='Profile' onClick={handleNavigateToProfile}/>
+        <ListItemText primary='Profile' />
       </MenuItem>
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleNavigateToSettings}>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>
-        <ListItemText primary='Settings' onClick={handleNavigateToSettings}/>
+        <ListItemText primary='Settings' />
       </MenuItem>
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>
-        <ListItemText primary='Logout' onClick={handleLogout}/>
+        <ListItemText primary='Logout' />
       </MenuItem>
     </Menu>
   );

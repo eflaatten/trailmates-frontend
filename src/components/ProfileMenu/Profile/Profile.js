@@ -7,6 +7,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Typography,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import NavBar from "../../Navigation/NavBar";
@@ -14,18 +15,20 @@ import ProfileMenu from "../../Navigation/ProfileMenu";
 import { getProfile, updateUsername, updateEmail } from "../../../api/profile";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
 import ChangeProfilePicture from "./ChangeProfilePicture";
 import { removeProfilePicture } from "../../../api/profile";
-
-
 
 const UserProfile = () => {
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
+  const [originalUser, setOriginalUser] = useState("");
+  const [originalEmail, setOriginalEmail] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState(false); // Combined edit mode for both username and email
 
   const handleSetUser = (e) => {
     setUser(e.target.value);
@@ -39,6 +42,9 @@ const UserProfile = () => {
     try {
       updateUsername(user);
       updateEmail(email);
+      setEditing(false);
+      setOriginalUser(user); // Update original username and email to the saved values
+      setOriginalEmail(email);
       toast.success("Profile updated successfully", { ...toastOptions });
     } catch (error) {
       console.log("Failed to update profile:", error);
@@ -46,16 +52,24 @@ const UserProfile = () => {
     }
   };
 
+  const handleCancel = () => {
+    setEditing(false);
+    setUser(originalUser);
+    setEmail(originalEmail);
+  };
+
   const handleOpenChangePicture = () => {
     setOpen(true);
     setAnchorEl(null);
-  }
+  };
 
   const handleRemovePicture = async () => {
     try {
       await removeProfilePicture();
       setProfilePicture("");
-      toast.success("Profile picture removed successfully", { ...toastOptions });
+      toast.success("Profile picture removed successfully", {
+        ...toastOptions,
+      });
       setAnchorEl(null);
     } catch (error) {
       console.error("Failed to remove profile picture:", error);
@@ -69,7 +83,8 @@ const UserProfile = () => {
         const profileData = await getProfile();
         setUser(profileData.username);
         setEmail(profileData.email);
-        // If you have a profile picture field
+        setOriginalUser(profileData.username);
+        setOriginalEmail(profileData.email);
         setProfilePicture(profileData.profile_picture);
       } catch (error) {
         console.error("Failed to fetch profile data:", error);
@@ -88,110 +103,166 @@ const UserProfile = () => {
           <Box sx={avatarWrapperStyle}>
             <Avatar
               sx={avatarStyle}
-              src={profilePicture} // Set the profile picture as the source
-              alt={user || "User Avatar"} // Use the username or a fallback
+              src={profilePicture}
+              alt={user || "User Avatar"}
             >
               {!profilePicture && <PersonIcon sx={avatarIconStyle} />}
             </Avatar>
+
+            {/* Pencil Icon on Profile Picture */}
             <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                right: 0,
-                bgcolor: "#2e2e2e", // Retaining the background for the wrapper
-                borderRadius: "50%",
-                p: 0.4,
-                cursor: "pointer",
-              }}
+              sx={editIconStyle}
               onClick={(e) => setAnchorEl(e.currentTarget)}
             >
               <EditIcon sx={{ color: "#ffffff", opacity: 1 }} />
             </Box>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-              PaperProps={{
-                sx: {
-                  backgroundColor: "#000000", // Menu background color
-                  color: "#ffffff", // Menu text color
-                },
-              }}
-            >
-              <MenuItem
-                onClick={handleOpenChangePicture}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#333333", // Dark gray hover effect
-                  },
-                }}
-              >
-                Change picture
-              </MenuItem>
-              <MenuItem
-                onClick={handleRemovePicture}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#333333", // Dark gray hover effect
-                  },
-                }}
-              >
-                Remove Picture
-              </MenuItem>
-            </Menu>
+          </Box>
+
+          <Box sx={profileDetailsStyle}>
+            {/* Username with edit option */}
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {!editing ? (
+                <>
+                  <Typography variant='h5' sx={{ color: "white" }}>
+                    {user}
+                  </Typography>
+                </>
+              ) : (
+                <TextField
+                  variant='outlined'
+                  value={user}
+                  onChange={handleSetUser}
+                  fullWidth
+                  InputLabelProps={{
+                    style: { color: "#ffffff" }, // Label color
+                  }}
+                  InputProps={{
+                    style: { color: "#ffffff" }, // Text color
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#ffffff", // Default border color
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#ffffff", // Border color on hover
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#2196F3", // Border color when focused
+                      },
+                    },
+                    width: "600px",
+                  }}
+                />
+              )}
+            </Box>
+
+            {/* Email with edit option */}
+            <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+              {editing === false && (
+                <EmailIcon sx={{ color: "white", mr: 1 }} />
+              )}
+              {!editing ? (
+                <>
+                  <Typography variant='body1' sx={{ color: "#ccc" }}>
+                    {email}
+                  </Typography>
+                </>
+              ) : (
+                <TextField
+                  variant='outlined'
+                  value={email}
+                  onChange={handleSetEmail}
+                  fullWidth
+                  InputLabelProps={{
+                    style: { color: "#ffffff" }, // Label color
+                  }}
+                  InputProps={{
+                    style: { color: "#ffffff" }, // Text color
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#ffffff", // Default border color
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#ffffff", // Border color on hover
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#2196F3", // Border color when focused
+                      },
+                    },
+                    width: "600px",
+                  }}
+                />
+              )}
+            </Box>
           </Box>
         </Box>
-        <form style={formStyle}>
-          <TextField
-            fullWidth
-            label='Username'
-            variant='outlined'
-            margin='normal'
-            InputLabelProps={{ style: inputLabelStyle }}
-            InputProps={{ style: inputStyle }}
-            onChange={handleSetUser}
-            value={user}
-          />
-          <TextField
-            fullWidth
-            label='Email'
-            variant='outlined'
-            margin='normal'
-            InputLabelProps={{ style: inputLabelStyle }}
-            InputProps={{ style: inputStyle }}
-            onChange={handleSetEmail}
-            value={email}
-          />
+
+        {/* Show Save and Cancel buttons only in edit mode */}
+        {editing ? (
           <Box sx={buttonContainerStyle}>
-            {/* <Button variant='outlined' color='secondary' sx={{ mr: 2 }}>
+            <Button
+              variant='outlined'
+              sx={cancelButtonStyle}
+              onClick={handleCancel}
+            >
               CANCEL
-            </Button> */}
+            </Button>
             <Button
               variant='contained'
-              sx={{
-                //marginRight: 2,
-                width: "100px",
-                backgroundColor: "#2196F3", 
-                color: "white", 
-                "&:hover": {
-                  backgroundColor: "#1976D2", 
-                  opacity: 0.9, 
-                },
-              }}
+              sx={saveButtonStyle}
               onClick={handleSaveChanges}
             >
               SAVE
             </Button>
           </Box>
-        </form>
+        ) : (
+          <Box sx={buttonContainerStyle}>
+            <Button
+              variant='outlined'
+              sx={editButtonStyle}
+              onClick={() => setEditing(true)}
+            >
+              EDIT
+            </Button>
+          </Box>
+        )}
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={() => setAnchorEl(null)}
+          PaperProps={{
+            sx: {
+              backgroundColor: "#000000",
+              color: "#ffffff",
+            },
+          }}
+        >
+          <MenuItem
+            onClick={handleOpenChangePicture}
+            sx={{ "&:hover": { backgroundColor: "#333333" } }}
+          >
+            Change picture
+          </MenuItem>
+          <MenuItem
+            onClick={handleRemovePicture}
+            sx={{ "&:hover": { backgroundColor: "#333333" } }}
+          >
+            Remove Picture
+          </MenuItem>
+        </Menu>
+
+        <ChangeProfilePicture
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            setAnchorEl(null);
+          }}
+        />
       </Paper>
-      <ChangeProfilePicture
-        open={open}
-        onClose={() => {
-          setOpen(false);
-          setAnchorEl(null); 
-        }}
-      />
     </>
   );
 };
@@ -201,9 +272,9 @@ export default UserProfile;
 // Styles
 const paperStyle = {
   p: 4,
-  maxWidth: "90%", // Adjusted to prevent overflow
+  width: "80%",
   margin: "auto",
-  mt: 4,
+  mt: 6,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -211,20 +282,17 @@ const paperStyle = {
   color: "#ffffff",
   "@media (max-width: 600px)": {
     width: "100%",
-    maxWidth: "80%",
+    maxWidth: "90%",
     mt: 2,
   },
 };
 
 const avatarContainerStyle = {
   display: "flex",
-  justifyContent: "flex-start",
   alignItems: "center",
-  width: "80%",
+  width: "100%",
   mb: 2,
-  "@media (max-width: 600px)": {
-    width: "25%",
-  },
+  position: "relative",
 };
 
 const avatarWrapperStyle = {
@@ -242,23 +310,59 @@ const avatarIconStyle = {
   color: "#ffffff",
 };
 
-const formStyle = {
-  width: "80%",
+const editIconStyle = {
+  position: "absolute",
+  bottom: 0,
+  right: 0,
+  bgcolor: "#2e2e2e",
+  borderRadius: "50%",
+  p: 0.4,
+  cursor: "pointer",
 };
 
-const inputLabelStyle = {
-  color: "#ffffff",
-};
-
-const inputStyle = {
-  color: "#ffffff",
-  borderColor: "#ffffff",
+const profileDetailsStyle = {
+  display: "flex",
+  flexDirection: "column",
+  ml: 3,
 };
 
 const buttonContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
   mt: 3,
+  width: "100%",
+};
+
+const saveButtonStyle = {
+  width: "100px",
+  backgroundColor: "#2196F3",
+  color: "white",
+  "&:hover": {
+    backgroundColor: "#1976D2",
+    opacity: 0.9,
+  },
+};
+
+const cancelButtonStyle = {
+  width: "100px",
+  color: "#ffffff",
+  borderColor: "#ffffff",
+  mr: 2,
+  "&:hover": {
+    backgroundColor: "#212121",
+    opacity: 0.7,
+  },
+};
+
+const editButtonStyle = {
+  width: "100px",
+  color: "#ffffff",
+  borderColor: "#ffffff",
+  "&:hover": {
+    backgroundColor: "#212121",
+    color: "#ffffff",
+    opacity: 0.8,
+  },
 };
 
 const toastOptions = {
@@ -272,5 +376,5 @@ const toastOptions = {
   style: {
     background: "#000000",
     color: "#ffffff",
-  }
-}
+  },
+};

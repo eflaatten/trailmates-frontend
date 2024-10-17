@@ -86,6 +86,7 @@ export default Settings;
 const StyledPaper = styled(Paper)(({ theme }) => ({
   width: "90%",
   margin: "20px auto",
+  marginTop: "50px",
   padding: theme.spacing(3),
   backgroundColor: "#1e1e1e",
   color: "#ffffff",

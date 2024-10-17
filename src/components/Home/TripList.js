@@ -42,11 +42,13 @@ const TripList = () => {
         alignItems: "center",
         borderRadius: 4,
         "@media (max-width: 600px)": {
-          padding: 2,
-          borderRadius: 0,
+          padding: 1,
+          paddingTop: "40px",
+          borderRadius: 4,
         },
       }}
     >
+      {/* Create Trip Button */}
       <Box
         sx={{
           display: "flex",
@@ -80,6 +82,7 @@ const TripList = () => {
         }}
       />
 
+      {/* Trip List Container */}
       <Box
         sx={{
           width: "100%",
@@ -94,6 +97,10 @@ const TripList = () => {
           marginTop: 2,
           "@media (max-width: 600px)": {
             marginTop: 2,
+            padding: "10px",
+            minHeight: "100vh",
+            maxHeight: "100vh",
+            borderRadius: 0,
           },
         }}
       >
@@ -101,10 +108,13 @@ const TripList = () => {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr 1fr auto", // Add auto for actions column
+            gridTemplateColumns: "1fr 1fr 1fr 1fr auto",
             gap: 2,
             color: "#aaa",
             paddingBottom: 2,
+            "@media (max-width: 600px)": {
+              gridTemplateColumns: "1fr 1fr auto", // Adjust for mobile: name, destination, actions
+            },
           }}
         >
           <Typography variant='body2' sx={{ fontWeight: "bold" }}>
@@ -113,10 +123,16 @@ const TripList = () => {
           <Typography variant='body2' sx={{ fontWeight: "bold" }}>
             Destination
           </Typography>
-          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant='body2'
+            sx={{ fontWeight: "bold", display: { xs: "none", sm: "block" } }} // Hide Start Date on mobile
+          >
             Start Date
           </Typography>
-          <Typography variant='body2' sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant='body2'
+            sx={{ fontWeight: "bold", display: { xs: "none", sm: "block" } }} // Hide End Date on mobile
+          >
             End Date
           </Typography>
           <Typography variant='body2' sx={{ fontWeight: "bold" }}>
@@ -133,6 +149,7 @@ const TripList = () => {
           }}
         />
 
+        {/* Trip Items */}
         {error ? (
           <Typography sx={{ color: "red" }}>{error}</Typography>
         ) : trips.length > 0 ? (
@@ -144,6 +161,7 @@ const TripList = () => {
                 cursor: "pointer",
                 "@media (max-width: 600px)": {
                   gap: "10px",
+                  gridTemplateColumns: "1fr 1fr auto", // Match the labels on mobile
                 },
                 "&:hover": {
                   backgroundColor: "#444",
