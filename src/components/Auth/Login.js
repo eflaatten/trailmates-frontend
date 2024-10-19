@@ -1,25 +1,59 @@
 import React, { useState } from "react";
-import { Button, Typography, Box, TextField } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Box,
+  TextField,
+  IconButton,
+  InputAdornment,
+  Tooltip,
+} from "@mui/material";
+import {
+  Visibility,
+  VisibilityOff,
+  Error as ErrorIcon,
+  Warning as WarningIcon,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import ErrorIcon from "@mui/icons-material/Error";
 import { login } from "../../api/auth";
-import LOGIN_BG_IMAGE from "../../assets/LOGIN_BG2.jpg";
+import TripMatesLogo from "../../assets/TrailMates(bg).png"; // Add your logo path here
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showError, setShowError] = useState(false); // for wrong email/password error
+  const [emptyFieldErrors, setEmptyFieldErrors] = useState({ username: false });
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any existing errors
+    setEmptyFieldErrors({ username: false });
+    setShowError(false);
+
+    if (!username || !password) {
+      // Show tooltip for empty username field
+      if (!username) {
+        setEmptyFieldErrors({ username: true });
+      }
+      return;
+    }
+
     try {
       await login(username, password);
       navigate("/home");
     } catch (error) {
-      setError("Wrong username or password");
+      // Show error when wrong credentials are provided
+      setShowError(true);
     }
+  };
+
+  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setShowError(false); // Hide error when typing
+    setEmptyFieldErrors({ username: false });
   };
 
   return (
@@ -29,27 +63,18 @@ const Login = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundImage: `url(${LOGIN_BG_IMAGE})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: "linear-gradient(to right, #1a237e, #000000)",
       }}
     >
-      {/* Dark gray box for the form */}
       <Box
         sx={{
-          backgroundColor: "rgba(0, 0, 0, 0.9)",
+          backgroundColor: "white",
           padding: "40px",
           borderRadius: "8px",
           width: "100%",
           maxWidth: "400px",
           textAlign: "center",
-          "@media (max-width: 600px)": {
-            height: "100vh",
-            padding: "60px",
-            mt: "80px",
-            overflowY: "hidden",
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
-          },
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
@@ -57,54 +82,129 @@ const Login = () => {
           }
         }}
       >
+        {/* Logo and TripMates Name inside the form */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mb: 3,
+          }}
+        >
+          <img
+            src={TripMatesLogo}
+            alt='TripMates Logo'
+            style={{ width: 55, height: 55, marginRight: 8, borderRadius: 8 }}
+          />
+          <Typography
+            variant='h4'
+            sx={{ fontWeight: "bold", color: "#1a237e" }}
+          >
+            TripMates
+          </Typography>
+        </Box>
+
         <Typography
-          variant='h4'
-          component='h1'
+          variant='h5'
+          component='h2'
           gutterBottom
-          sx={{ color: "white" }}
+          sx={{ color: "black" }}
         >
           Welcome
         </Typography>
-        <Typography variant='body1' paragraph sx={{ color: "white" }}>
-          Please log in to access your dashboard.
-        </Typography>
-        <TextField
-          label='Username'
-          variant='outlined'
-          margin='normal'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          fullWidth
-          sx={inputStyles}
-        />
+
+        {/* Username field with bigger tooltip and warning icon for empty field */}
+        <Tooltip
+          open={emptyFieldErrors.username}
+          title={
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <WarningIcon sx={{ mr: 1, color: "orange" }} />
+              Please fill out this field
+            </Box>
+          }
+          arrow
+          disableHoverListener
+          PopperProps={{
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, -4],
+                },
+              },
+            ],
+          }}
+          componentsProps={{
+            tooltip: {
+              sx: {
+                fontSize: "16px",
+                backgroundColor: "white", 
+                border: "1px solid black",
+                color: "black",
+              },
+            },
+          }}
+        >
+          <TextField
+            label='Username'
+            variant='outlined'
+            margin='normal'
+            value={username}
+            onChange={handleInputChange(setUsername)}
+            required
+            fullWidth
+            error={showError} // Red border for wrong credentials
+          />
+        </Tooltip>
+
+        {/* Password field without tooltip */}
         <TextField
           label='Password'
-          type='password'
+          type={showPassword ? "text" : "password"}
           variant='outlined'
           margin='normal'
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleInputChange(setPassword)}
           required
           fullWidth
-          sx={inputStyles}
+          error={showError} // Red border for wrong credentials
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <Tooltip
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  <IconButton
+                    aria-label='toggle password visibility'
+                    onClick={handleClickShowPassword}
+                    edge='end'
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            ),
+          }}
         />
-        {error && (
+
+        {/* Show error message if wrong email or password */}
+        {showError && (
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               mt: 2,
               color: "error.main",
-              justifyContent: "center",
+              justifyContent: "flex-start",
             }}
           >
             <ErrorIcon sx={{ mr: 1 }} />
             <Typography variant='body2' color='error'>
-              {error}
+              Wrong email or password
             </Typography>
           </Box>
         )}
+
         <Button
           variant='contained'
           fullWidth
@@ -114,43 +214,31 @@ const Login = () => {
             color: "white",
             "&:hover": {
               backgroundColor: "#1976D2",
-              opacity: 0.9,
             },
           }}
           onClick={handleLogin}
         >
           LOGIN
         </Button>
-        <Typography variant='body2' sx={{ mt: 2, color: "white" }}>
+
+        <Typography variant='body2' sx={{ mt: 2, color: "gray" }}>
           Don't have an account?{" "}
-          <Button color='primary' onClick={() => navigate("/signup")}>
+          <Button
+            onClick={() => navigate("/signup")}
+            sx={{
+              padding: 0,
+              textTransform: "none",
+              color: "#2196F3",
+              fontSize: "14px",
+              fontWeight: "normal"
+            }}
+          >
             Sign up
           </Button>
         </Typography>
       </Box>
     </Box>
   );
-};
-
-const inputStyles = {
-  "& .MuiOutlinedInput-root": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    "& fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.3)",
-    },
-    "&:hover fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.5)",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "white",
-    },
-  },
-  "& .MuiInputLabel-root": {
-    color: "rgba(255, 255, 255, 0.7)",
-  },
-  "& .MuiOutlinedInput-input": {
-    color: "white",
-  },
 };
 
 export default Login;

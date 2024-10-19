@@ -1,20 +1,38 @@
 import React, { useState } from "react";
-import { Button, Typography, Box, TextField } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Box,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
+import {
+  Visibility,
+  VisibilityOff,
+  Error as ErrorIcon,
+  Warning as WarningIcon,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import ErrorIcon from "@mui/icons-material/Error";
 import { signup } from "../../api/auth";
-import SIGNUP_BG_IMAGE from "../../assets/LOGIN_BG2.jpg";
+import TripMatesLogo from "../../assets/TrailMates(bg).png"; // Add your logo path here
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [formTouched, setFormTouched] = useState(false); // Tracks if the form was submitted
+  const [error, setError] = useState(""); // Tracks specific error messages
   const navigate = useNavigate();
 
   const handleSignup = async () => {
+    setFormTouched(true);
+    setError("");
+
+    // Check if all fields are filled out
     if (!username || !email || !password) {
-      setError("All fields are required.");
+      setError("Please fill out all fields.");
       return;
     }
 
@@ -34,6 +52,13 @@ const SignUp = () => {
     }
   };
 
+  const handleInputChange = (setter) => (e) => {
+    setter(e.target.value);
+    setError(""); // Clear error message when user starts typing
+  };
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+
   const handleLogin = () => {
     navigate("/login");
   };
@@ -45,27 +70,18 @@ const SignUp = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundImage: `url(${SIGNUP_BG_IMAGE})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: "linear-gradient(to right, #1a237e, #000000)",
       }}
     >
-      {/* Dark gray box for the form */}
       <Box
         sx={{
-          backgroundColor: "rgba(0, 0, 0, 0.9)", // Dark gray box with transparency
+          backgroundColor: "white",
           padding: "40px",
           borderRadius: "8px",
           width: "100%",
           maxWidth: "400px",
           textAlign: "center",
-          "@media (max-width: 600px)": {
-            height: "100vh",
-            padding: "60px",
-            mt: "80px",
-            overflowY: "hidden",
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
-          },
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
@@ -73,48 +89,88 @@ const SignUp = () => {
           }
         }}
       >
+        {/* Logo and TripMates Name inside the form */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mb: 3,
+          }}
+        >
+          <img
+            src={TripMatesLogo}
+            alt='TripMates Logo'
+            style={{ width: 55, height: 55, marginRight: 8, borderRadius: 8 }}
+          />
+          <Typography
+            variant='h4'
+            sx={{ fontWeight: "bold", color: "#1a237e" }}
+          >
+            TripMates
+          </Typography>
+        </Box>
+
         <Typography
-          variant='h4'
-          component='h1'
+          variant='h5'
+          component='h2'
           gutterBottom
-          sx={{ color: "white" }}
+          sx={{ color: "black" }}
         >
           Create Account
         </Typography>
-        <Typography variant='body1' paragraph sx={{ color: "white" }}>
-          Sign up to get started.
-        </Typography>
+
+        {/* Username field */}
         <TextField
           label='Username'
           variant='outlined'
           margin='normal'
-          sx={inputStyles}
-          required
-          onChange={(e) => setUsername(e.target.value)}
           value={username}
+          onChange={handleInputChange(setUsername)}
+          required
           fullWidth
+          error={Boolean(formTouched && !username)}
         />
+
+        {/* Email field */}
         <TextField
           label='Email'
           variant='outlined'
           margin='normal'
-          sx={inputStyles}
-          required
-          onChange={(e) => setEmail(e.target.value)}
           value={email}
+          onChange={handleInputChange(setEmail)}
+          required
           fullWidth
+          error={Boolean(formTouched && !email)}
         />
+
+        {/* Password field with eye icon */}
         <TextField
           label='Password'
-          type='password'
+          type={showPassword ? "text" : "password"}
           variant='outlined'
           margin='normal'
-          sx={inputStyles}
-          onChange={(e) => setPassword(e.target.value)}
           value={password}
+          onChange={handleInputChange(setPassword)}
           required
           fullWidth
+          error={Boolean(formTouched && !password)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton
+                  aria-label='toggle password visibility'
+                  onClick={handleClickShowPassword}
+                  edge='end'
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
+
+        {/* Display error message at the bottom if any field is empty */}
         {error && (
           <Box
             sx={{
@@ -125,12 +181,13 @@ const SignUp = () => {
               justifyContent: "center",
             }}
           >
-            <ErrorIcon sx={{ mr: 1 }} />
+            <WarningIcon sx={{ mr: 1 }} />
             <Typography variant='body2' color='error'>
               {error}
             </Typography>
           </Box>
         )}
+
         <Button
           variant='contained'
           fullWidth
@@ -140,43 +197,31 @@ const SignUp = () => {
             color: "white",
             "&:hover": {
               backgroundColor: "#1976D2",
-              opacity: 0.9,
             },
           }}
           onClick={handleSignup}
         >
           SIGN UP
         </Button>
-        <Typography variant='body2' sx={{ mt: 2, color: "white" }}>
+
+        <Typography variant='body2' sx={{ mt: 2, color: "gray" }}>
           Already have an account?{" "}
-          <Button color='primary' onClick={handleLogin}>
+          <Button
+            onClick={handleLogin}
+            sx={{
+              padding: 0,
+              textTransform: "none",
+              color: "#2196F3",
+              fontSize: "14px",
+              fontWeight: "normal",
+            }}
+          >
             Log in
           </Button>
         </Typography>
       </Box>
     </Box>
   );
-};
-
-const inputStyles = {
-  "& .MuiOutlinedInput-root": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    "& fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.3)",
-    },
-    "&:hover fieldset": {
-      borderColor: "rgba(255, 255, 255, 0.5)",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "white",
-    },
-  },
-  "& .MuiInputLabel-root": {
-    color: "rgba(255, 255, 255, 0.7)",
-  },
-  "& .MuiOutlinedInput-input": {
-    color: "white",
-  },
 };
 
 export default SignUp;
