@@ -99,9 +99,8 @@ const TripList = () => {
           "@media (max-width: 600px)": {
             marginTop: 2,
             padding: "10px",
-            minHeight: "100vh",
-            maxHeight: "100vh",
-            borderRadius: 0,
+            height: "auto",
+            borderRadius: 4,
           },
         }}
       >
