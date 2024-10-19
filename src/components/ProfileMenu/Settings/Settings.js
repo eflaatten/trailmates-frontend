@@ -84,15 +84,15 @@ const Settings = () => {
 export default Settings;
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  width: "90%",
+  width: "40%",
   margin: "20px auto",
   marginTop: "50px",
   padding: theme.spacing(3),
   backgroundColor: "#1e1e1e",
   color: "#ffffff",
   [theme.breakpoints.down("sm")]: {
-    width: "85%",
-    margin: "50px auto",
+    width: "90%",
+    margin: "40px auto",
     padding: theme.spacing(2),
   },
 }));
@@ -100,7 +100,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
   [theme.breakpoints.down("sm")]: {
-    margin: theme.spacing(0.5),
+    margin: theme.spacing(0.8),
   },
 }));
 

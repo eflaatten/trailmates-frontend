@@ -36,7 +36,7 @@ const TripList = () => {
     <Box
       sx={{
         padding: 4,
-        minHeight: "100vh",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -89,10 +89,11 @@ const TripList = () => {
           backgroundColor: "#1a1a1a",
           borderRadius: 2,
           padding: 4,
-          minHeight: "200px",
+          //minHeight: "200px",
           overflowY: "auto",
           overflowX: "hidden",
-          maxHeight: "500px",
+          //maxHeight: "500px",
+          height: "auto",
           boxSizing: "border-box",
           marginTop: 2,
           "@media (max-width: 600px)": {
@@ -169,10 +170,12 @@ const TripList = () => {
               }}
             >
               <TripItem
+                tripId={trip.tripId}
                 tripName={trip.trip_name}
                 destination={trip.destination}
                 startDate={trip.start_date}
                 endDate={trip.end_date}
+                onDelete={() => dispatch(getUserTrips())}
               />
             </Box>
           ))

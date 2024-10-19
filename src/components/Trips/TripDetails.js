@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import NavBar from "../Navigation/NavBar";
+import ReactMarkdown from "react-markdown";
+
 
 const TripDetails = () => {
   const navigate = useNavigate();
@@ -21,14 +23,15 @@ const TripDetails = () => {
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "#0a0a0a", color: "#fff" }}>
       <NavBar />
-      <Box sx={{
-        padding: 4,
-        margin: "20px",
-        "@media (max-width: 600px)": {
-          padding: 2,
-          margin: "0",
-        }
-      }}
+      <Box
+        sx={{
+          padding: 4,
+          margin: "20px",
+          "@media (max-width: 600px)": {
+            padding: 2,
+            margin: "0",
+          },
+        }}
       >
         {/* Back Arrow */}
         <IconButton
@@ -43,8 +46,8 @@ const TripDetails = () => {
             },
             "@media (max-width: 600px)": {
               marginBottom: 6,
-              display: "none"
-            }
+              display: "none",
+            },
           }}
         >
           <ArrowBackIosNewIcon />
@@ -86,6 +89,10 @@ const TripDetails = () => {
               </Typography>
               <Typography variant='body1' sx={{ marginBottom: 2 }}>
                 <strong>Description:</strong> {trip.trip_description}
+              </Typography>
+              <Typography variant='body1' sx={{ marginBottom: 1 }}>
+                <strong>AI Summary:</strong>
+                <ReactMarkdown>{trip.openai_response}</ReactMarkdown>
               </Typography>
             </Box>
           </>

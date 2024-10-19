@@ -6,6 +6,7 @@ const BASE_URL = "https://trailmates-backend.vercel.app/api";
 // Action Types
 export const GET_TRIPS = "GET_TRIPS";
 export const CREATE_TRIP = "CREATE_TRIP";
+export const DELETE_TRIP = "DELETE_TRIP";
 export const ERROR = "ERROR";
 
 // Fetch User Trips and Dispatch to Redux
@@ -71,3 +72,37 @@ export const createTrip = (tripData) => async (dispatch) => {
     throw error;
   }
 };
+
+export const deleteTrip = (tripId) => async (dispatch) => {
+  const token = getToken();
+  console.log("deleting trip with id:", tripId);
+
+  if (!token) {
+    console.error("No token found, user might not be logged in");
+    throw new Error("No token found, user might not be logged in");
+  }
+
+  try {
+    const response = await axios.delete(`${BASE_URL}/trips/deleteTrip/${tripId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Delete trip response:", response);
+
+    if (response.status === 200) {
+      dispatch({
+        type: DELETE_TRIP,
+        payload: tripId,
+      })
+      dispatch(getUserTrips());
+    } else {
+      console.error("Unexpected response status:", response.status);
+      throw new Error(`Unexpected response status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Delete trip error details:", error);
+    throw error;
+  }
+}

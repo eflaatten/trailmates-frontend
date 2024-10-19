@@ -1,4 +1,3 @@
-// state.js
 export const initialState = {
   trips: [],
   error: null,

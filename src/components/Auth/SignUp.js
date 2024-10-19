@@ -53,12 +53,24 @@ const SignUp = () => {
       {/* Dark gray box for the form */}
       <Box
         sx={{
-          backgroundColor: "rgba(0, 0, 0, 0.7)", // Dark gray box with transparency
+          backgroundColor: "rgba(0, 0, 0, 0.9)", // Dark gray box with transparency
           padding: "40px",
           borderRadius: "8px",
           width: "100%",
           maxWidth: "400px",
           textAlign: "center",
+          "@media (max-width: 600px)": {
+            height: "100vh",
+            padding: "60px",
+            mt: "80px",
+            overflowY: "hidden",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+          },
+        }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            handleSignup(e);
+          }
         }}
       >
         <Typography

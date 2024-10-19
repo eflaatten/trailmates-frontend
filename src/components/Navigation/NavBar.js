@@ -52,7 +52,7 @@ const NavBar = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar
-      position='sticky'
+      position='static'
       sx={{
         borderRadius: "18px",
         width: "auto",
@@ -77,7 +77,7 @@ const NavBar = () => {
             sx={{
               flexGrow: 1,
               cursor: "pointer",
-              fontFamily: "'Comic Sans MS', 'Comic Sans', cursive",
+              fontFamily: "inherit",
               fontSize: "1.2rem",
             }}
             onClick={handleNavigateToHome}

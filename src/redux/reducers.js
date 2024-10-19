@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { GET_TRIPS, CREATE_TRIP, ERROR } from "./actions";
+import { GET_TRIPS, CREATE_TRIP, DELETE_TRIP, ERROR } from "./actions";
 import initialState from "./state";
 
 const tripsReducer = (state = initialState, action) => {
@@ -14,6 +14,12 @@ const tripsReducer = (state = initialState, action) => {
       return {
         ...state,
         trips: [...state.trips, action.payload],
+        error: null,
+      };
+    case DELETE_TRIP:
+      return {
+        ...state,
+        trips: state.trips.filter((trip) => trip.id !== action.payload),
         error: null,
       };
     case ERROR:

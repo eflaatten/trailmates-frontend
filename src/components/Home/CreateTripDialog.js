@@ -31,11 +31,12 @@ const CreateTripDialog = ({ open, onClose }) => {
   const [destination, setDestination] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [startingPoint, setStartingPoint] = useState("");
 
   const dispatch = useDispatch();
 
   const handleCreate = async () => {
-    if (!tripName || !destination || !startDate || !endDate) {
+    if (!tripName || !destination || !startDate || !endDate || !startingPoint) {
       toast.error("Please fill all fields!", {...toastOptions}); // Error toast if fields are empty
       return;
     }
@@ -46,6 +47,7 @@ const CreateTripDialog = ({ open, onClose }) => {
       start_date: dayjs(startDate).format("YYYY-MM-DD"), 
       end_date: dayjs(endDate).format("YYYY-MM-DD"),
       destination,
+      starting_location: startingPoint,
     };
 
     console.log("Final trip data:", tripData);
@@ -90,6 +92,16 @@ const CreateTripDialog = ({ open, onClose }) => {
             variant='outlined'
             value={tripName}
             onChange={(e) => setTripName(e.target.value)}
+          />
+          <TextField 
+            margin='dense'
+            id='startingPoint'
+            label='Starting Location'
+            type='text'
+            fullWidth
+            variant='outlined'
+            value={startingPoint}
+            onChange={(e) => setStartingPoint(e.target.value)}
           />
           <TextField
             margin='dense'

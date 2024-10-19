@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteTrip } from "../../redux/actions";
+import { toast } from "react-toastify"; // For toast notifications
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
 
 // Function to format the date to a more readable format
 const formatDate = (dateString) => {
@@ -13,8 +17,9 @@ const formatDate = (dateString) => {
   });
 };
 
-const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
+const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
 
   const handleMenuOpen = (event) => {
     event.stopPropagation(); // Prevent navigation click
@@ -22,12 +27,24 @@ const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
   };
 
   const handleMenuClose = (event) => {
-    event.stopPropagation(); // Prevent navigation click
+    if (event) {
+      event.stopPropagation(); 
+    }
     setAnchorEl(null);
   };
 
-  const handleDelete = () => {
-    onDelete();
+  const handleDelete = async (event) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    try {
+      await dispatch(deleteTrip(tripId)); // Dispatch the action
+      onDelete();
+      toast.success("Trip deleted successfully!", toastOptions);
+    } catch (error) {
+      console.error("Failed to delete trip:", error);
+      toast.error("Failed to delete trip!", toastOptions);
+    }
     handleMenuClose();
   };
 
@@ -47,6 +64,7 @@ const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
           borderColor: "#0066ff", // Dark blue border on hover
           scale: 1.01, // Slightly larger on hover
           cursor: "pointer",
+          borderRadius: 2,
         },
         "@media (max-width: 600px)": {
           gridTemplateColumns: "1fr 1fr auto", // Hide start and end date on mobile
@@ -104,3 +122,17 @@ const TripItem = ({ tripName, destination, startDate, endDate, onDelete }) => {
 };
 
 export default TripItem;
+
+const toastOptions = {
+  position: "top-right",
+  autoClose: 3000,
+  closeOnClick: true,
+  pauseOnHover: false,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+  style: {
+    background: "#000000",
+    color: "#ffffff",
+  },
+};

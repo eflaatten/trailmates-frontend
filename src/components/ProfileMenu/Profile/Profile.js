@@ -151,7 +151,10 @@ const UserProfile = () => {
                         borderColor: "#2196F3", // Border color when focused
                       },
                     },
-                    width: "600px",
+                    width: "500px",
+                    "@media (max-width: 600px)": {
+                      width: "350px",
+                    }
                   }}
                 />
               )}
@@ -192,7 +195,10 @@ const UserProfile = () => {
                         borderColor: "#2196F3", // Border color when focused
                       },
                     },
-                    width: "600px",
+                    width: "500px",
+                    "@media (max-width: 600px)": {
+                      width: "350px",
+                    }
                   }}
                 />
               )}
@@ -272,7 +278,7 @@ export default UserProfile;
 // Styles
 const paperStyle = {
   p: 4,
-  width: "80%",
+  width: "40%",
   margin: "auto",
   mt: 6,
   display: "flex",
@@ -282,7 +288,7 @@ const paperStyle = {
   color: "#ffffff",
   "@media (max-width: 600px)": {
     width: "100%",
-    maxWidth: "90%",
+    maxWidth: "80%",
     mt: 2,
   },
 };
@@ -293,8 +299,11 @@ const avatarContainerStyle = {
   width: "100%",
   mb: 2,
   position: "relative",
+  "@media (max-width: 600px)": {
+    flexDirection: "column", // Avatar on top in mobile view
+    alignItems: "center",
+  },
 };
-
 const avatarWrapperStyle = {
   position: "relative",
 };
@@ -303,11 +312,18 @@ const avatarStyle = {
   width: 100,
   height: 100,
   bgcolor: "#333333",
+  "@media (max-width: 600px)": {
+    width: 80,
+    height: 80, // Reduce avatar size on mobile
+  },
 };
 
 const avatarIconStyle = {
   fontSize: 60,
   color: "#ffffff",
+  "@media (max-width: 600px)": {
+    fontSize: 50, // Reduce icon size on mobile
+  },
 };
 
 const editIconStyle = {
@@ -324,8 +340,12 @@ const profileDetailsStyle = {
   display: "flex",
   flexDirection: "column",
   ml: 3,
+  "@media (max-width: 600px)": {
+    ml: 0, // Remove left margin in mobile view for better alignment
+    mt: 2, // Add margin on top to separate from avatar
+    alignItems: "center", // Center align details under avatar
+  },
 };
-
 const buttonContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
