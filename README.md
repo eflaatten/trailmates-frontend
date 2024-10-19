@@ -1,4 +1,6 @@
-<img src="./src/assets/TrailMates(bg).png" alt="TrailMates Logo" width="200"/> TripMates
+<img src="./src/assets/TrailMates(bg).png" alt="TrailMates Logo" width="70"/> 
+
+# TripMates
 
 🚗 Visit TripMates App
 
