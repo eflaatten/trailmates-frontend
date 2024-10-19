@@ -8,15 +8,13 @@
 
 🌟 Features:
 - 📝 Plan your trip itinerary and store details like start date, end date, destination, and starting location.
-- 🍔 Add stops for food, rest, or fun attractions along your trip route.
+- 🍔 Automatically adds recommended stops for food, rest, or fun attractions along your trip route.
 - 💬 Automatically generate a trip summary with AI to capture the highlights of your journey.
 - 🗺️ Keep all your past trips in one place, and easily view or edit them anytime.
 
 🚀 Get Started:
 1. Sign up and create your account.
-2. Start planning your next adventure by creating a new trip.
-3. Add stops to your trip for food, rest, or places you want to explore.
-4. Enjoy a smooth road trip, knowing that TripMates has your back! 🌍
+2. Start planning by creating a new trip.
 
 ---
 
