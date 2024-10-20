@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogActions,
@@ -6,12 +6,27 @@ import {
   DialogTitle,
   Button,
   TextField,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { changePassword } from "../../../api/auth";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
+  useEffect(() => {
+    // Reset the fields when the dialog is closed
+    if (!open) {
+      setCurrentPassword("");
+      setNewPassword("");
+      setShowCurrentPassword(false);
+      setShowNewPassword(false);
+    }
+  }, [open]);
 
   const handleCurrentPasswordChange = (event) => {
     setCurrentPassword(event.target.value);
@@ -31,41 +46,94 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
     }
   };
 
+  const toggleShowCurrentPassword = () => {
+    setShowCurrentPassword(!showCurrentPassword);
+  };
+
+  const toggleShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth='sm'
+      PaperProps={{
+        sx: {
+          backgroundColor: "#333",
+          padding: "20px",
+        },
+      }}
+    >
       <DialogTitle style={dialogTitleStyle}>Change Password</DialogTitle>
       <DialogContent style={dialogContentStyle}>
         <TextField
           autoFocus
           margin='dense'
           label='Current Password'
-          type='password'
+          type={showCurrentPassword ? "text" : "password"}
           fullWidth
           variant='outlined'
           value={currentPassword}
           onChange={handleCurrentPasswordChange}
-          style={textFieldStyle}
+          sx={{ ...textFieldStyle, paddingBottom: "16px" }}
           InputLabelProps={{ style: inputLabelStyle }}
-          InputProps={{ style: inputStyle }}
+          InputProps={{
+            style: inputStyle,
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton onClick={toggleShowCurrentPassword} edge='end'>
+                  {showCurrentPassword ? (
+                    <VisibilityOff sx={{ color: "white" }} />
+                  ) : (
+                    <Visibility sx={{ color: "white" }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           margin='dense'
           label='New Password'
-          type='password'
+          type={showNewPassword ? "text" : "password"}
           fullWidth
           variant='outlined'
           value={newPassword}
           onChange={handleNewPasswordChange}
-          style={textFieldStyle}
+          sx={{ ...textFieldStyle, paddingBottom: "16px" }}
           InputLabelProps={{ style: inputLabelStyle }}
-          InputProps={{ style: inputStyle }}
+          InputProps={{
+            style: inputStyle,
+            endAdornment: (
+              <InputAdornment position='end'>
+                <IconButton onClick={toggleShowNewPassword} edge='end'>
+                  {showNewPassword ? (
+                    <VisibilityOff sx={{ color: "white" }} />
+                  ) : (
+                    <Visibility sx={{ color: "white" }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       </DialogContent>
       <DialogActions style={dialogActionsStyle}>
         <Button onClick={onClose} style={buttonStyle}>
           Close
         </Button>
-        <Button onClick={handleSubmit} style={submitButtonStyle}>
+        <Button
+          onClick={handleSubmit}
+          style={submitButtonStyle}
+          sx={{
+            "&:hover": {
+              backgroundColor: "#0056b3", // Darker shade on hover
+            },
+          }}
+        >
           Submit
         </Button>
       </DialogActions>
@@ -78,6 +146,8 @@ export default ChangePasswordDialog;
 const dialogTitleStyle = {
   backgroundColor: "#333",
   color: "#fff",
+  textAlign: "center",
+  fontSize: "1.25rem",
 };
 
 const dialogContentStyle = {
@@ -85,9 +155,9 @@ const dialogContentStyle = {
 };
 
 const textFieldStyle = {
-  marginBottom: "16px",
   backgroundColor: "transparent",
   color: "#fff",
+  marginBottom: "24px",
 };
 
 const inputLabelStyle = {

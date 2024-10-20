@@ -38,9 +38,9 @@ const SignUp = () => {
 
     try {
       const response = await signup(username, email, password);
+      window.location.reload();
       if (response.user) {
         localStorage.setItem("user", JSON.stringify(response.user));
-        window.location.reload();
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -82,6 +82,10 @@ const SignUp = () => {
           maxWidth: "400px",
           textAlign: "center",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          "@media (max-width: 600px)": {
+            height: "90%",
+            width: "70%",
+          },
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {

@@ -109,7 +109,7 @@ export const deleteAccount = async () => {
   }
 
   try {
-    const response = await axios.post(`${BASE_URL}/auth/delete-account`, {
+    const response = await axios.delete(`${BASE_URL}/auth/delete-account`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
