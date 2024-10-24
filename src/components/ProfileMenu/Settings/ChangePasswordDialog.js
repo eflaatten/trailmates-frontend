@@ -122,19 +122,35 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
         />
       </DialogContent>
       <DialogActions style={dialogActionsStyle}>
-        <Button onClick={onClose} style={buttonStyle}>
-          Close
+        <Button
+          onClick={onClose}
+          sx={{
+            color: "#ff1400",
+            borderColor: "#00a1e6",
+            "&:hover": {
+              backgroundColor: "transparent",
+              color: "#ff1400",
+              transform: "scale(1.05)",
+            },
+            transition: "transform 0.3s ease",
+          }}
+        >
+          Cancel
         </Button>
         <Button
           onClick={handleSubmit}
-          style={submitButtonStyle}
           sx={{
+            backgroundColor: "#2196F3",
+            color: "white",
             "&:hover": {
-              backgroundColor: "#0056b3", // Darker shade on hover
+              backgroundColor: "#1976D2",
+              opacity: 0.9,
+              transform: "scale(1.05)",
             },
+            transition: "transform 0.3s ease",
           }}
         >
-          Submit
+          Change Password
         </Button>
       </DialogActions>
     </Dialog>
@@ -172,11 +188,11 @@ const dialogActionsStyle = {
   backgroundColor: "#333",
 };
 
-const buttonStyle = {
-  color: "#fff",
-};
+// const buttonStyle = {
+//   color: "#fff",
+// };
 
-const submitButtonStyle = {
-  color: "#fff",
-  backgroundColor: "#007bff",
-};
+// const submitButtonStyle = {
+//   color: "#fff",
+//   backgroundColor: "#007bff",
+// };

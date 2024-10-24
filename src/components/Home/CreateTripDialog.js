@@ -76,7 +76,7 @@ const CreateTripDialog = ({ open, onClose }) => {
         PaperProps={{
           sx: {
             padding: "15px",
-            backgroundColor: "#0a0a0a !important", // Ensure your background color takes precedence
+            backgroundColor: "#211f1f !important", // Ensure your background color takes precedence
             boxShadow: "0px 11px 15px -7px rgba(0, 0, 0, 0.2) !important", // Override shadow
             backgroundImage: "none !important", // Disable any overlay
           },
@@ -160,10 +160,34 @@ const CreateTripDialog = ({ open, onClose }) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose} color='primary'>
+          <Button
+            onClick={onClose}
+            sx={{
+              color: "#ff1400",
+              borderColor: "#00a1e6",
+              "&:hover": {
+                backgroundColor: "transparent",
+                color: "#ff1400",
+                transform: "scale(1.05)",
+              },
+              transition: "transform 0.3s ease",
+            }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleCreate} color='primary'>
+          <Button
+            onClick={handleCreate}
+            sx={{
+              backgroundColor: "#2196F3",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#1976D2",
+                opacity: 0.9,
+                transform: "scale(1.05)",
+              },
+              transition: "transform 0.3s ease",
+            }}  
+          >
             Create
           </Button>
         </DialogActions>

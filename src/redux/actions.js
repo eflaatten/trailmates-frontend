@@ -124,10 +124,17 @@ export const fetchRoute = (origin, destination) => async (dispatch) => {
   }
 };
 
-// Fetch POIs along the route
-export const fetchPOIs = ({ waypoints }) => async (dispatch) => {
+// Fetch POIs along the route - not used in MVP but will work on later.
+export const fetchPOIs = (waypoints) => async (dispatch) => {
   try {
-    const response = await axios.post(`${BASE_URL}/maps/pois`, { waypoints });
+    // Check if waypoints contain valid lat, lng objects
+    const formattedWaypoints = waypoints.map(
+      (point) => `${point.lat},${point.lng}`
+    );
+
+    const response = await axios.post(`${BASE_URL}/maps/pois`, {
+      waypoints: formattedWaypoints,
+    });
     dispatch({ type: "FETCH_POIS", payload: response.data });
     console.log("POIs:", response.data);
   } catch (error) {

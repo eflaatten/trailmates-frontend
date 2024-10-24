@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
-import { getUserTrips, fetchPOIs } from "../../redux/actions";
+import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
+import { getUserTrips } from "../../redux/actions";
 import axios from "axios";
+import { Button, Box } from "@mui/material";
 
 const Map = ({ selectedTripId }) => {
   const dispatch = useDispatch();
   const trips = useSelector((state) => state.trips.trips);
-  const pois = useSelector((state) => state.trips.pois);
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [startCoords, setStartCoords] = useState(null);
@@ -38,22 +38,9 @@ const Map = ({ selectedTripId }) => {
     }
   };
 
-  const getWaypointsAlongRoute = (route) => {
-    const points = route.routes[0].overview_path;
-    const waypointInterval = Math.ceil(points.length / 5); // Adjust to get 5 waypoints
-    return points.filter((_, index) => index % waypointInterval === 0);
-  };
-
-  // Reset state when a new trip is selected
-  useEffect(() => {
-    setDirectionsResponse(null);
-    setStartCoords(null);
-    setDestCoords(null);
-  }, [selectedTripId]);
-
   useEffect(() => {
     if (trips.length > 0 && selectedTripId) {
-      const selectedTrip = trips.find((trip) => trip.tripId === selectedTripId); // Fix here
+      const selectedTrip = trips.find((trip) => trip.tripId === selectedTripId);
       if (selectedTrip) {
         const startLocation = selectedTrip.starting_location;
         const destination = selectedTrip.destination;
@@ -83,16 +70,6 @@ const Map = ({ selectedTripId }) => {
               (result, status) => {
                 if (status === window.google.maps.DirectionsStatus.OK) {
                   setDirectionsResponse(result);
-
-                  // Get waypoints along the route
-                  const waypoints = getWaypointsAlongRoute(result);
-                  const waypointCoords = waypoints.map((point) => ({
-                    lat: point.lat(),
-                    lng: point.lng(),
-                  }));
-
-                  // Fetch POIs along the waypoints
-                  dispatch(fetchPOIs(waypointCoords));
                 } else {
                   console.error(`Error fetching directions: ${status}`);
                 }
@@ -110,8 +87,15 @@ const Map = ({ selectedTripId }) => {
 
   const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // Fallback location
 
+  const handleOpenInGoogleMaps = () => {
+    if (startCoords && destCoords) {
+      const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${startCoords.lat},${startCoords.lng}&destination=${destCoords.lat},${destCoords.lng}&travelmode=driving`;
+      window.open(mapsUrl, "_blank");
+    }
+  };
+
   return (
-    <div>
+    <Box>
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "900px" }}
         center={startCoords || defaultCenter}
@@ -121,21 +105,30 @@ const Map = ({ selectedTripId }) => {
         {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )}
-
-        {/* Render POIs */}
-        {pois && pois.length > 0
-          ? pois.map((poi, index) => (
-              <Marker
-                key={index}
-                position={{
-                  lat: poi.geometry.location.lat,
-                  lng: poi.geometry.location.lng,
-                }}
-              />
-            ))
-          : console.log("No POIs to render")}
       </GoogleMap>
-    </div>
+
+      {/* Button to Open Google Maps */}
+      <Box sx={{ textAlign: "left", marginTop: 2 }}>
+        <Button
+          variant='outlined'
+          onClick={handleOpenInGoogleMaps}
+          disabled={!startCoords || !destCoords}
+          sx={{
+            borderColor: "#2196F3",
+            color: "#2196F3",
+            "&:hover": {
+              borderColor: "#1976D2",
+              backgroundColor: "transparent",
+              color: "#1976D2",
+              transform: "scale(1.05)", // Slightly enlarges the button
+            },
+            transition: "transform 0.3s ease", // Smooth transition effect
+          }}
+        >
+          Open in Google Maps
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

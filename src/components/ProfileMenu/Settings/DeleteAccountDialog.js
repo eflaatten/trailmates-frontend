@@ -5,30 +5,62 @@ import {
   DialogContent,
   DialogTitle,
   Button,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { deleteAccount } from "../../../api/auth";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
-
   const handleDeleteAccount = () => {
     deleteAccount();
     //window.location.reload();
-  }
+  };
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle style={dialogTitleStyle}>Delete Your Account</DialogTitle>
       <DialogContent style={dialogContentStyle}>
-        <p style={softUITextStyle}>
-          Are you sure you want to delete your account? There's no recovering it after.
-        </p>
+        <Alert
+          severity='warning'
+          icon={<WarningAmberIcon fontSize='inherit' />}
+          style={warningAlertStyle}
+        >
+          <AlertTitle>Warning</AlertTitle>
+          Are you sure you want to delete your account? There's no recovering it
+          after.
+        </Alert>
       </DialogContent>
       <DialogActions style={dialogActionsStyle}>
-        <Button onClick={onClose} style={buttonStyle}>
-          CANCEL
+        <Button
+          onClick={onClose}
+          sx={{
+            color: "#ff1400",
+            borderColor: "#00a1e6",
+            "&:hover": {
+              backgroundColor: "transparent",
+              color: "#ff1400",
+              transform: "scale(1.05)",
+            },
+            transition: "transform 0.3s ease",
+          }}
+        >
+          Cancel
         </Button>
-        <Button style={submitButtonStyle} onClick={handleDeleteAccount}>
-          YES, I WANT TO DELETE MY ACCOUNT
+        <Button
+          onClick={handleDeleteAccount}
+          sx={{
+            backgroundColor: "#2196F3",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#1976D2",
+              opacity: 0.9,
+              transform: "scale(1.05)",
+            },
+            transition: "transform 0.3s ease",
+          }}
+        >
+          CONFIRM
         </Button>
       </DialogActions>
     </Dialog>
@@ -50,16 +82,12 @@ const dialogActionsStyle = {
   backgroundColor: "#333",
 };
 
-const buttonStyle = {
-  color: "#fff",
+const warningAlertStyle = {
+  backgroundColor: "#fff9c4", // Light yellow background
+  color: "#000",
 };
 
-const submitButtonStyle = {
-  color: "#fff",
-  backgroundColor: "#ff0000",
-};
-
-const softUITextStyle = {
-  color: "#fff",
-  marginBottom: "16px",
-};
+// const softUITextStyle = {
+//   color: "#fff",
+//   marginBottom: "16px",
+// };

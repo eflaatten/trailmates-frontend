@@ -86,10 +86,10 @@ const NavBar = () => {
                 cursor: "pointer",
                 fontFamily: "inherit",
                 fontSize: "1.2rem",
-                "&:hover": {
-                  color: "#2196F3",
-                  cursor: "pointer",
-                },
+                // "&:hover": {
+                //   color: "#2196F3",
+                //   cursor: "pointer",
+                // },
               }}
               onClick={handleNavigateToHome}
             >

@@ -19,6 +19,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
 import ChangeProfilePicture from "./ChangeProfilePicture";
 import { removeProfilePicture } from "../../../api/profile";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import IconButton from "@mui/material/IconButton";
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const [user, setUser] = useState("");
@@ -29,6 +32,12 @@ const UserProfile = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const navigate = useNavigate();
+
+  // Handle back navigation
+  const handleBack = () => {
+    navigate("/home");
+  };
 
   const handleSetUser = (e) => {
     setUser(e.target.value);
@@ -104,6 +113,39 @@ const UserProfile = () => {
     <>
       <NavBar />
       <ProfileMenu />
+
+      {/* Go Back Button positioned above the Paper */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          paddingLeft: "90px",
+          paddingTop: "50px",
+          "@media (max-width: 600px)": {
+            padding: 2,
+            paddingTop: 2,
+          },
+        }}
+      >
+        <IconButton
+          onClick={handleBack}
+          sx={{
+            color: "#fff",
+            padding: 0,
+            transition: "transform 0.2s",
+            "&:hover": {
+              transform: "translateX(-5px)",
+            },
+            "@media (max-width: 600px)": {
+              marginTop: 2,
+            },
+          }}
+        >
+          <ArrowBackIosNewIcon />
+          Go Back
+        </IconButton>
+      </Box>
+
       <Paper elevation={3} sx={paperStyle}>
         <Box sx={avatarContainerStyle}>
           <Box sx={avatarWrapperStyle}>
@@ -186,9 +228,9 @@ const UserProfile = () => {
             sx={{
               ...saveButtonStyle,
               backgroundColor: hasChanges ? "#2196F3" : "#004e94", // Slightly darker blue when no changes
-                opacity: hasChanges ? 1 : 0.9,
-                cursor: hasChanges ? "pointer" : "not-allowed",
-              }}
+              opacity: hasChanges ? 1 : 0.9,
+              cursor: hasChanges ? "pointer" : "not-allowed",
+            }}
           >
             SAVE
           </Button>

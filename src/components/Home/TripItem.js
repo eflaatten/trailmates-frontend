@@ -114,7 +114,11 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
       >
         <MenuItem
         onClick={handleDelete}
-        sx={{ "&:hover": { backgroundColor: "#333" } }} // Darker background on hover
+        sx={{
+          "&:hover": {
+            backgroundColor: "#333"
+          }
+        }} // Darker background on hover
         >
           <DeleteIcon sx={{ color: "red", marginRight: "8px" }} />
           <Typography sx={{ color: "#fff" }}>Delete</Typography>

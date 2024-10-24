@@ -84,6 +84,11 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
       MenuListProps={{
         "aria-labelledby": "basic-button",
       }}
+      sx={{
+        "& .MuiMenu-paper": {
+          borderRadius: "25px"
+        },
+      }}
     >
       {/* Profile Info */}
       <ListItem>
@@ -94,7 +99,7 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         />
         <div style={{ marginLeft: "10px" }}>
           <Typography variant='body1' component='p'>
-            {username}
+            <strong>{username}</strong>
           </Typography>
           <Typography variant='body2' color='textSecondary'>
             {email}
@@ -138,6 +143,11 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
+        }}
+        sx={{
+          "& .MuiMenu-paper": {
+            borderRadius: "25px",
+          },
         }}
       >
         <MenuItem onClick={() => handleThemeChange("Light")}>

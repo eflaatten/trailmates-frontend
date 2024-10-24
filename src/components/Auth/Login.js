@@ -234,7 +234,12 @@ const Login = () => {
               textTransform: "none",
               color: "#2196F3",
               fontSize: "14px",
-              fontWeight: "normal"
+              fontWeight: "normal",
+              "&:hover": {
+                backgroundColor: "transparent",
+                transform: "scale(1.02)",
+              },
+              transition: "transform 0.3s ease",
             }}
           >
             Sign up

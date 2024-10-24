@@ -64,7 +64,9 @@ const TripList = () => {
             "&:hover": {
               backgroundColor: "#1976D2",
               opacity: 0.9,
+              transform: "scale(1.05)",
             },
+            transition: "transform 0.3s ease",
             marginBottom: 2,
           }}
           onClick={handleOpenCreateTripDialog}
