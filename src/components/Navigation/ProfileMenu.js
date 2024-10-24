@@ -1,17 +1,50 @@
-import React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import React, { useState, useEffect } from "react";
+import {
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  ListItem,
+  Avatar,
+  Typography,
+  Divider,
+} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
+import NightsStayIcon from "@mui/icons-material/NightsStay";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import Brightness6Icon from "@mui/icons-material/Brightness6";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../api/auth";
+import { getProfile } from "../../api/profile";
 
 const ProfileMenu = ({ anchorEl, handleClose }) => {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const [profilePicture, setProfilePicture] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+
+  // State for the theme menu
+  const [themeAnchorEl, setThemeAnchorEl] = useState(null);
+  const openThemeMenu = Boolean(themeAnchorEl);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profileData = await getProfile();
+        setEmail(profileData.email);
+        setUsername(profileData.username);
+        setProfilePicture(profileData.profile_picture);
+      } catch (error) {
+        console.error("Failed to fetch profile data:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleNavigateToProfile = () => {
     navigate("/profile");
@@ -28,6 +61,20 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
     navigate("/login");
   };
 
+  // Functions to handle theme submenu
+  const handleOpenThemeMenu = (event) => {
+    setThemeAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseThemeMenu = () => {
+    setThemeAnchorEl(null);
+  };
+
+  const handleThemeChange = (theme) => {
+    console.log(`Theme changed to: ${theme}`);
+    handleCloseThemeMenu();
+  };
+
   return (
     <Menu
       id='profile-menu'
@@ -38,7 +85,27 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         "aria-labelledby": "basic-button",
       }}
     >
-      <MenuItem onClick={handleNavigateToProfile}>
+      {/* Profile Info */}
+      <ListItem>
+        <Avatar
+          src={profilePicture}
+          alt={username}
+          style={{ width: 55, height: 55, marginBottom: 10 }}
+        />
+        <div style={{ marginLeft: "10px" }}>
+          <Typography variant='body1' component='p'>
+            {username}
+          </Typography>
+          <Typography variant='body2' color='textSecondary'>
+            {email}
+          </Typography>
+        </div>
+      </ListItem>
+
+      <Divider />
+
+      {/* Menu Options */}
+      <MenuItem onClick={handleNavigateToProfile} style={{ marginTop: 8 }}>
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>
@@ -50,6 +117,51 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         </ListItemIcon>
         <ListItemText primary='Settings' />
       </MenuItem>
+
+      {/* Theme Menu */}
+      <MenuItem onClick={handleOpenThemeMenu}>
+        <ListItemIcon>
+          <NightsStayIcon />
+        </ListItemIcon>
+        <ListItemText primary='Theme' />
+      </MenuItem>
+
+      {/* Submenu for Theme */}
+      <Menu
+        anchorEl={themeAnchorEl}
+        open={openThemeMenu}
+        onClose={handleCloseThemeMenu}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem onClick={() => handleThemeChange("Light")}>
+          <ListItemIcon>
+            <LightModeIcon />
+          </ListItemIcon>
+          <ListItemText primary='Light' />
+        </MenuItem>
+        <MenuItem onClick={() => handleThemeChange("Dark")}>
+          <ListItemIcon>
+            <DarkModeIcon />
+          </ListItemIcon>
+          <ListItemText primary='Dark' />
+        </MenuItem>
+        <MenuItem onClick={() => handleThemeChange("System")}>
+          <ListItemIcon>
+            <Brightness6Icon />
+          </ListItemIcon>
+          <ListItemText primary='System' />
+        </MenuItem>
+      </Menu>
+
+      <Divider />
+
       <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <LogoutIcon />

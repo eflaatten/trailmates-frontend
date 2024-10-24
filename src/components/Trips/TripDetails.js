@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import NavBar from "../Navigation/NavBar";
 import ReactMarkdown from "react-markdown";
-
+import Map from "./Map"; // Import the updated Map component
 
 const TripDetails = () => {
   const navigate = useNavigate();
@@ -45,8 +45,7 @@ const TripDetails = () => {
               transform: "translateX(-5px)",
             },
             "@media (max-width: 600px)": {
-              marginBottom: 6,
-              display: "none",
+              marginTop: 2,
             },
           }}
         >
@@ -74,6 +73,7 @@ const TripDetails = () => {
                 padding: 3,
                 borderRadius: 2,
                 boxShadow: 3,
+                marginBottom: 4,
               }}
             >
               <Typography variant='body1' sx={{ marginBottom: 1 }}>
@@ -90,10 +90,15 @@ const TripDetails = () => {
               <Typography variant='body1' sx={{ marginBottom: 2 }}>
                 <strong>Description:</strong> {trip.trip_description}
               </Typography>
-              <Typography variant='body1' sx={{ marginBottom: 1 }}>
+              <Typography variant='body1' sx={{ marginBottom: 2 }}>
                 <strong>AI Summary:</strong>
                 <ReactMarkdown>{trip.openai_response}</ReactMarkdown>
               </Typography>
+
+              {/* Map */}
+              <Box sx={{ marginTop: 4 }}>
+                <Map selectedTripId={trip.tripId} />
+              </Box>
             </Box>
           </>
         )}

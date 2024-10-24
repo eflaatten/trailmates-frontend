@@ -7,6 +7,8 @@ const BASE_URL = "https://trailmates-backend.vercel.app/api";
 export const GET_TRIPS = "GET_TRIPS";
 export const CREATE_TRIP = "CREATE_TRIP";
 export const DELETE_TRIP = "DELETE_TRIP";
+export const FETCH_ROUTE = "FETCH_ROUTE";
+export const FETCH_POIS = "FETCH_POIS"; 
 export const ERROR = "ERROR";
 
 // Fetch User Trips and Dispatch to Redux
@@ -38,6 +40,7 @@ export const getUserTrips = () => async (dispatch) => {
   }
 };
 
+// CREATE_TRIP ACTION
 export const createTrip = (tripData) => async (dispatch) => {
   const token = getToken();
   console.log("Token: ", token);
@@ -106,3 +109,29 @@ export const deleteTrip = (tripId) => async (dispatch) => {
     throw error;
   }
 }
+
+// MAP ACTIONS
+
+// Fetch Route
+export const fetchRoute = (origin, destination) => async (dispatch) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/maps/routes`, { params: { origin, destination } });
+    dispatch({ type: "FETCH_ROUTE", payload: response.data.polyline });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching route:", error);
+    dispatch({ type: "ERROR", payload: "Error fetching route" });
+  }
+};
+
+// Fetch POIs along the route
+export const fetchPOIs = ({ waypoints }) => async (dispatch) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/maps/pois`, { waypoints });
+    dispatch({ type: "FETCH_POIS", payload: response.data });
+    console.log("POIs:", response.data);
+  } catch (error) {
+    console.error("Error fetching POIs:", error);
+    dispatch({ type: "ERROR", payload: "Error fetching POIs" });
+  }
+};

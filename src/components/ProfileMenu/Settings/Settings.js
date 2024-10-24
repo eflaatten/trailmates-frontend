@@ -84,7 +84,7 @@ const Settings = () => {
 export default Settings;
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  width: "40%",
+  width: "90%",
   margin: "20px auto",
   marginTop: "50px",
   padding: theme.spacing(3),
@@ -99,7 +99,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 
 const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1),
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("xs")]: {
     margin: theme.spacing(0.8),
   },
 }));

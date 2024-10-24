@@ -77,7 +77,7 @@ const Login = () => {
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
           "@media (max-width: 600px)": {
             height: "90%",
-            width: "70%"
+            width: "100%"
           }
         }}
         onKeyPress={(e) => {

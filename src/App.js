@@ -9,13 +9,17 @@ import "react-toastify/dist/ReactToastify.css";
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
+import { LoadScript } from "@react-google-maps/api";
+
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <ToastContainer />
-        <Router />
-      </BrowserRouter>
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+        <BrowserRouter>
+          <ToastContainer />
+          <Router />
+        </BrowserRouter>
+      </LoadScript>
     </Provider>
   );
 }

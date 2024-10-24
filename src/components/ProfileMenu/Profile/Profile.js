@@ -236,7 +236,7 @@ export default UserProfile;
 // Styles
 const paperStyle = {
   p: 4,
-  width: "40%",
+  width: "90%",
   margin: "auto",
   mt: 6,
   display: "flex",
