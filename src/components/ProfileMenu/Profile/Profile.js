@@ -119,7 +119,7 @@ const UserProfile = () => {
         sx={{
           display: "flex",
           justifyContent: "flex-start",
-          paddingLeft: "90px",
+          paddingLeft: "50px",
           paddingTop: "50px",
           "@media (max-width: 600px)": {
             padding: 2,
@@ -286,6 +286,7 @@ const paperStyle = {
   alignItems: "center",
   backgroundColor: "#1e1e1e",
   color: "#ffffff",
+  borderRadius: 7,
   "@media (max-width: 600px)": {
     width: "100%",
     maxWidth: "80%",

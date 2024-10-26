@@ -119,19 +119,29 @@ const ChangeProfilePicture = ({ open, onClose }) => {
         <Button
           onClick={onClose}
           sx={{
-            color: "#ffffff",
-            "&:hover": { backgroundColor: "#333" },
+            color: "#ff1400",
+            borderColor: "#00a1e6",
+            "&:hover": {
+              backgroundColor: "transparent",
+              color: "#ff1400",
+              transform: "scale(1.05)",
+            },
+            transition: "transform 0.3s ease",
           }}
         >
           Cancel
         </Button>
         <Button
-          variant='contained'
           onClick={handleUploadProfilePicture}
           sx={{
             backgroundColor: "#2196F3",
-            color: "#fff",
-            "&:hover": { backgroundColor: "#1976D2" },
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#1976D2",
+              opacity: 0.9,
+              transform: "scale(1.05)",
+            },
+            transition: "transform 0.3s ease",
           }}
         >
           Upload

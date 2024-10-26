@@ -6,7 +6,6 @@ import {
   TextField,
   IconButton,
   InputAdornment,
-  Tooltip,
 } from "@mui/material";
 import {
   Visibility,
@@ -16,26 +15,23 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
-import TripMatesLogo from "../../assets/TrailMates(bg).png"; // Add your logo path here
+import TripMatesLogo from "../../assets/img/TrailMates(bg).png";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showError, setShowError] = useState(false); // for wrong email/password error
-  const [emptyFieldErrors, setEmptyFieldErrors] = useState({ username: false });
+  const [formTouched, setFormTouched] = useState(false); // Tracks if form is submitted
+  const [showError, setShowError] = useState(false); // For wrong username/password error
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setEmptyFieldErrors({ username: false });
+    setFormTouched(true);
     setShowError(false);
 
+    // Show empty fields warning if username or password is missing
     if (!username || !password) {
-      // Show tooltip for empty username field
-      if (!username) {
-        setEmptyFieldErrors({ username: true });
-      }
       return;
     }
 
@@ -43,7 +39,7 @@ const Login = () => {
       await login(username, password);
       navigate("/home");
     } catch (error) {
-      // Show error when wrong credentials are provided
+      // Show error message for incorrect credentials
       setShowError(true);
     }
   };
@@ -52,8 +48,7 @@ const Login = () => {
 
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
-    setShowError(false); // Hide error when typing
-    setEmptyFieldErrors({ username: false });
+    setShowError(false); // Reset error when typing
   };
 
   return (
@@ -77,8 +72,8 @@ const Login = () => {
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
           "@media (max-width: 600px)": {
             height: "90%",
-            width: "100%"
-          }
+            width: "100%",
+          },
         }}
         onKeyPress={(e) => {
           if (e.key === "Enter") {
@@ -86,7 +81,7 @@ const Login = () => {
           }
         }}
       >
-        {/* Logo and TripMates Name inside the form */}
+        {/* Logo and TripMates Name */}
         <Box
           sx={{
             display: "flex",
@@ -117,51 +112,19 @@ const Login = () => {
           Welcome
         </Typography>
 
-        {/* Username field with bigger tooltip and warning icon for empty field */}
-        <Tooltip
-          open={emptyFieldErrors.username}
-          title={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <WarningIcon sx={{ mr: 1, color: "orange" }} />
-              Please fill out this field
-            </Box>
-          }
-          arrow
-          disableHoverListener
-          PopperProps={{
-            modifiers: [
-              {
-                name: "offset",
-                options: {
-                  offset: [0, -4],
-                },
-              },
-            ],
-          }}
-          componentsProps={{
-            tooltip: {
-              sx: {
-                fontSize: "16px",
-                backgroundColor: "white", 
-                border: "1px solid black",
-                color: "black",
-              },
-            },
-          }}
-        >
-          <TextField
-            label='Username'
-            variant='outlined'
-            margin='normal'
-            value={username}
-            onChange={handleInputChange(setUsername)}
-            required
-            fullWidth
-            error={showError} // Red border for wrong credentials
-          />
-        </Tooltip>
+        {/* Username Field */}
+        <TextField
+          label='Username'
+          variant='outlined'
+          margin='normal'
+          value={username}
+          onChange={handleInputChange(setUsername)}
+          required
+          fullWidth
+          error={formTouched && !username} // Show red border if empty
+        />
 
-        {/* Password field without tooltip */}
+        {/* Password Field with Eye Icon */}
         <TextField
           label='Password'
           type={showPassword ? "text" : "password"}
@@ -171,27 +134,41 @@ const Login = () => {
           onChange={handleInputChange(setPassword)}
           required
           fullWidth
-          error={showError} // Red border for wrong credentials
+          error={formTouched && !password} // Show red border if empty
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
-                <Tooltip
-                  title={showPassword ? "Hide password" : "Show password"}
+                <IconButton
+                  aria-label='toggle password visibility'
+                  onClick={handleClickShowPassword}
+                  edge='end'
                 >
-                  <IconButton
-                    aria-label='toggle password visibility'
-                    onClick={handleClickShowPassword}
-                    edge='end'
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </Tooltip>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
               </InputAdornment>
             ),
           }}
         />
 
-        {/* Show error message if wrong email or password */}
+        {/* Error Message for Empty Fields */}
+        {formTouched && (!username || !password) && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mt: 2,
+              color: "error.main",
+              justifyContent: "center",
+            }}
+          >
+            <WarningIcon sx={{ mr: 1 }} />
+            <Typography variant='body2' color='error'>
+              Please fill out all fields!
+            </Typography>
+          </Box>
+        )}
+
+        {/* Error Message for Incorrect Credentials */}
         {showError && (
           <Box
             sx={{
@@ -199,12 +176,12 @@ const Login = () => {
               alignItems: "center",
               mt: 2,
               color: "error.main",
-              justifyContent: "flex-start",
+              justifyContent: "center",
             }}
           >
             <ErrorIcon sx={{ mr: 1 }} />
             <Typography variant='body2' color='error'>
-              Wrong email or password
+              Wrong username or password
             </Typography>
           </Box>
         )}

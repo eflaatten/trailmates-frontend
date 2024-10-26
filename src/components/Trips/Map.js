@@ -97,7 +97,13 @@ const Map = ({ selectedTripId }) => {
   return (
     <Box>
       <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "900px" }}
+        mapContainerStyle={{
+          width: "100%",
+          height: "900px",
+          "@media (max-width: 600px)": {
+            height: "60px",
+          }
+        }}
         center={startCoords || defaultCenter}
         zoom={10}
       >

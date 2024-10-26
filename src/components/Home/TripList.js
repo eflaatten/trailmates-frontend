@@ -87,8 +87,8 @@ const TripList = () => {
       {/* Trip List Container */}
       <Box
         sx={{
-          width: "100%",
-          backgroundColor: "#1a1a1a",
+          width: "103%",
+          //backgroundColor: "#1a1a1a",
           borderRadius: 2,
           padding: 4,
           //minHeight: "200px",
@@ -100,7 +100,7 @@ const TripList = () => {
           marginTop: 2,
           "@media (max-width: 600px)": {
             marginTop: 2,
-            padding: "10px",
+            padding: "25px",
             height: "auto",
             borderRadius: 4,
           },

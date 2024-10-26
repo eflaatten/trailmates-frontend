@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { changePassword } from "../../../api/auth";
+import { toast } from "react-toastify"; // For toast notifications
+import "react-toastify/dist/ReactToastify.css";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -39,10 +41,11 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   const handleSubmit = () => {
     try {
       changePassword(currentPassword, newPassword);
-      onSubmit();
       onClose();
+      toast.success("Password changed successfully!", { ...toastOptions });
     } catch (error) {
       console.error("Failed to change password:", error);
+      toast.error("Failed to change password", { ...toastOptions });
     }
   };
 
@@ -196,3 +199,17 @@ const dialogActionsStyle = {
 //   color: "#fff",
 //   backgroundColor: "#007bff",
 // };
+
+const toastOptions = {
+  position: "top-right",
+  autoClose: 3000,
+  closeOnClick: true,
+  pauseOnHover: false,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+  style: {
+    background: "#000000",
+    color: "#ffffff",
+  },
+};

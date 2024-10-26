@@ -15,7 +15,7 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../../api/auth";
-import TripMatesLogo from "../../assets/TrailMates(bg).png"; // Add your logo path here
+import TripMatesLogo from "../../assets//img/TrailMates(bg).png"; 
 
 const SignUp = () => {
   const [username, setUsername] = useState("");

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -21,7 +21,7 @@ const TripDetails = () => {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "#0a0a0a", color: "#fff" }}>
+    <Box sx={{ minHeight: "100vh", color: "#fff" }}>
       <NavBar />
       <Box
         sx={{
@@ -64,7 +64,7 @@ const TripDetails = () => {
         ) : (
           <>
             <Typography variant='h4' sx={{ marginBottom: 3 }}>
-              {trip.trip_name} {/* Use correct API field trip_name */}
+              {trip.trip_name}
             </Typography>
 
             <Box

@@ -10,7 +10,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProfileMenu from "./ProfileMenu";
 import { getProfile } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
-import tripMatesLogo from "../../assets/TrailMates(bg).png";
+import tripMatesLogo from "../../assets//img/TrailMates(bg).png";
 
 const darkTheme = createTheme({
   palette: {
