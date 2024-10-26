@@ -1,7 +1,8 @@
 export const initialState = {
   trips: [],
   routes: [],
-  pois: [],
+  waypoints: [], 
+  pois: {}, 
   error: null,
 };
 

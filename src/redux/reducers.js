@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { GET_TRIPS, CREATE_TRIP, DELETE_TRIP, FETCH_ROUTE, FETCH_POIS, ERROR } from "./actions";
+import { GET_TRIPS, CREATE_TRIP, DELETE_TRIP, FETCH_ROUTE, FETCH_WAYPOINTS, FETCH_POIS_FOR_WAYPOINTS, ERROR } from "./actions";
 import initialState from "./state";
 
 const tripsReducer = (state = initialState, action) => {
@@ -28,7 +28,13 @@ const tripsReducer = (state = initialState, action) => {
         routes: action.payload,
         error: null,
       };
-    case FETCH_POIS:
+    case FETCH_WAYPOINTS:
+      return {
+        ...state,
+        waypoints: action.payload,
+        error: null,
+      };
+    case FETCH_POIS_FOR_WAYPOINTS:
       return {
         ...state,
         pois: action.payload,

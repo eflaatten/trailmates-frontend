@@ -9,6 +9,8 @@ export const CREATE_TRIP = "CREATE_TRIP";
 export const DELETE_TRIP = "DELETE_TRIP";
 export const FETCH_ROUTE = "FETCH_ROUTE";
 export const FETCH_POIS = "FETCH_POIS"; 
+export const FETCH_WAYPOINTS = "FETCH_WAYPOINTS";
+export const FETCH_POIS_FOR_WAYPOINTS = "FETCH_POIS_FOR_WAYPOINTS";
 export const ERROR = "ERROR";
 
 // Fetch User Trips and Dispatch to Redux
@@ -124,21 +126,30 @@ export const fetchRoute = (origin, destination) => async (dispatch) => {
   }
 };
 
-// Fetch POIs along the route - not used in MVP but will work on later.
-export const fetchPOIs = (waypoints) => async (dispatch) => {
+// Fetch waypoints for the selected route
+export const fetchWaypoints = (origin, destination) => async (dispatch) => {
   try {
-    // Check if waypoints contain valid lat, lng objects
-    const formattedWaypoints = waypoints.map(
-      (point) => `${point.lat},${point.lng}`
-    );
-
-    const response = await axios.post(`${BASE_URL}/maps/pois`, {
-      waypoints: formattedWaypoints,
+    const response = await axios.post(`${BASE_URL}/maps/fetchWaypoints`, {
+      origin,
+      destination,
     });
-    dispatch({ type: "FETCH_POIS", payload: response.data });
-    console.log("POIs:", response.data);
+    dispatch({ type: FETCH_WAYPOINTS, payload: response.data.waypoints });
   } catch (error) {
-    console.error("Error fetching POIs:", error);
-    dispatch({ type: "ERROR", payload: "Error fetching POIs" });
+    console.error("Error fetching waypoints:", error);
+    dispatch({ type: ERROR, payload: "Error fetching waypoints" });
+  }
+};
+
+// Fetch POIs for the waypoints
+export const fetchPoisForWaypoints = (waypoints) => async (dispatch) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/maps/fetchPoisForWaypoints`, {
+      waypoints,
+      limit: 1, // Limiting to 1 places per waypoint
+    });
+    dispatch({ type: FETCH_POIS_FOR_WAYPOINTS, payload: response.data });
+  } catch (error) {
+    console.error("Error fetching POIs for waypoints:", error);
+    dispatch({ type: ERROR, payload: "Error fetching POIs for waypoints" });
   }
 };

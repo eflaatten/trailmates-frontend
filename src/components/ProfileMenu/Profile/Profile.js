@@ -216,23 +216,36 @@ const UserProfile = () => {
 
         <Box sx={buttonContainerStyle}>
           <Button
-            variant='outlined'
-            sx={cancelButtonStyle}
             onClick={handleCancel}
+            sx={{
+              color: "#ff1400",
+              borderColor: "#00a1e6",
+              "&:hover": {
+                backgroundColor: "transparent",
+                color: "#ff1400",
+                transform: "scale(1.05)",
+              },
+              transition: "transform 0.3s ease",
+            }}
           >
-            CANCEL
+            Cancel
           </Button>
           <Button
-            variant='contained'
             onClick={handleSaveChanges}
             sx={{
               ...saveButtonStyle,
-              backgroundColor: hasChanges ? "#2196F3" : "#004e94", // Slightly darker blue when no changes
+              backgroundColor: hasChanges ? "#2196F3" : "#004e94",
               opacity: hasChanges ? 1 : 0.9,
               cursor: hasChanges ? "pointer" : "not-allowed",
+              "&:hover": {
+                backgroundColor: "#1976D2",
+                opacity: 0.9,
+                //transform: "scale(1.05)",
+              },
+              transition: "transform 0.3s ease",
             }}
           >
-            SAVE
+            Save
           </Button>
         </Box>
 
@@ -375,6 +388,7 @@ const buttonContainerStyle = {
   justifyContent: "flex-end",
   mt: 3,
   width: "100%",
+  gap: 2,
 };
 
 const saveButtonStyle = {
@@ -384,17 +398,6 @@ const saveButtonStyle = {
   "&:hover": {
     backgroundColor: "#1976D2",
     opacity: 0.9,
-  },
-};
-
-const cancelButtonStyle = {
-  width: "100px",
-  color: "#ffffff",
-  borderColor: "#ffffff",
-  mr: 2,
-  "&:hover": {
-    backgroundColor: "#212121",
-    opacity: 0.7,
   },
 };
 

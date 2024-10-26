@@ -54,7 +54,7 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr 1fr auto", // Add auto for the actions column
         gap: 2,
-        backgroundColor: "#333", // Dark gray background
+        backgroundColor: "#242323", // Dark gray background
         borderRadius: 2,
         padding: 2,
         marginBottom: 2,
@@ -113,12 +113,12 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
         onClick={(e) => e.stopPropagation()} // Prevent click from propagating to parent
       >
         <MenuItem
-        onClick={handleDelete}
-        sx={{
-          "&:hover": {
-            backgroundColor: "#333"
-          }
-        }} // Darker background on hover
+          onClick={handleDelete}
+          sx={{
+            "&:hover": {
+              backgroundColor: "#333",
+            },
+          }} // Darker background on hover
         >
           <DeleteIcon sx={{ color: "red", marginRight: "8px" }} />
           <Typography sx={{ color: "#fff" }}>Delete</Typography>
