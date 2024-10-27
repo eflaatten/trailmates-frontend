@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ViewAgendaIcon from "@mui/icons-material/ViewAgenda";
 import { deleteTrip } from "../../redux/actions";
 import { toast } from "react-toastify"; // For toast notifications
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
+const { useNavigate } = require("react-router-dom");
 
 // Function to format the date to a more readable format
 const formatDate = (dateString) => {
@@ -20,6 +22,7 @@ const formatDate = (dateString) => {
 const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event) => {
     event.stopPropagation(); // Prevent navigation click
@@ -47,6 +50,13 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
     }
     handleMenuClose();
   };
+
+  const handleViewTrip = (event) => {
+    if (event) {
+      event.stopPropagation();
+    }
+    navigate(`/trip/${tripId}`);
+  }
 
   return (
     <Box
@@ -112,18 +122,33 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
         }}
         onClick={(e) => e.stopPropagation()} // Prevent click from propagating to parent
       >
-        <MenuItem
-          onClick={handleDelete}
-          sx={{
-            "&:hover": {
-              backgroundColor: "#333",
-            },
-          }} // Darker background on hover
-        >
-          <DeleteIcon sx={{ color: "red", marginRight: "8px" }} />
-          <Typography sx={{ color: "#fff" }}>Delete</Typography>
-        </MenuItem>
-      </Menu>
+          
+        {/* View trip menu item */}
+          <MenuItem
+            onClick={handleViewTrip}
+            sx={{
+              "&:hover": {
+                backgroundColor: "#333",
+              },
+            }} // Darker background on hover
+          >
+            <ViewAgendaIcon sx={{ color: "#fff", marginRight: "8px" }} />
+            <Typography sx={{ color: "#fff" }}>View</Typography>
+          </MenuItem>
+
+            {/* Delete trip menu item */}
+            <MenuItem
+              onClick={handleDelete}
+              sx={{
+                "&:hover": {
+                  backgroundColor: "#333",
+                },
+              }} // Darker background on hover
+            >
+              <DeleteIcon sx={{ color: "red", marginRight: "8px" }} />
+              <Typography sx={{ color: "#fff" }}>Delete</Typography>
+            </MenuItem>
+        </Menu>
     </Box>
   );
 };

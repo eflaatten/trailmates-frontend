@@ -35,9 +35,24 @@ const CreateTripDialog = ({ open, onClose }) => {
 
   const dispatch = useDispatch();
 
+  const handleClose = () => {
+    setTripName("");
+    setDescription("");
+    setDestination("");
+    setStartDate(null);
+    setEndDate(null);
+    setStartingPoint("");
+    onClose();
+  }
+
   const handleCreate = async () => {
     if (!tripName || !destination || !startDate || !endDate || !startingPoint) {
       toast.error("Please fill all fields!", { ...toastOptions });
+      return;
+    }
+
+    if (dayjs(endDate).isBefore(dayjs(startDate))) {
+      toast.error("End date cannot be before start date!", { ...toastOptions });
       return;
     }
 
@@ -161,7 +176,7 @@ const CreateTripDialog = ({ open, onClose }) => {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={onClose}
+            onClick={handleClose}
             sx={{
               color: "#ff1400",
               borderColor: "#00a1e6",
