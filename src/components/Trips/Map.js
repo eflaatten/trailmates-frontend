@@ -80,7 +80,7 @@ const Map = ({ selectedTripId }) => {
                   setDirectionsResponse(result);
 
                   const filteredWaypoints = result.routes[0].overview_path
-                    .filter((_, index) => index % 40 === 0)
+                    .filter((_, index) => index % 40 === 0) // Increase to reduce number of waypoints
                     .map((point) => ({
                       lat: point.lat(),
                       lng: point.lng(),
@@ -174,6 +174,11 @@ const Map = ({ selectedTripId }) => {
             "&:hover": {
               cursor: "pointer",
             },
+            "@media (max-width: 600px)": {
+              width: 240,
+              top: 10,
+              right: 10,
+            }
           }}
         >
           <IconButton

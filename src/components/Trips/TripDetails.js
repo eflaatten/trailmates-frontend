@@ -96,7 +96,16 @@ const TripDetails = () => {
               </Typography>
 
               {/* Map */}
-              <Box sx={{ marginTop: 4 }}>
+              <Box sx={{
+                marginTop: 4,
+                borderRadius: 4,
+                "@media (max-width: 600px)": {
+                  marginTop: 6,
+                  width: "110%",
+                  marginLeft: "-4.8%",
+                },
+              }}
+              >
                 <Map selectedTripId={trip.tripId} />
               </Box>
             </Box>

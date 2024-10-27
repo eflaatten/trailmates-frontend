@@ -100,7 +100,7 @@ const CreateTripDialog = ({ open, onClose }) => {
           <TextField
             margin='dense'
             id='startingPoint'
-            label='Start Destination'
+            label='Depart From'
             type='text'
             fullWidth
             variant='outlined'
