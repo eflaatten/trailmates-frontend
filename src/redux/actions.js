@@ -8,7 +8,6 @@ export const GET_TRIPS = "GET_TRIPS";
 export const CREATE_TRIP = "CREATE_TRIP";
 export const DELETE_TRIP = "DELETE_TRIP";
 export const FETCH_ROUTE = "FETCH_ROUTE";
-export const FETCH_POIS = "FETCH_POIS"; 
 export const FETCH_WAYPOINTS = "FETCH_WAYPOINTS";
 export const FETCH_POIS_FOR_WAYPOINTS = "FETCH_POIS_FOR_WAYPOINTS";
 export const ERROR = "ERROR";

@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GoogleMap,
-  DirectionsRenderer,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
+import { GoogleMap, DirectionsRenderer, Marker } from "@react-google-maps/api";
 import {
   getUserTrips,
   fetchWaypoints,
   fetchPoisForWaypoints,
 } from "../../redux/actions";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 
 const Map = ({ selectedTripId }) => {
@@ -24,7 +20,7 @@ const Map = ({ selectedTripId }) => {
   const [startCoords, setStartCoords] = useState(null);
   const [destCoords, setDestCoords] = useState(null);
   const [selectedPoi, setSelectedPoi] = useState(null);
-  
+  const mapRef = useRef(null);
 
   // Function to geocode a location address to lat/lng coordinates
   const geocodeLocation = async (location) => {
@@ -90,7 +86,6 @@ const Map = ({ selectedTripId }) => {
                       lng: point.lng(),
                     }));
 
-                  //dispatch(fetchWaypoints(filteredWaypoints));
                   dispatch(fetchPoisForWaypoints(filteredWaypoints));
                 } else {
                   console.error(`Error fetching directions: ${status}`);
@@ -116,6 +111,10 @@ const Map = ({ selectedTripId }) => {
     }
   };
 
+  const handleMarkerClick = (poi) => {
+    setSelectedPoi(poi);
+  };
+
   const mapOptions = {
     streetViewControl: false,
     mapTypeControl: true,
@@ -124,12 +123,14 @@ const Map = ({ selectedTripId }) => {
   };
 
   return (
-    <Box>
+    <Box position='relative'>
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "900px" }}
         center={startCoords || defaultCenter}
         zoom={10}
         options={mapOptions}
+        onLoad={(map) => (mapRef.current = map)} // Reference to map instance
+        onClick={() => setSelectedPoi(null)} // Close Box when clicking outside
       >
         {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
@@ -151,55 +152,88 @@ const Map = ({ selectedTripId }) => {
                   lng: poi.geometry.location.lng,
                 }}
                 title={poi.name}
-                onClick={() => {
-                  setSelectedPoi(poi);
-                }}
+                onClick={() => handleMarkerClick(poi)}
               />
             ))
           )}
-
-        {/* Single InfoWindow */}
-        {/*OVERLAPPING INFOWINDOWS ~ FIX LATER*/}
-        {/* {selectedPoi && (
-          <InfoWindow
-            position={{
-              lat: selectedPoi.geometry.location.lat,
-              lng: selectedPoi.geometry.location.lng,
-            }}
-            onCloseClick={() => setSelectedPoi(null)}
-            options={{ disableAutoPan: true }} // Prevents auto-pan on open
-          >
-            <div
-              style={{
-                width: "200px",
-                cursor: "pointer",
-                textAlign: "center",
-                display: selectedPoi ? "block" : "none", // Ensures it's hidden if no POI
-              }}
-              onClick={() =>
-                window.open(
-                  `https://www.google.com/maps/search/?api=1&query=${selectedPoi.geometry.location.lat},${selectedPoi.geometry.location.lng}`,
-                  "_blank"
-                )
-              }
-            >
-              {selectedPoi.photos && selectedPoi.photos.length > 0 && (
-                <img
-                  src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${selectedPoi.photos[0].photo_reference}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-                  alt={selectedPoi.name}
-                  style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-                />
-              )}
-              <h3 style={{ color: "#000", margin: "8px 0 4px" }}>
-                {selectedPoi.name}
-              </h3>
-              <p style={{ color: "#000", margin: "4px 0" }}>
-                {selectedPoi.vicinity}
-              </p>
-            </div>
-          </InfoWindow>
-        )} */}
       </GoogleMap>
+
+      {/* Custom Box for POI Info in top right corner */}
+      {selectedPoi && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            backgroundColor: "white",
+            padding: 3,
+            borderRadius: 1,
+            boxShadow: 3,
+            zIndex: 1000,
+            width: 300, 
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
+        >
+          <IconButton
+            onClick={() => setSelectedPoi(null)}
+            sx={{ position: "absolute", top: 8, right: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+          {selectedPoi.photos && selectedPoi.photos.length > 0 && (
+            <img
+              src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${selectedPoi.photos[0].photo_reference}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+              alt={selectedPoi.name}
+              style={{ width: "100%", height: "auto", borderRadius: "4px", marginTop: "25px" }}
+            />
+          )}
+          <Typography variant='h6' sx={{ mt: 2, color: "#000" }}>
+            {selectedPoi.name}
+          </Typography>
+          <Typography variant='body2' sx={{ mt: 1, color: "#000" }}>
+            {selectedPoi.vicinity}
+          </Typography>
+
+          {selectedPoi.rating && (
+            <Typography variant='body2' sx={{ mt: 1, color: "#000" }}>
+              Rating: {selectedPoi.rating}
+            </Typography>
+          )}
+
+          {selectedPoi.opening_hours && (
+            <Typography variant='body2' sx={{ mt: 1, color: "#000" }}>
+              {selectedPoi.opening_hours.open_now ? "Open now" : "Closed"}
+            </Typography>
+          )}
+
+          {/*GOOGLE MAPS LINK*/}
+          <Button
+            variant='outlined'
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${selectedPoi.geometry.location.lat},${selectedPoi.geometry.location.lng}`,
+                "_blank"
+              )
+            }
+            sx={{
+              borderColor: "#2196F3",
+              color: "#2196F3",
+              "&:hover": {
+                borderColor: "#1976D2",
+                backgroundColor: "transparent",
+                color: "#1976D2",
+                transform: "scale(1.05)",
+              },
+              transition: "transform 0.3s ease",
+              mt: 2,
+            }}
+          >
+            Open in Google Maps
+          </Button>
+        </Box>
+      )}
 
       <Box sx={{ textAlign: "left", marginTop: 2 }}>
         <Button
