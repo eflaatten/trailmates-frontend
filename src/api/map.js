@@ -3,14 +3,14 @@ const BASE_URL = "https://trailmates-backend.vercel.app/api";
 
 export const geocodeLocation = async (locationName) => {
   try {
-    const url = `${BASE_URL}/maps/geocode?location=${encodeURIComponent(locationName)}`;
-    const response = await axios.get(url);
+    const url = `${BASE_URL}/maps/geocode`;
+    const response = await axios.post(url, { location: locationName });
 
-    // Extract the first result's coordinates
-    const { results } = response.data;
-    if (results && results.length > 0) {
-      const { lat, lng } = results[0].geometry.location;
-      return { lat, lng };
+    // Extract and return the first result's coordinates
+    const data = response.data;
+    if (data && data.length > 0) {
+      const { lat, lon } = data[0]; // OSM returns `lat` and `lon` instead of `geometry.location`
+      return { lat, lon };
     }
 
     throw new Error(`No coordinates found for location: ${locationName}`);
