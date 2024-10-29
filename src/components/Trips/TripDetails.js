@@ -1,11 +1,12 @@
 import React from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Link as MuiLink } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import LinkIcon from "@mui/icons-material/Link"; 
 import NavBar from "../Navigation/NavBar";
 import ReactMarkdown from "react-markdown";
-import Map from "./Map"; // Import the updated Map component
+import Map from "./Map"; 
 
 const TripDetails = () => {
   const navigate = useNavigate();
@@ -19,6 +20,21 @@ const TripDetails = () => {
   const handleBack = () => {
     navigate("/home");
   };
+
+  // Custom link renderer for ReactMarkdown
+  const renderLink = ({ href, children }) => (
+    <MuiLink
+      href={href}
+      target='_blank'
+      rel='noopener noreferrer'
+      underline='none'
+    >
+      <IconButton color='primary'>
+        <LinkIcon />
+        <Typography variant='body1' sx={{ ml: 1 }}>{children}</Typography>
+      </IconButton>
+    </MuiLink>
+  );
 
   return (
     <Box sx={{ minHeight: "100vh", color: "#fff" }}>
@@ -92,19 +108,26 @@ const TripDetails = () => {
               </Typography>
               <Typography variant='body1' sx={{ marginBottom: 2 }}>
                 <strong>AI Summary:</strong>
-                <ReactMarkdown>{trip.openai_response}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    a: renderLink, // Use custom link renderer for markdown links
+                  }}
+                >
+                  {trip.openai_response}
+                </ReactMarkdown>
               </Typography>
 
               {/* Map */}
-              <Box sx={{
-                marginTop: 4,
-                borderRadius: 4,
-                "@media (max-width: 600px)": {
-                  marginTop: 6,
-                  width: "110%",
-                  marginLeft: "-4.8%",
-                },
-              }}
+              <Box
+                sx={{
+                  marginTop: 4,
+                  borderRadius: 4,
+                  "@media (max-width: 600px)": {
+                    marginTop: 6,
+                    width: "110%",
+                    marginLeft: "-4.8%",
+                  },
+                }}
               >
                 <Map selectedTripId={trip.tripId} />
               </Box>

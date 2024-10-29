@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux"; // For dispatching actions
 import { createTrip } from "../../redux/actions"; // action for creating a trip
 import dayjs from "dayjs"; // For date formatting
+import { getUserTrips } from "../../redux/actions";
 
 const darkTheme = createTheme({
   palette: {
@@ -71,9 +72,10 @@ const CreateTripDialog = ({ open, onClose }) => {
       dispatch(createTrip(tripData));
       onClose();
       toast.success("Trip created successfully!", { ...toastOptions });
+      dispatch(getUserTrips());
       setTimeout(() => {
         window.location.reload();
-      }, 3100);
+      }, 5000);
     } catch (error) {
       toast.error("Error creating trip. Please try again.", {
         ...toastOptions,
