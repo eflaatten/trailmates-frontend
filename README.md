@@ -8,9 +8,8 @@
 
 🌟 Features:
 - 📝 Plan your trip itinerary and store details like start date, end date, destination, and starting location.
-- 🍔 Automatically adds recommended stops for breaks.
-- 💬 Automatically generate a trip summary with AI to capture the highlights of your journey.
-- 🗺️ Keep all your past trips in one place, and easily view or edit them anytime.
+- 💬 Automatically generate a trip summary with AI to capture the highlights of the trip.
+- 🗺️ Keep all your past trips in one place, and easily view them anytime.
 
 🚀 Get Started:
 1. Sign up and create your account.
@@ -23,8 +22,8 @@
 ### Tech Stack:
 - **Frontend:** React
 - **Backend:** Node.js, Express.js, Vercel
-- **Database:** MySQL (Cloud SQL)
-- **API Integrations:** OpenAI API for trip summary generation & Google Maps for routing
+- **Database:** MySQL
+- **API Integrations:** OpenAI API for trip summary generation & OpenStreetMaps for route
 
 ### Installation:
 1. Clone the repository:
@@ -37,11 +36,7 @@
   npm install
   ```
 
-3. Configure `.env` file with API keys:
-  - `REACT_APP_GOOGLE_MAPS_API_KEY=key`
-  - `REACT_APP_OPEN_AI_KEY=key`
-
-4. Start the development server:
+3. Start the development server:
   ```bash
   npm start
   ```
