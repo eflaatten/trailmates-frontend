@@ -70,16 +70,16 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
 export default ChangePasswordDialog;
 
 const dialogTitleStyle = {
-  backgroundColor: "#333",
+  backgroundColor: "#222",
   color: "#fff",
 };
 
 const dialogContentStyle = {
-  backgroundColor: "#333",
+  backgroundColor: "#222",
 };
 
 const dialogActionsStyle = {
-  backgroundColor: "#333",
+  backgroundColor: "#222",
 };
 
 const warningAlertStyle = {

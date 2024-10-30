@@ -3,10 +3,12 @@ import { Box, Typography, IconButton, Link as MuiLink } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import LinkIcon from "@mui/icons-material/Link"; 
+import LinkIcon from "@mui/icons-material/Link";
 import NavBar from "../Navigation/NavBar";
-import ReactMarkdown from "react-markdown";
-import Map from "./Map"; 
+import Tabs from "./TripTabs";
+import Overview from "./Tabs/Overview";
+import AISummary from "./Tabs/Summary";
+import MapTab from "./Tabs/Map";
 
 const TripDetails = () => {
   const navigate = useNavigate();
@@ -31,7 +33,9 @@ const TripDetails = () => {
     >
       <IconButton color='primary'>
         <LinkIcon />
-        <Typography variant='body1' sx={{ ml: 1 }}>{children}</Typography>
+        <Typography variant='body1' sx={{ ml: 1 }}>
+          {children}
+        </Typography>
       </IconButton>
     </MuiLink>
   );
@@ -79,10 +83,6 @@ const TripDetails = () => {
           </Typography>
         ) : (
           <>
-            <Typography variant='h4' sx={{ marginBottom: 3 }}>
-              {trip.trip_name}
-            </Typography>
-
             <Box
               sx={{
                 backgroundColor: "#1a1a1a",
@@ -92,45 +92,17 @@ const TripDetails = () => {
                 marginBottom: 4,
               }}
             >
-              <Typography variant='body1' sx={{ marginBottom: 1 }}>
-                <strong>Destination:</strong> {trip.destination}
-              </Typography>
-              <Typography variant='body1' sx={{ marginBottom: 1 }}>
-                <strong>Start Date:</strong>{" "}
-                {new Date(trip.start_date).toLocaleDateString()}
-              </Typography>
-              <Typography variant='body1' sx={{ marginBottom: 1 }}>
-                <strong>End Date:</strong>{" "}
-                {new Date(trip.end_date).toLocaleDateString()}
-              </Typography>
-              <Typography variant='body1' sx={{ marginBottom: 2 }}>
-                <strong>Description:</strong> {trip.trip_description}
-              </Typography>
-              <Typography variant='body1' sx={{ marginBottom: 2 }}>
-                <strong>AI Summary:</strong>
-                <ReactMarkdown
-                  components={{
-                    a: renderLink, // Use custom link renderer for markdown links
-                  }}
-                >
-                  {trip.openai_response}
-                </ReactMarkdown>
-              </Typography>
-
-              {/* Map */}
-              <Box
-                sx={{
-                  marginTop: 4,
-                  borderRadius: 4,
-                  "@media (max-width: 600px)": {
-                    marginTop: 6,
-                    width: "110%",
-                    marginLeft: "-4.8%",
-                  },
-                }}
-              >
-                <Map selectedTripId={trip.tripId} />
-              </Box>
+              <Tabs>
+                <div label='Overview'>
+                  <Overview trip={trip} />
+                </div>
+                <div label='AI Summary'>
+                  <AISummary trip={trip} renderLink={renderLink} />
+                </div>
+                <div label='Map'>
+                  <MapTab selectedTripId={trip.tripId} />
+                </div>
+              </Tabs>
             </Box>
           </>
         )}

@@ -8,14 +8,14 @@ import {
   Typography,
   Box,
   Avatar,
-  IconButton,
+  IconButton
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { useDropzone } from "react-dropzone";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; 
-import { changeProfilePicture } from "../../../api/profile";
+import { changeProfilePicture, getProfile } from "../../../api/profile";
 
 const ChangeProfilePicture = ({ open, onClose }) => {
   const [file, setFile] = useState(null);
@@ -43,10 +43,12 @@ const ChangeProfilePicture = ({ open, onClose }) => {
   const handleUploadProfilePicture = async () => {
     if (file) {
       try {
-        await changeProfilePicture(file); 
+        await changeProfilePicture(file);
+        setTimeout(() => {
+          getProfile();
+        }, 2500);
         onClose();
         toast.success("Profile picture uploaded successfully!", { ...toastOptions });
-        
       } catch (error) {
         console.error("Upload failed:", error);
         toast.error("Failed to upload profile picture!", { ...toastOptions });
@@ -191,14 +193,15 @@ const TrashIconButton = styled(IconButton)({
 
 const toastOptions = {
   position: "top-right",
-  autoClose: 3000,
+  height: 80,
+  autoClose: 3200,
   closeOnClick: true,
   pauseOnHover: false,
   draggable: true,
   progress: undefined,
   theme: "dark",
   style: {
-    background: "#000000",
+    background: "#121212",
     color: "#ffffff",
   },
 };

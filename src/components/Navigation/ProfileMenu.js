@@ -88,7 +88,12 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
       <Divider />
 
       {/* Menu Options */}
-      <MenuItem onClick={handleNavigateToProfile} style={{ marginTop: 8 }}>
+      <MenuItem
+        onClick={handleNavigateToProfile}
+        style={{
+          marginTop: 8,
+        }}
+        >
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>

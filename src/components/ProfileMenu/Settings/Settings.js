@@ -104,6 +104,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   color: "#ffffff",
   textAlign: "center",
   borderRadius: 7,
+  marginTop: 50,
   [theme.breakpoints.down("sm")]: {
     width: "83%",
     padding: theme.spacing(2),

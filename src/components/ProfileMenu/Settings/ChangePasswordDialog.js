@@ -65,7 +65,7 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
       maxWidth='sm'
       PaperProps={{
         sx: {
-          backgroundColor: "#333",
+          backgroundColor: "#222",
           padding: "20px",
         },
       }}
@@ -163,18 +163,19 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
 export default ChangePasswordDialog;
 
 const dialogTitleStyle = {
-  backgroundColor: "#333",
+  backgroundColor: "#222",
   color: "#fff",
   textAlign: "center",
   fontSize: "1.25rem",
 };
 
 const dialogContentStyle = {
-  backgroundColor: "#333",
+  backgroundColor: "#222",
 };
 
 const textFieldStyle = {
   backgroundColor: "transparent",
+  borderColor: "#fff",
   color: "#fff",
   marginBottom: "24px",
 };
@@ -188,7 +189,7 @@ const inputStyle = {
 };
 
 const dialogActionsStyle = {
-  backgroundColor: "#333",
+  backgroundColor: "#222",
 };
 
 // const buttonStyle = {
@@ -202,14 +203,15 @@ const dialogActionsStyle = {
 
 const toastOptions = {
   position: "top-right",
-  autoClose: 3000,
+  height: 80,
+  autoClose: 3200,
   closeOnClick: true,
   pauseOnHover: false,
   draggable: true,
   progress: undefined,
   theme: "dark",
   style: {
-    background: "#000000",
+    background: "#121212",
     color: "#ffffff",
   },
 };

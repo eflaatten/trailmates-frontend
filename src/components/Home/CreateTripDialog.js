@@ -9,6 +9,8 @@ import {
   createTheme,
   ThemeProvider,
   Box,
+  CircularProgress,
+  Typography,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -33,6 +35,7 @@ const CreateTripDialog = ({ open, onClose }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [startingPoint, setStartingPoint] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -44,7 +47,7 @@ const CreateTripDialog = ({ open, onClose }) => {
     setEndDate(null);
     setStartingPoint("");
     onClose();
-  }
+  };
 
   const handleCreate = async () => {
     if (!tripName || !destination || !startDate || !endDate || !startingPoint) {
@@ -69,14 +72,14 @@ const CreateTripDialog = ({ open, onClose }) => {
     console.log("Final trip data:", tripData);
 
     try {
-      dispatch(createTrip(tripData));
-      onClose();
+      setLoading(true);
+      await dispatch(createTrip(tripData));
+      await dispatch(getUserTrips());
+      setLoading(false);
+      handleClose();
       toast.success("Trip created successfully!", { ...toastOptions });
-      dispatch(getUserTrips());
-      setTimeout(() => {
-        window.location.reload();
-      }, 5000);
     } catch (error) {
+      setLoading(false);
       toast.error("Error creating trip. Please try again.", {
         ...toastOptions,
       });
@@ -87,7 +90,7 @@ const CreateTripDialog = ({ open, onClose }) => {
     <ThemeProvider theme={darkTheme}>
       <Dialog
         open={open}
-        onClose={onClose}
+        onClose={handleClose}
         maxWidth='md'
         fullWidth
         PaperProps={{
@@ -99,114 +102,142 @@ const CreateTripDialog = ({ open, onClose }) => {
           },
         }}
       >
-        <DialogTitle>Create New Trip</DialogTitle>
+        {!loading && (
+          <DialogTitle>Create New Trip</DialogTitle>
+        )}
         <DialogContent
           sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
         >
-          <TextField
-            autoFocus
-            margin='dense'
-            id='tripName'
-            label='Trip Name'
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={tripName}
-            onChange={(e) => setTripName(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='startingPoint'
-            label='Depart From'
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={startingPoint}
-            onChange={(e) => setStartingPoint(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='destination'
-            label='Destination'
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          />
-          <TextField
-            margin='dense'
-            id='description'
-            label='Description'
-            type='text'
-            fullWidth
-            variant='outlined'
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "4%",
-              width: "100%",
-              "@media (max-width: 650px)": {
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200px",
                 flexDirection: "column",
                 gap: "20px",
-              },
-            }}
-          >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label='Start Date'
-                value={startDate}
-                onChange={(date) => setStartDate(date)}
-                renderInput={(params) => <TextField {...params} fullWidth />}
-                sx={{ width: { xs: "100%", md: "48%" } }}
+              }}
+            >
+              <CircularProgress />
+              <Typography variant='h6'>Creating trip...</Typography>
+            </Box>
+          ) : (
+            <>
+              <TextField
+                autoFocus
+                margin='dense'
+                id='tripName'
+                label='Trip Name'
+                type='text'
+                fullWidth
+                variant='outlined'
+                value={tripName}
+                onChange={(e) => setTripName(e.target.value)}
               />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label='End Date'
-                value={endDate}
-                onChange={(date) => setEndDate(date)}
-                renderInput={(params) => <TextField {...params} fullWidth />}
-                sx={{ width: { xs: "100%", md: "48%" } }}
+              <TextField
+                margin='dense'
+                id='startingPoint'
+                label='Depart From'
+                type='text'
+                fullWidth
+                variant='outlined'
+                value={startingPoint}
+                onChange={(e) => setStartingPoint(e.target.value)}
               />
-            </LocalizationProvider>
-          </Box>
+              <TextField
+                margin='dense'
+                id='destination'
+                label='Destination'
+                type='text'
+                fullWidth
+                variant='outlined'
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+              />
+              <TextField
+                margin='dense'
+                id='description'
+                label='Description'
+                type='text'
+                fullWidth
+                variant='outlined'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "4%",
+                  width: "100%",
+                  "@media (max-width: 650px)": {
+                    flexDirection: "column",
+                    gap: "20px",
+                  },
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label='Start Date'
+                    value={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth />
+                    )}
+                    sx={{ width: { xs: "100%", md: "48%" } }}
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label='End Date'
+                    value={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    renderInput={(params) => (
+                      <TextField {...params} fullWidth />
+                    )}
+                    sx={{ width: { xs: "100%", md: "48%" } }}
+                  />
+                </LocalizationProvider>
+              </Box>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleClose}
-            sx={{
-              color: "#ff1400",
-              borderColor: "#00a1e6",
-              "&:hover": {
-                backgroundColor: "transparent",
-                color: "#ff1400",
-                transform: "scale(1.05)",
-              },
-              transition: "transform 0.3s ease",
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleCreate}
-            sx={{
-              backgroundColor: "#2196F3",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#1976D2",
-                opacity: 0.9,
-                transform: "scale(1.05)",
-              },
-              transition: "transform 0.3s ease",
-            }}  
-          >
-            Create
-          </Button>
+          {!loading && (
+            <>
+              <Button
+                onClick={handleClose}
+                sx={{
+                  color: "#ff1400",
+                  borderColor: "#00a1e6",
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                    color: "#ff1400",
+                    transform: "scale(1.05)",
+                  },
+                  transition: "transform 0.3s ease",
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleCreate}
+                sx={{
+                  backgroundColor: "#2196F3",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#1976D2",
+                    opacity: 0.9,
+                    transform: "scale(1.05)",
+                  },
+                  transition: "transform 0.3s ease",
+                }}
+              >
+                Create
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </ThemeProvider>
@@ -217,14 +248,15 @@ export default CreateTripDialog;
 
 const toastOptions = {
   position: "top-right",
-  autoClose: 3000,
+  height: 80,
+  autoClose: 3200,
   closeOnClick: true,
   pauseOnHover: false,
   draggable: true,
   progress: undefined,
   theme: "dark",
   style: {
-    background: "#000000",
+    background: "#121212",
     color: "#ffffff",
   },
 };

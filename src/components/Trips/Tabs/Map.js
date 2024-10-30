@@ -8,8 +8,8 @@ import {
   Polyline,
   useMap,
 } from "react-leaflet";
-import { fetchRoute, getUserTrips } from "../../redux/actions";
-import { geocodeLocation } from "../../api/map";
+import { fetchRoute, getUserTrips } from "../../../redux/actions";
+import { geocodeLocation } from "../../../api/map";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 

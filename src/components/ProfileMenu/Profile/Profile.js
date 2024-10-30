@@ -299,7 +299,7 @@ const paperStyle = {
   alignItems: "center",
   backgroundColor: "#1e1e1e",
   color: "#ffffff",
-  borderRadius: 7,
+  borderRadius: 2,
   "@media (max-width: 600px)": {
     width: "100%",
     maxWidth: "80%",
@@ -324,8 +324,9 @@ const avatarWrapperStyle = {
 };
 
 const avatarStyle = {
-  width: 100,
-  height: 100,
+  width: 80,
+  height: 80,
+  borderRadius: "17%",
   bgcolor: "#333333",
   "@media (max-width: 600px)": {
     width: 80,
@@ -334,7 +335,7 @@ const avatarStyle = {
 };
 
 const avatarIconStyle = {
-  fontSize: 60,
+  fontSize: 50,
   color: "#ffffff",
   "@media (max-width: 600px)": {
     fontSize: 50,
@@ -343,11 +344,11 @@ const avatarIconStyle = {
 
 const editIconStyle = {
   position: "absolute",
-  bottom: 0,
-  right: 0,
+  bottom: -7,
+  right: -7,
   bgcolor: "#2e2e2e",
-  borderRadius: "50%",
-  p: 0.4,
+  borderRadius: "25%",
+  p: 0.2,
   cursor: "pointer",
 };
 
@@ -403,14 +404,15 @@ const saveButtonStyle = {
 
 const toastOptions = {
   position: "top-right",
-  autoClose: 3000,
+  height: 80,
+  autoClose: 3200,
   closeOnClick: true,
   pauseOnHover: false,
   draggable: true,
   progress: undefined,
   theme: "dark",
   style: {
-    background: "#000000",
+    background: "#121212",
     color: "#ffffff",
   },
 };
