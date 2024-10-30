@@ -31,9 +31,26 @@ const TripDetails = () => {
       rel='noopener noreferrer'
       underline='none'
     >
-      <IconButton color='primary'>
+      <IconButton
+      color='primary'
+      sx={{
+        padding: 0,
+        "&:hover": {
+          backgroundColor: "transparent",
+        },
+      }}
+      >
         <LinkIcon />
-        <Typography variant='body1' sx={{ ml: 1 }}>
+        <Typography
+          variant='body1'
+          sx={{
+            ml: 1,
+            "&:hover": {
+              textDecoration: "underline",
+              backgroundColor: "transparent",
+            },
+          }}
+        >
           {children}
         </Typography>
       </IconButton>

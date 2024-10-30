@@ -1,7 +1,5 @@
 import axios from "axios";
 
-
-
 const BASE_URL = "https://trailmates-backend.vercel.app/api";
 
 export const getToken = () => {

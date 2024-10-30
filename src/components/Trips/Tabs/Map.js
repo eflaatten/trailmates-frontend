@@ -8,6 +8,7 @@ import {
   Polyline,
   useMap,
 } from "react-leaflet";
+import { Button } from "@mui/material";
 import { fetchRoute, getUserTrips } from "../../../redux/actions";
 import { geocodeLocation } from "../../../api/map";
 import "leaflet/dist/leaflet.css";
@@ -71,40 +72,66 @@ const Map = ({ selectedTripId }) => {
     return null;
   };
 
+  const openRouteInOSM = () => {
+    if (routePolyline.length > 0) {
+      const start = routePolyline[0];
+      const end = routePolyline[routePolyline.length - 1];
+      const osmUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${start.lat},${start.lng};${end.lat},${end.lng}`;
+      window.open(osmUrl, "_blank");
+    }
+  }
+
   return (
-    <MapContainer
-      center={[37.7749, -122.4194]} // Default center, will be overridden by `fitBounds`
-      zoom={10}
-      style={{ width: "100%", height: "900px" }}
-    >
-      <TileLayer
-        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-      />
+    <>
+      <Button
+        onClick={openRouteInOSM}
+        sx={{
+          transition: "0.2s",
+          "&:hover": {
+            backgroundColor: "transparent",
+            color: "blue",
+            cursor: "pointer",
+            transform: "scale(1.1)",
+            transition: "0.2s",
+          }
+        }}
+      >
+        Open route
+      </Button>
+      <MapContainer
+        center={[37.7749, -122.4194]} // Default center, will be overridden by `fitBounds`
+        zoom={10}
+        style={{ width: "100%", height: "900px" }}
+      >
+        <TileLayer
+          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+        />
 
-      {startCoords && (
-        <Marker position={startCoords}>
-          <Popup>Starting Point</Popup>
-        </Marker>
-      )}
+        {startCoords && (
+          <Marker position={startCoords}>
+            <Popup>Starting Point</Popup>
+          </Marker>
+        )}
 
-      {destCoords && (
-        <Marker position={destCoords}>
-          <Popup>Destination</Popup>
-        </Marker>
-      )}
+        {destCoords && (
+          <Marker position={destCoords}>
+            <Popup>Destination</Popup>
+          </Marker>
+        )}
 
-      {/* Polyline for the route */}
-      {Array.isArray(routePolyline) && routePolyline.length > 0 && (
-        <>
-          <Polyline
-            positions={routePolyline.map((point) => [point.lat, point.lng])}
-            color='blue'
-          />
-          <RouteAutoCenter polyline={routePolyline} />
-        </>
-      )}
-    </MapContainer>
+        {/* Polyline for the route */}
+        {Array.isArray(routePolyline) && routePolyline.length > 0 && (
+          <>
+            <Polyline
+              positions={routePolyline.map((point) => [point.lat, point.lng])}
+              color='blue'
+            />
+            <RouteAutoCenter polyline={routePolyline} />
+          </>
+        )}
+      </MapContainer>
+    </>
   );
 };
 

@@ -60,6 +60,11 @@ const CreateTripDialog = ({ open, onClose }) => {
       return;
     }
 
+    if(dayjs(startDate).isBefore(dayjs())) {
+      toast.error("Start date cannot be before today!", { ...toastOptions });
+      return;
+    }
+
     const tripData = {
       trip_name: tripName,
       trip_description: description,
