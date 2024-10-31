@@ -87,13 +87,16 @@ const Map = ({ selectedTripId }) => {
         onClick={openRouteInOSM}
         sx={{
           transition: "0.2s",
+          backgroundColor: "#0b82e3",
+          color: "#fff",
+          mb: 2,
           "&:hover": {
-            backgroundColor: "transparent",
-            color: "blue",
+            backgroundColor: "#00659c",
+            color: "white",
             cursor: "pointer",
-            transform: "scale(1.1)",
+            transform: "scale(1.03)",
             transition: "0.2s",
-          }
+          },
         }}
       >
         Open route
