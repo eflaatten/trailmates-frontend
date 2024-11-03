@@ -8,7 +8,7 @@
 
 🌟 Features:
 - 📝 Plan your trip itinerary and store details like start date, end date, destination, and starting location.
-- 💬 Automatically generate a trip summary with AI to capture the highlights of the trip.
+- 💬 Automatically generate a trip summary & activity, hotel recommendations with AI 
 - 🗺️ Keep all your past trips in one place, and easily view them anytime.
 
 🚀 Get Started:
