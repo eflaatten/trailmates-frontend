@@ -39,6 +39,18 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   };
 
   const handleSubmit = () => {
+    if (!currentPassword || !newPassword) {
+      toast.error("Please fill in all fields", { ...toastOptions });
+      return;
+    }
+
+    if (currentPassword === newPassword) {
+      toast.error("New password must be different from current password", {
+        ...toastOptions,
+      });
+      return;
+    }
+
     try {
       changePassword(currentPassword, newPassword);
       onClose();
