@@ -21,9 +21,8 @@
 
 ### Tech Stack:
 - **Frontend:** React
-- **Backend:** Node.js, Express.js, Vercel
-- **Database:** MySQL
-- **API Integrations:** OpenAI API for trip summary generation & OpenStreetMaps for route
+- **Production Build:** Vercel
+- **Domain:** Cloudflare 
 
 ### Installation:
 1. Clone the repository:
