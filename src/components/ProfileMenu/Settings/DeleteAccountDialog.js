@@ -18,7 +18,17 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      sx={{
+        "& .MuiDialog-paper": {
+          width: "600px", // Adjust width
+          maxWidth: "90%", // Ensure responsiveness
+          backgroundColor: "#0e0c24", // Background color matches the dialog content
+        },
+      }}
+    >
       <DialogTitle style={dialogTitleStyle}>Delete Your Account</DialogTitle>
       <DialogContent style={dialogContentStyle}>
         <Alert
@@ -36,10 +46,10 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
           onClick={onClose}
           sx={{
             color: "#ff1400",
-            borderColor: "#00a1e6",
+            border: "2px solid #ff1400",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "transparent",
-              color: "#ff1400",
+              backgroundColor: "rgba(255, 20, 0, 0.1)",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -50,11 +60,11 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
         <Button
           onClick={handleDeleteAccount}
           sx={{
-            backgroundColor: "#2196F3",
-            color: "white",
+            color: "#a061d1",
+            border: "2px solid #a061d1",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "#1976D2",
-              opacity: 0.9,
+              backgroundColor: "rgba(160, 97, 209, 0.1)",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -70,24 +80,23 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
 export default ChangePasswordDialog;
 
 const dialogTitleStyle = {
-  backgroundColor: "#222",
   color: "#fff",
+  textAlign: "center",
 };
 
 const dialogContentStyle = {
-  backgroundColor: "#222",
+  padding: "24px", // Internal padding for spacing
 };
 
 const dialogActionsStyle = {
-  backgroundColor: "#222",
+  display: "flex",
+  justifyContent: "flex-end",
+  padding: "16px",
+  gap: "16px", // Space between buttons
+  backgroundColor: "#0e0c24",
 };
 
 const warningAlertStyle = {
-  backgroundColor: "#fff9c4", // Light yellow background
-  color: "#000",
+  backgroundColor: "#28273d",
+  color: "#fff",
 };
-
-// const softUITextStyle = {
-//   color: "#fff",
-//   marginBottom: "16px",
-// };

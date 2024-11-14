@@ -4,7 +4,6 @@ import TripList from "../Home/TripList";
 import "./index.css";
 import { getProfile } from "../../api/profile";
 import { Typography } from "@mui/material";
-import { Divider } from "@mui/material";
                  
 const Index = () => {
   const [username, setUsername] = useState("");
@@ -28,7 +27,7 @@ const Index = () => {
         variant='h5'
         className='welcome-text'
         sx={{
-          ml: 8,
+          ml: 5,
           mt: 5,
           color: "#d6d6d6",
           "@media (max-width: 600px)": {

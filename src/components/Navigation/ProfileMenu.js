@@ -9,9 +9,9 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from '../../assets/icons/gear-fill.svg';
+import ProfileIcon from '../../assets/icons/person-fill.svg';
+import LogoutIcon from '../../assets/icons/box-arrow-right.svg';
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../api/auth";
 import { getProfile } from "../../api/profile";
@@ -64,7 +64,20 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
       }}
       sx={{
         "& .MuiMenu-paper": {
-          borderRadius: "25px",
+          backgroundColor: "#2B1747",
+          borderRadius: "12px",
+        },
+        "& .MuiDivider-root": {
+          backgroundColor: "#ffffff80",
+        },
+        "& .MuiMenuItem-root": {
+          margin: "0 8px",
+          transition: "0.2s",
+        },
+        "& .MuiMenuItem-root:hover": {
+          backgroundColor: "#080310",
+          transition: "0.2s",
+          borderRadius: "8px",
         },
       }}
     >
@@ -75,11 +88,11 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
           alt={username}
           style={{ width: 55, height: 55, marginBottom: 10 }}
         />
-        <div style={{ marginLeft: "10px" }}>
+        <div style={{ marginLeft: "10px", color: "white" }}>
           <Typography variant='body1' component='p'>
             <strong>{username}</strong>
           </Typography>
-          <Typography variant='body2' color='textSecondary'>
+          <Typography variant='body2' color='white'>
             <strong>{email}</strong>
           </Typography>
         </div>
@@ -92,25 +105,38 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         onClick={handleNavigateToProfile}
         style={{
           marginTop: 8,
+          color: "white",
         }}
-        >
-        <ListItemIcon>
-          <PersonIcon />
+      >
+        <ListItemIcon sx={{ color: "white" }}>
+          <img
+            src={ProfileIcon}
+            alt='Profile Icon'
+            style={{ width: 24, height: 24 }}
+          />
         </ListItemIcon>
         <ListItemText primary='Profile' />
       </MenuItem>
-      <MenuItem onClick={handleNavigateToSettings}>
-        <ListItemIcon>
-          <SettingsIcon />
+      <MenuItem onClick={handleNavigateToSettings} sx={{ color: "white" }}>
+        <ListItemIcon sx={{ color: "white" }}>
+          <img
+            src={SettingsIcon}
+            alt='Settings Icon'
+            style={{ width: 24, height: 24 }}
+          />
         </ListItemIcon>
-        <ListItemText primary='Settings' />
+        <ListItemText primary='Settings' color='white' />
       </MenuItem>
 
       <Divider />
 
-      <MenuItem onClick={handleLogout}>
-        <ListItemIcon>
-          <LogoutIcon />
+      <MenuItem onClick={handleLogout} sx={{ color: "white" }}>
+        <ListItemIcon sx={{ color: "white" }}>
+          <img
+            src={LogoutIcon}
+            alt='Logout Icon'
+            style={{ width: 24, height: 24 }}
+          />
         </ListItemIcon>
         <ListItemText primary='Logout' />
       </MenuItem>

@@ -9,6 +9,8 @@ import Tabs from "./TripTabs";
 import Overview from "./Tabs/Overview";
 import AISummary from "./Tabs/Summary";
 import MapTab from "./Tabs/Map";
+import CommentsTab from './Tabs/Comments';
+import TripTabs from "./TripTabs";
 
 const TripDetails = () => {
   const navigate = useNavigate();
@@ -74,13 +76,13 @@ const TripDetails = () => {
         <IconButton
           onClick={handleBack}
           sx={{
-            color: "#fff",
+            color: "#CACACC",
             padding: 0,
             marginBottom: 3,
             transition: "transform 0.2s",
-            "&:hover": {
-              transform: "translateX(-5px)",
-            },
+            // "&:hover": {
+            //   transform: "translateX(-5px)",
+            // },
             "@media (max-width: 600px)": {
               marginTop: 2,
             },
@@ -102,24 +104,14 @@ const TripDetails = () => {
           <>
             <Box
               sx={{
-                backgroundColor: "#1a1a1a",
+                backgroundColor: "#0e0c24",
                 padding: 3,
                 borderRadius: 2,
                 boxShadow: 3,
                 marginBottom: 4,
               }}
             >
-              <Tabs>
-                <div label='Overview'>
-                  <Overview trip={trip} />
-                </div>
-                <div label='AI Summary'>
-                  <AISummary trip={trip} renderLink={renderLink} />
-                </div>
-                <div label='Map'>
-                  <MapTab selectedTripId={trip.tripId} />
-                </div>
-              </Tabs>
+              <TripTabs trip={trip} renderLink={renderLink} />
             </Box>
           </>
         )}

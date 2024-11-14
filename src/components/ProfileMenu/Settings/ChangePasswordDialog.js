@@ -8,6 +8,7 @@ import {
   TextField,
   IconButton,
   InputAdornment,
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { changePassword } from "../../../api/auth";
@@ -45,7 +46,7 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
     }
 
     if (currentPassword === newPassword) {
-      toast.error("New password must be different from current password", {
+      toast.error("New password must be different from the current password", {
         ...toastOptions,
       });
       return;
@@ -77,26 +78,28 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
       maxWidth='sm'
       PaperProps={{
         sx: {
-          backgroundColor: "#222",
+          backgroundColor: "#0e0c24",
           padding: "20px",
         },
       }}
     >
-      <DialogTitle style={dialogTitleStyle}>Change Password</DialogTitle>
-      <DialogContent style={dialogContentStyle}>
+      <DialogTitle sx={dialogTitleStyle}>Change Password</DialogTitle>
+      <DialogContent>
+        <Typography variant='body2' color='#CACACC'>
+          Current Password
+        </Typography>
         <TextField
           autoFocus
           margin='dense'
-          label='Current Password'
           type={showCurrentPassword ? "text" : "password"}
           fullWidth
           variant='outlined'
           value={currentPassword}
           onChange={handleCurrentPasswordChange}
-          sx={{ ...textFieldStyle, paddingBottom: "16px" }}
-          InputLabelProps={{ style: inputLabelStyle }}
+          sx={textFieldStyle}
+          InputLabelProps={{ style: { color: "#ffffff" } }}
           InputProps={{
-            style: inputStyle,
+            style: { color: "#ffffff" },
             endAdornment: (
               <InputAdornment position='end'>
                 <IconButton onClick={toggleShowCurrentPassword} edge='end'>
@@ -110,18 +113,21 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
             ),
           }}
         />
+
+        <Typography variant='body2' color='#CACACC' sx={{ mt: 3 }}>
+          New Password
+        </Typography>
         <TextField
           margin='dense'
-          label='New Password'
           type={showNewPassword ? "text" : "password"}
           fullWidth
           variant='outlined'
           value={newPassword}
           onChange={handleNewPasswordChange}
-          sx={{ ...textFieldStyle, paddingBottom: "16px" }}
-          InputLabelProps={{ style: inputLabelStyle }}
+          sx={textFieldStyle}
+          InputLabelProps={{ style: { color: "#ffffff" } }}
           InputProps={{
-            style: inputStyle,
+            style: { color: "#ffffff" },
             endAdornment: (
               <InputAdornment position='end'>
                 <IconButton onClick={toggleShowNewPassword} edge='end'>
@@ -136,15 +142,15 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
           }}
         />
       </DialogContent>
-      <DialogActions style={dialogActionsStyle}>
+      <DialogActions sx={dialogActionsStyle}>
         <Button
           onClick={onClose}
           sx={{
             color: "#ff1400",
-            borderColor: "#00a1e6",
+            border: "2px solid #ff1400",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "transparent",
-              color: "#ff1400",
+              backgroundColor: "rgba(255, 20, 0, 0.1)",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -155,11 +161,11 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
         <Button
           onClick={handleSubmit}
           sx={{
-            backgroundColor: "#2196F3",
-            color: "white",
+            color: "#a061d1",
+            border: "2px solid #a061d1",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "#1976D2",
-              opacity: 0.9,
+              backgroundColor: "rgba(160, 97, 209, 0.1)",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -174,44 +180,42 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
 
 export default ChangePasswordDialog;
 
+// Styles
 const dialogTitleStyle = {
-  backgroundColor: "#222",
-  color: "#fff",
+  color: "#ffffff",
   textAlign: "center",
-  fontSize: "1.25rem",
-};
-
-const dialogContentStyle = {
-  backgroundColor: "#222",
+  fontSize: "1.5rem",
+  marginBottom: "10px",
 };
 
 const textFieldStyle = {
-  backgroundColor: "transparent",
-  borderColor: "#fff",
-  color: "#fff",
-  marginBottom: "24px",
-};
-
-const inputLabelStyle = {
-  color: "#fff",
-};
-
-const inputStyle = {
-  color: "#fff",
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "transparent",
+    },
+    "&:hover fieldset": {
+      borderColor: "transparent",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "transparent",
+    },
+    "&.Mui-focused": {
+      boxShadow: "none",
+    },
+  },
+  backgroundColor: "#28273d",
+  color: "white",
+  width: "100%",
+  borderRadius: 3,
+  mt: 1,
+  mb: 3,
 };
 
 const dialogActionsStyle = {
-  backgroundColor: "#222",
+  display: "flex",
+  justifyContent: "flex-end",
+  gap: "16px",
 };
-
-// const buttonStyle = {
-//   color: "#fff",
-// };
-
-// const submitButtonStyle = {
-//   color: "#fff",
-//   backgroundColor: "#007bff",
-// };
 
 const toastOptions = {
   position: "top-right",

@@ -17,7 +17,7 @@ const DeleteTripConfirmDialog = ({ open, handleClose, handleConfirm }) => {
       aria-describedby='delete-trip-dialog-description'
       PaperProps={{
         sx: {
-          backgroundColor: "#121212",
+          backgroundColor: "#0e0c24",
           color: "#fff",
         },
       }}
@@ -34,10 +34,10 @@ const DeleteTripConfirmDialog = ({ open, handleClose, handleConfirm }) => {
           onClick={handleClose}
           sx={{
             color: "#ff1400",
-            borderColor: "#00a1e6",
+            border: "2px solid #ff1400",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "transparent",
-              color: "#ff1400",
+              backgroundColor: "rgba(255, 20, 0, 0.1)",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -48,14 +48,13 @@ const DeleteTripConfirmDialog = ({ open, handleClose, handleConfirm }) => {
         <Button
           onClick={handleConfirm}
           sx={{
-            backgroundColor: "#2196F3",
-            color: "white",
+            color: "#a061d1",
+            border: "2px solid #a061d1",
+            backgroundColor: "transparent",
             "&:hover": {
-              backgroundColor: "#1976D2",
-              opacity: 0.9,
+              backgroundColor: "rgba(160, 97, 209, 0.1)",
               transform: "scale(1.05)",
             },
-            transition: "transform 0.3s ease",
           }}
         >
           Delete

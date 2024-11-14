@@ -54,6 +54,8 @@ const UserProfile = () => {
   };
 
   const handleSaveChanges = async () => {
+    if(!hasChanges) return;
+    
     try {
       await updateUsername(user);
       await updateEmail(email);
@@ -91,21 +93,21 @@ const UserProfile = () => {
       toast.error("Failed to remove profile picture", { ...toastOptions });
     }
   };
+  
+  const fetchProfile = async () => {
+    try {
+      const profileData = await getProfile();
+      setUser(profileData.username);
+      setEmail(profileData.email);
+      setOriginalUser(profileData.username);
+      setOriginalEmail(profileData.email);
+      setProfilePicture(profileData.profile_picture);
+    } catch (error) {
+      console.error("Failed to fetch profile data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const profileData = await getProfile();
-        setUser(profileData.username);
-        setEmail(profileData.email);
-        setOriginalUser(profileData.username);
-        setOriginalEmail(profileData.email);
-        setProfilePicture(profileData.profile_picture);
-      } catch (error) {
-        console.error("Failed to fetch profile data:", error);
-      }
-    };
-
     fetchProfile();
   }, []);
 
@@ -130,12 +132,12 @@ const UserProfile = () => {
         <IconButton
           onClick={handleBack}
           sx={{
-            color: "#fff",
+            color: "#CACACC",
             padding: 0,
             transition: "transform 0.2s",
-            "&:hover": {
-              transform: "translateX(-5px)",
-            },
+            // "&:hover": {
+            //   transform: "translateX(-5px)",
+            // },
             "@media (max-width: 600px)": {
               marginTop: 2,
             },
@@ -183,33 +185,25 @@ const UserProfile = () => {
 
         {/* Input fields below username and email with spacing */}
         <Box sx={inputFieldContainerStyle}>
+          <Typography variant='p' sx={{ color: "#ccc", marginBottom: 2 }}>
+            Username
+          </Typography>
           <TextField
             variant='outlined'
             value={user}
             onChange={handleSetUser}
             fullWidth
-            InputLabelProps={{
-              style: { color: "#ffffff" },
-            }}
-            InputProps={{
-              style: { color: "#ffffff" },
-            }}
-            label='Username'
             sx={textFieldStyle}
           />
 
+          <Typography variant='p' sx={{ color: "#ccc", marginBottom: 2 }}>
+            Email
+          </Typography>
           <TextField
             variant='outlined'
             value={email}
             onChange={handleSetEmail}
             fullWidth
-            InputLabelProps={{
-              style: { color: "#ffffff" },
-            }}
-            InputProps={{
-              style: { color: "#ffffff" },
-            }}
-            label='Email'
             sx={textFieldStyle}
           />
         </Box>
@@ -219,10 +213,10 @@ const UserProfile = () => {
             onClick={handleCancel}
             sx={{
               color: "#ff1400",
-              borderColor: "#00a1e6",
+              border: "2px solid #ff1400",
+              backgroundColor: "transparent",
               "&:hover": {
-                backgroundColor: "transparent",
-                color: "#ff1400",
+                backgroundColor: "rgba(255, 20, 0, 0.1)",
                 transform: "scale(1.05)",
               },
               transition: "transform 0.3s ease",
@@ -234,13 +228,14 @@ const UserProfile = () => {
             onClick={handleSaveChanges}
             sx={{
               ...saveButtonStyle,
-              backgroundColor: hasChanges ? "#2196F3" : "#004e94",
-              opacity: hasChanges ? 1 : 0.9,
-              cursor: hasChanges ? "pointer" : "not-allowed",
+              color: "#a061d1",
+              border: "2px solid #a061d1",
+              backgroundColor: "transparent",
+              opacity: hasChanges ? 1 : 0.5,
               "&:hover": {
-                backgroundColor: "#1976D2",
-                opacity: 0.9,
-                //transform: "scale(1.05)",
+                backgroundColor: hasChanges ? "rgba(160, 97, 209, 0.1)" : "transparent",
+                transform: hasChanges ? "scale(1.05)" : "none",
+                cursor: hasChanges ? "pointer" : "default",
               },
               transition: "transform 0.3s ease",
             }}
@@ -255,20 +250,21 @@ const UserProfile = () => {
           onClose={() => setAnchorEl(null)}
           PaperProps={{
             sx: {
-              backgroundColor: "#000000",
+              backgroundColor: "#221e42",
               color: "#ffffff",
+              padding: 0.7,
             },
           }}
         >
           <MenuItem
             onClick={handleOpenChangePicture}
-            sx={{ "&:hover": { backgroundColor: "#333333" } }}
+            sx={{ "&:hover": { backgroundColor: "#080310", borderRadius: 2 } }}
           >
             Change picture
           </MenuItem>
           <MenuItem
             onClick={handleRemovePicture}
-            sx={{ "&:hover": { backgroundColor: "#333333" } }}
+            sx={{ "&:hover": { backgroundColor: "#080310", borderRadius: 2 } }}
           >
             Remove Picture
           </MenuItem>
@@ -280,6 +276,7 @@ const UserProfile = () => {
             setOpen(false);
             setAnchorEl(null);
           }}
+          refreshProfilePicture={fetchProfile}
         />
       </Paper>
     </>
@@ -297,7 +294,7 @@ const paperStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  backgroundColor: "#1e1e1e",
+  backgroundColor: "#0e0c24",
   color: "#ffffff",
   borderRadius: 2,
   "@media (max-width: 600px)": {
@@ -327,6 +324,7 @@ const avatarStyle = {
   width: 80,
   height: 80,
   borderRadius: "17%",
+  border: "1px solid #D9D9D9",
   bgcolor: "#333333",
   "@media (max-width: 600px)": {
     width: 80,
@@ -346,7 +344,7 @@ const editIconStyle = {
   position: "absolute",
   bottom: -7,
   right: -7,
-  bgcolor: "#2e2e2e",
+  bgcolor: "#1d1759",
   borderRadius: "25%",
   p: 0.2,
   cursor: "pointer",
@@ -371,16 +369,25 @@ const inputFieldContainerStyle = {
 const textFieldStyle = {
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#ffffff",
+      borderColor: "transparent",
     },
     "&:hover fieldset": {
-      borderColor: "#ffffff",
+      borderColor: "transparent",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#2196F3",
+      borderColor: "transparent",
+    },
+    "&.Mui-focused": {
+      boxShadow: "none",
+    },
+    "& input": {
+      color: "white", // Set the text color to white
     },
   },
+  backgroundColor: "#28273d",
   width: "100%",
+  borderRadius: 3,
+  mt: 1,
   mb: 3,
 };
 

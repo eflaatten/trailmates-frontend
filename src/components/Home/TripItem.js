@@ -72,22 +72,18 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
 
   return (
     <>
-    
       <Box
+        className='trip-item'
         sx={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr auto", // Add auto for the actions column
+          gridTemplateColumns: "1fr 1fr 1fr 1fr auto",
           gap: 2,
-          backgroundColor: "#242323", // Dark gray background
+          backgroundColor: "#211c3d",
           padding: 2,
           marginBottom: 2,
-          transition: "0.2s",
-          "&:hover": {
-            backgroundColor: "#3d3d3d", // Dark blue border on hover
-            cursor: "pointer",
-          },
+          borderRadius: 3,
           "@media (max-width: 600px)": {
-            gridTemplateColumns: "1fr 1fr auto", // Hide start and end date on mobile
+            gridTemplateColumns: "1fr 1fr auto",
           },
         }}
       >
@@ -126,19 +122,23 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           onClose={handleMenuClose}
           PaperProps={{
             sx: {
-              backgroundColor: "#000",
-              color: "#fff", 
+              backgroundColor: "#2B1747",
+              color: "#fff",
               width: "180px",
             },
           }}
-          onClick={(e) => e.stopPropagation()} 
+          onClick={(e) => e.stopPropagation()}
         >
           {/* View trip menu item */}
           <MenuItem
             onClick={handleViewTrip}
             sx={{
+              margin: "0 8px",
+              transition: "0.2s",
+              borderRadius: "12px",
               "&:hover": {
-                backgroundColor: "#333",
+                backgroundColor: "#080310",
+                transition: "0.2s",
               },
             }}
           >
@@ -150,22 +150,26 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           <MenuItem
             onClick={handleOpenDeleteConfirmDialog}
             sx={{
+              margin: "0 8px",
+              transition: "0.2s",
+              borderRadius: "12px",
               "&:hover": {
-                backgroundColor: "#333",
+                backgroundColor: "#080310",
+                transition: "0.2s",
               },
-            }} 
+            }}
           >
             {/* <DeleteIcon sx={{ color: "red", marginRight: "8px" }} /> */}
             <Typography sx={{ color: "#fff" }}>Delete</Typography>
           </MenuItem>
         </Menu>
       </Box>
-            {/* Add the DeleteTripConfirmDialog component here */}
-        <DeleteTripConfirmDialog
-          open={deleteDialogOpen}
-          handleClose={handleCloseDeleteConfirmDialog}
-          handleConfirm={handleDelete}
-        />
+      {/* Add the DeleteTripConfirmDialog component here */}
+      <DeleteTripConfirmDialog
+        open={deleteDialogOpen}
+        handleClose={handleCloseDeleteConfirmDialog}
+        handleConfirm={handleDelete}
+      />
     </>
   );
 };

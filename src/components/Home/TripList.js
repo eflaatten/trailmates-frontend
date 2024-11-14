@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserTrips } from "../../redux/actions";
 import CreateTripDialog from "../Home/CreateTripDialog";
 import TripItem from "../Home/TripItem";
+import SquarePlusIcon from '../../assets/icons/plus-square.svg';
 
 const TripList = () => {
   const [openCreateTripDialog, setOpenCreateTripDialog] = useState(false);
@@ -35,8 +36,9 @@ const TripList = () => {
   return (
     <Box
       sx={{
+        backgroundColor: "#0e0c24",
         padding: 4,
-        height: "100vh",
+        height: "auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -52,18 +54,21 @@ const TripList = () => {
       <Box
         sx={{
           display: "flex",
+          alignItems: "center",
           justifyContent: "flex-start",
           width: "100%",
         }}
       >
         <Button
-          variant='contained'
+          variant='text'
           sx={{
-            backgroundColor: "#2196F3",
-            color: "white",
+            backgroundColor: "transparent",
+            color: "blue",
+            outline: "none",
+            display: "flex",
+            alignItems: "center",
             "&:hover": {
-              backgroundColor: "#1976D2",
-              opacity: 0.9,
+              backgroundColor: "transparent",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -71,6 +76,11 @@ const TripList = () => {
           }}
           onClick={handleOpenCreateTripDialog}
         >
+          <img
+            src={SquarePlusIcon}
+            alt='Plus Icon'
+            style={{ width: 20, height: 20, marginRight: 9, marginBottom: 1.5 }}
+          />
           Create Trip
         </Button>
       </Box>
