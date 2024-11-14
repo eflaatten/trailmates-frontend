@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import NavBar from "../../Navigation/NavBar";
-import { Paper, Button, Box, Typography, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  IconButton,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import DeleteAccountDialog from "./DeleteAccountDialog";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import NavBar from "../../Navigation/NavBar";
 import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
@@ -24,7 +32,6 @@ const Settings = () => {
   const handleCloseDeleteAccountDialog = () =>
     setOpenDeleteAccountDialog(false);
 
-
   return (
     <>
       <NavBar />
@@ -33,22 +40,14 @@ const Settings = () => {
         sx={{
           display: "flex",
           justifyContent: "flex-start",
-          paddingLeft: { xs: 2, sm: 5, md: 8 },
+          paddingLeft: { xs: 2, sm: 5, md: 4 },
           paddingTop: { xs: 2, sm: 4 },
         }}
       >
         <IconButton
           onClick={handleBack}
           sx={{
-            color: "#fff",
-            padding: 0,
-            transition: "transform 0.2s",
-            "&:hover": {
-              transform: "translateX(-5px)",
-            },
-            "@media (max-width: 600px)": {
-              marginTop: 4,
-            }
+            color: "#CACACC",
           }}
         >
           <ArrowBackIosNewIcon />
@@ -56,29 +55,48 @@ const Settings = () => {
         </IconButton>
       </Box>
 
-      <StyledPaper elevation={3}>
-        <Typography variant='h4' align='start' gutterBottom sx={{ fontSize: "25px"}}>
-          Settings
-        </Typography>
+      {/* Cards container */}
+      <CardContainer>
+        <StyledCard>
+          <CardContent>
+            <Typography variant='h6' gutterBottom>
+              Change Password
+            </Typography>
+            <Typography variant='body2' color='#CACACC'>
+              Update your account password to keep your account secure.
+            </Typography>
+          </CardContent>
+          <CardActions sx={{ justifyContent: "center" }}>
+            <TransparentButton
+              variant='outlined'
+              onClick={handleOpenChangePasswordDialog}
+              startIcon={<LockIcon />}
+            >
+              Change Password
+            </TransparentButton>
+          </CardActions>
+        </StyledCard>
 
-        {/* Buttons container */}
-        <ButtonContainer>
-          <StyledButton
-            variant='contained'
-            onClick={handleOpenChangePasswordDialog}
-            startIcon={<LockIcon />}
-          >
-            Change Password
-          </StyledButton>
-          <DeleteButton
-            variant='contained'
-            onClick={handleOpenDeleteAccountDialog}
-            startIcon={<DeleteIcon />}
-          >
-            Delete Account
-          </DeleteButton>
-        </ButtonContainer>
-      </StyledPaper>
+        <StyledCard>
+          <CardContent>
+            <Typography variant='h6' gutterBottom>
+              Delete Account
+            </Typography>
+            <Typography variant='body2' color='#CACACC'>
+              Permanently delete your account and all associated data.
+            </Typography>
+          </CardContent>
+          <CardActions sx={{ justifyContent: "center" }}>
+            <TransparentButton
+              variant='outlined'
+              onClick={handleOpenDeleteAccountDialog}
+              startIcon={<DeleteIcon />}
+            >
+              Delete Account
+            </TransparentButton>
+          </CardActions>
+        </StyledCard>
+      </CardContainer>
 
       {/* Dialogs */}
       <ChangePasswordDialog
@@ -96,59 +114,39 @@ const Settings = () => {
 export default Settings;
 
 // Styled Components
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  width: "90%",
-  margin: "20px auto",
-  padding: theme.spacing(3),
-  backgroundColor: "#1e1e1e",
-  color: "#ffffff",
-  textAlign: "center",
-  borderRadius: 7,
-  marginTop: 50,
-  [theme.breakpoints.down("sm")]: {
-    width: "83%",
-    padding: theme.spacing(2),
-    margin: "30px 5%",
-  },
-}));
-
-const ButtonContainer = styled(Box)(({ theme }) => ({
+const CardContainer = styled(Box)(({ theme }) => ({
   display: "flex",
-  gap: theme.spacing(2),
-  justifyContent: "flex-start",
-  marginTop: theme.spacing(3),
-  // Mobile View
+  justifyContent: "space-between",
+  gap: theme.spacing(5),
+  marginTop: theme.spacing(5),
+  padding: theme.spacing(0, 5),
   [theme.breakpoints.down("sm")]: {
     flexDirection: "column",
     alignItems: "center",
-    gap: theme.spacing(1.5),
+    padding: theme.spacing(0, 2),
   },
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: "#2196F3",
-  color: "#ffffff",
-  "&:hover": {
-    backgroundColor: "#1976D2",
-    transform: "scale(1.05)",
-  },
-  transition: "transform 0.3s ease",
-  // Mobile specific width
+const StyledCard = styled(Card)(({ theme }) => ({
+  flex: 1,
+  backgroundColor: "#1e1b38",
+  color: "#cccccc",
+  borderRadius: 10,
+  padding: theme.spacing(3),
   [theme.breakpoints.down("sm")]: {
-    width: "100%",
+    width: "90%",
   },
 }));
 
-const DeleteButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.error.main,
-  color: "#ffffff",
+const TransparentButton = styled(Button)(({ theme }) => ({
+  border: "2px solid #a061d1",
+  color: "#a061d1",
+  backgroundColor: "transparent",
+  fontWeight: "bold",
   "&:hover": {
-    backgroundColor: theme.palette.error.dark,
-    transform: "scale(1.05)",
+    backgroundColor: "rgba(160, 97, 209, 0.1)",
+    borderColor: "#7d47a2",
   },
-  transition: "transform 0.3s ease",
-  // Mobile specific width
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-  },
+  transition: "all 0.3s ease",
+  width: "80%",
 }));

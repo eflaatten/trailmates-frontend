@@ -86,17 +86,15 @@ const Map = ({ selectedTripId }) => {
       <Button
         onClick={openRouteInOSM}
         sx={{
-          transition: "0.2s",
-          backgroundColor: "#0b82e3",
-          color: "#fff",
-          mb: 2,
+          color: "#a061d1",
+          border: "2px solid #a061d1",
+          backgroundColor: "transparent",
+          marginBottom: "20px",
           "&:hover": {
-            backgroundColor: "#00659c",
-            color: "white",
-            cursor: "pointer",
-            transform: "scale(1.03)",
-            transition: "0.2s",
+            backgroundColor: "rgba(160, 97, 209, 0.1)",
+            transform: "scale(1.05)",
           },
+          transition: "transform 0.3s ease",
         }}
       >
         Open route
@@ -104,7 +102,13 @@ const Map = ({ selectedTripId }) => {
       <MapContainer
         center={[37.7749, -122.4194]} // Default center, will be overridden by `fitBounds`
         zoom={10}
-        style={{ width: "100%", height: "900px" }}
+        style={{
+          width: "100%",
+          height: "900px",
+          "&media (max-width: 600px)": {
+            height: "300px",
+          }
+        }}
       >
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

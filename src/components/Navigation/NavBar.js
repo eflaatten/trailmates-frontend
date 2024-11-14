@@ -6,17 +6,10 @@ import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
 import { Box } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProfileMenu from "./ProfileMenu";
 import { getProfile } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
 import tripMatesLogo from "../../assets//img/TrailMates(bg).png";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -51,74 +44,66 @@ const NavBar = () => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <AppBar
-        position='static'
-        sx={{
-          borderRadius: "18px",
-          width: "auto",
-          margin: "20px",
-          "@media (max-width: 600px)": {
-            margin: "0px",
-            width: "100%",
-            borderRadius: "0px",
-          },
-        }}
-      >
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* Left side: Logo and name container */}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={tripMatesLogo}
-              alt='TripMates Logo'
-              style={{
-                height: "37px",
-                marginRight: "10px",
-                cursor: "pointer",
-                borderRadius: "20%",
-              }}
-              onClick={handleNavigateToHome}
-            />
-            <Typography
-              variant='h6'
-              component='div'
-              sx={{
-                cursor: "pointer",
-                fontFamily: "inherit",
-                fontSize: "1.2rem",
-                // "&:hover": {
-                //   color: "#2196F3",
-                //   cursor: "pointer",
-                // },
-              }}
-              onClick={handleNavigateToHome}
-            >
-              TripMates
-            </Typography>
-          </Box>
-
-          {/* Right side: Profile avatar */}
-          <IconButton
-            edge='end'
-            color='inherit'
-            onClick={handleProfileMenuOpen}
-          >
-            <Avatar
-              src={profilePicture}
-              alt={user || "User Avatar"}
-              sx={{ width: 30, height: 30 }}
-            >
-              {!profilePicture && <PersonIcon />}
-            </Avatar>
-          </IconButton>
-
-          <ProfileMenu
-            anchorEl={anchorEl}
-            handleClose={handleProfileMenuClose}
+    <AppBar
+      position='static'
+      sx={{
+        backgroundColor: "#13042b",
+        borderRadius: "18px",
+        width: "auto",
+        margin: "20px",
+        "@media (max-width: 600px)": {
+          margin: "0px",
+          width: "100%",
+          borderRadius: "0px",
+        },
+      }}
+    >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        {/* Left side: Logo and name container */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <img
+            src={tripMatesLogo}
+            alt='TripMates Logo'
+            style={{
+              height: "37px",
+              marginRight: "10px",
+              cursor: "pointer",
+              borderRadius: "20%",
+            }}
+            onClick={handleNavigateToHome}
           />
-        </Toolbar>
-      </AppBar>
-    </ThemeProvider>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{
+              cursor: "pointer",
+              fontFamily: "inherit",
+              fontSize: "1.2rem",
+              // "&:hover": {
+              //   color: "#2196F3",
+              //   cursor: "pointer",
+              // },
+            }}
+            onClick={handleNavigateToHome}
+          >
+            TripMates
+          </Typography>
+        </Box>
+
+        {/* Right side: Profile avatar */}
+        <IconButton edge='end' color='inherit' onClick={handleProfileMenuOpen}>
+          <Avatar
+            src={profilePicture}
+            alt={user || "User Avatar"}
+            sx={{ width: 30, height: 30 }}
+          >
+            {!profilePicture && <PersonIcon />}
+          </Avatar>
+        </IconButton>
+
+        <ProfileMenu anchorEl={anchorEl} handleClose={handleProfileMenuClose} />
+      </Toolbar>
+    </AppBar>
   );
 };
 

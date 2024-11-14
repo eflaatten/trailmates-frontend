@@ -21,8 +21,12 @@
 
 ### Tech Stack:
 - **Frontend:** React
-- **Production Build:** Vercel
+- **Deployment:** Vercel
 - **Domain:** Cloudflare 
+
+### Environments:
+-- [Production](https://www.tripmates.org/login)
+-- [Development](tripmates-develop.vercel.app)
 
 ### Installation:
 1. Clone the repository:
