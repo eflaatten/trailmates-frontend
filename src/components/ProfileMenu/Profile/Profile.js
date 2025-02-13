@@ -13,11 +13,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import NavBar from "../../Navigation/NavBar";
 import ProfileMenu from "../../Navigation/ProfileMenu";
 import { getProfile, updateUsername, updateEmail } from "../../../api/profile";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import EmailIcon from "@mui/icons-material/Email";
-import EditIcon from "@mui/icons-material/Edit";
+import { toast, toastOptions } from "../../../assets/hotToast";
 import ChangeProfilePicture from "./ChangeProfilePicture";
+import { Mail, User, Pencil } from "lucide-react";
 import { removeProfilePicture } from "../../../api/profile";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import IconButton from "@mui/material/IconButton";
@@ -29,14 +27,16 @@ const UserProfile = () => {
   const [profilePicture, setProfilePicture] = useState("");
   const [originalUser, setOriginalUser] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
   // Handle back navigation
   const handleBack = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const handleSetUser = (e) => {
@@ -63,6 +63,7 @@ const UserProfile = () => {
       setOriginalEmail(email);
       setHasChanges(false);
       toast.success("Profile updated successfully", { ...toastOptions });
+      setIsEditing(false);
     } catch (error) {
       console.error("Failed to update profile:", error);
       toast.error("Failed to update profile", { ...toastOptions });
@@ -102,9 +103,21 @@ const UserProfile = () => {
       setOriginalUser(profileData.username);
       setOriginalEmail(profileData.email);
       setProfilePicture(profileData.profile_picture);
+      setCreatedAt(new Date(profileData.created_at).toLocaleDateString());
     } catch (error) {
       console.error("Failed to fetch profile data:", error);
     }
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setUser(originalUser);
+    setEmail(originalEmail);
+    setHasChanges(false);
   };
 
   useEffect(() => {
@@ -123,6 +136,7 @@ const UserProfile = () => {
           justifyContent: "flex-start",
           paddingLeft: "50px",
           paddingTop: "50px",
+          width: "50%",
           "@media (max-width: 600px)": {
             padding: 2,
             paddingTop: 2,
@@ -135,9 +149,9 @@ const UserProfile = () => {
             color: "#CACACC",
             padding: 0,
             transition: "transform 0.2s",
-            // "&:hover": {
-            //   transform: "translateX(-5px)",
-            // },
+            "&:hover": {
+              transform: "translateX(-5px)",
+            },
             "@media (max-width: 600px)": {
               marginTop: 2,
             },
@@ -149,8 +163,15 @@ const UserProfile = () => {
       </Box>
 
       <Paper elevation={3} sx={paperStyle}>
-        <Box sx={avatarContainerStyle}>
-          <Box sx={avatarWrapperStyle}>
+        <Box
+          sx={{
+            ...avatarContainerStyle,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Box sx={{ ...avatarWrapperStyle, marginBottom: "1rem" }}>
             <Avatar
               sx={avatarStyle}
               src={profilePicture}
@@ -163,7 +184,7 @@ const UserProfile = () => {
               sx={editIconStyle}
               onClick={(e) => setAnchorEl(e.currentTarget)}
             >
-              <EditIcon sx={{ color: "#ffffff", opacity: 1 }} />
+              <Pencil sx={{ color: "#ffffff", opacity: 1 }} />
             </Box>
           </Box>
 
@@ -175,96 +196,173 @@ const UserProfile = () => {
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-              <EmailIcon sx={{ color: "white", mr: 1 }} />
-              <Typography variant='body1' sx={{ color: "#ccc" }}>
+              <Typography variant='body1' sx={{ color: "#fff" }}>
                 {originalEmail}
               </Typography>
             </Box>
           </Box>
         </Box>
 
-        {/* Input fields below username and email with spacing */}
-        <Box sx={inputFieldContainerStyle}>
-          <Typography variant='p' sx={{ color: "#ccc", marginBottom: 2 }}>
-            Username
-          </Typography>
-          <TextField
-            variant='outlined'
-            value={user}
-            onChange={handleSetUser}
-            fullWidth
-            sx={textFieldStyle}
-          />
+        <Box sx={{ ...inputFieldContainerStyle, gap: 2 }}>
+          <div className='relative' style={{ marginBottom: "1rem" }}>
+            <label htmlFor='username' className='sr-only'>
+              Username
+            </label>
+            <input
+              id='username'
+              name='username'
+              type='text'
+              autoComplete='username'
+              required
+              className='appearance-none rounded-md relative block w-full px-3 py-3 placeholder-gray-500 text-gray-300 focus:outline-none focus:z-10 sm:text-sm'
+              placeholder='Username'
+              style={{
+                paddingLeft: "2.5rem",
+                backgroundColor: "#0E1113",
+                color: isEditing ? "white" : "#8c8c8c",
+              }}
+              value={user}
+              onChange={handleSetUser}
+              disabled={!isEditing}
+            />
+            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-20'>
+              <User className='h-5 w-5 text-gray-400' />
+            </div>
+          </div>
 
-          <Typography variant='p' sx={{ color: "#ccc", marginBottom: 2 }}>
-            Email
-          </Typography>
-          <TextField
-            variant='outlined'
-            value={email}
-            onChange={handleSetEmail}
-            fullWidth
-            sx={textFieldStyle}
-          />
+          <div className='relative' style={{ marginBottom: "1rem" }}>
+            <label htmlFor='email' className='sr-only'>
+              Email
+            </label>
+            <input
+              id='email'
+              name='email'
+              type='text'
+              autoComplete='email'
+              required
+              className='appearance-none rounded-md relative block w-full px-3 py-3 placeholder-gray-500 text-gray-300 focus:outline-none focus:z-10 sm:text-sm'
+              placeholder='Email'
+              value={email}
+              onChange={handleSetEmail}
+              style={{
+                paddingLeft: "2.5rem",
+                backgroundColor: "#0E1113",
+                color: isEditing ? "white" : "#8c8c8c",
+              }}
+              disabled={!isEditing}
+            />
+            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-20'>
+              <Mail className='h-5 w-5 text-gray-400' />
+            </div>
+          </div>
+
+          <div className='relative' style={{ marginBottom: "1rem" }}>
+            <h3 className='text-sm text-gray-400'>
+              Account created: {createdAt}
+            </h3>
+          </div>
         </Box>
 
         <Box sx={buttonContainerStyle}>
-          <Button
-            onClick={handleCancel}
-            sx={{
-              color: "#ff1400",
-              border: "2px solid #ff1400",
-              backgroundColor: "transparent",
-              "&:hover": {
-                backgroundColor: "rgba(255, 20, 0, 0.1)",
-                transform: "scale(1.05)",
-              },
-              transition: "transform 0.3s ease",
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSaveChanges}
-            sx={{
-              ...saveButtonStyle,
-              color: "#a061d1",
-              border: "2px solid #a061d1",
-              backgroundColor: "transparent",
-              opacity: hasChanges ? 1 : 0.5,
-              "&:hover": {
-                backgroundColor: hasChanges ? "rgba(160, 97, 209, 0.1)" : "transparent",
-                transform: hasChanges ? "scale(1.05)" : "none",
-                cursor: hasChanges ? "pointer" : "default",
-              },
-              transition: "transform 0.3s ease",
-            }}
-          >
-            Save
-          </Button>
+          {!isEditing && (
+            <Button
+              onClick={handleEdit}
+              sx={{
+                backgroundColor: "#6369ff",
+                color: "white",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  backgroundColor: "#6369ff",
+                },
+                transition: "0.2s ease",
+              }}
+            >
+              Edit
+            </Button>
+          )}
+
+          {isEditing && (
+            <>
+              <Button
+                onClick={handleCancelEdit}
+                sx={{
+                  color: "#ff1400",
+                  border: "1px solid #ff1400",
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                    transform: "scale(1.05)",
+                  },
+                  transition: "transform 0.3s ease",
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSaveChanges}
+                sx={{
+                  ...saveButtonStyle,
+                  color: "white !important",
+                  backgroundColor: "#6369ff",
+                  opacity: hasChanges ? 1 : 0.5,
+                  "&:hover": {
+                    backgroundColor: hasChanges ? "#6369ff" : "#6369ff",
+                    transform: hasChanges ? "scale(1.05)" : "none",
+                    cursor: hasChanges ? "pointer" : "default",
+                  },
+                  transition: "transform 0.3s ease",
+                }}
+                disabled={!hasChanges}
+              >
+                Save
+              </Button>
+            </>
+          )}
         </Box>
 
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
-          PaperProps={{
-            sx: {
-              backgroundColor: "#221e42",
-              color: "#ffffff",
-              padding: 0.7,
+          slotProps={{
+            paper: {
+              sx: {
+                backgroundColor: "#181C1F",
+                color: "#ffffff",
+                transition: "0.4s",
+                borderRadius: "8px",
+              },
             },
           }}
         >
           <MenuItem
             onClick={handleOpenChangePicture}
-            sx={{ "&:hover": { backgroundColor: "#080310", borderRadius: 2 } }}
+            sx={{
+              transition: "0.4s",
+              margin: "5px",
+              borderRadius: "8px",
+              "&:hover": {
+                backgroundColor: "black",
+                transition: "0.4s",
+                margin: "5px",
+                borderRadius: "8px",
+              },
+            }}
           >
             Change picture
           </MenuItem>
           <MenuItem
             onClick={handleRemovePicture}
-            sx={{ "&:hover": { backgroundColor: "#080310", borderRadius: 2 } }}
+            sx={{
+              transition: "0.4s",
+              margin: "5px",
+              borderRadius: "8px",
+              "&:hover": {
+                backgroundColor: "black",
+                transition: "0.4s",
+                margin: "5px",
+                borderRadius: "8px",
+              },
+            }}
           >
             Remove Picture
           </MenuItem>
@@ -288,13 +386,13 @@ export default UserProfile;
 // Styles
 const paperStyle = {
   p: 4,
-  width: "90%",
+  width: "50%",
   margin: "auto",
   mt: 6,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  backgroundColor: "#0e0c24",
+  backgroundColor: "#181C1F",
   color: "#ffffff",
   borderRadius: 2,
   "@media (max-width: 600px)": {
@@ -321,14 +419,14 @@ const avatarWrapperStyle = {
 };
 
 const avatarStyle = {
-  width: 80,
-  height: 80,
-  borderRadius: "17%",
+  width: 120,
+  height: 120,
+  borderRadius: "20%",
   border: "1px solid #D9D9D9",
   bgcolor: "#333333",
   "@media (max-width: 600px)": {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
   },
 };
 
@@ -344,19 +442,27 @@ const editIconStyle = {
   position: "absolute",
   bottom: -7,
   right: -7,
-  bgcolor: "#1d1759",
-  borderRadius: "25%",
-  p: 0.2,
+  bgcolor: "#212529",
+  borderRadius: "35%",
+  p: 1,
   cursor: "pointer",
+  "@media (max-width: 600px)": {
+    bottom: -4,
+    right: -4,
+    p: 0.5,
+  }
 };
 
 const profileDetailsStyle = {
   display: "flex",
   flexDirection: "column",
-  ml: 3,
+  justifyContent: "center",
+  alignItems: "flex-start",
+  ml: "2rem",
+  mt: "2rem",
   "@media (max-width: 600px)": {
     ml: 0,
-    mt: 2,
+    mt: 0,
     alignItems: "center",
   },
 };
@@ -406,20 +512,5 @@ const saveButtonStyle = {
   "&:hover": {
     backgroundColor: "#1976D2",
     opacity: 0.9,
-  },
-};
-
-const toastOptions = {
-  position: "top-right",
-  height: 80,
-  autoClose: 3200,
-  closeOnClick: true,
-  pauseOnHover: false,
-  draggable: true,
-  progress: undefined,
-  theme: "dark",
-  style: {
-    background: "#121212",
-    color: "#ffffff",
   },
 };

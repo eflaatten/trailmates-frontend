@@ -86,12 +86,11 @@ const Map = ({ selectedTripId }) => {
       <Button
         onClick={openRouteInOSM}
         sx={{
-          color: "#a061d1",
-          border: "2px solid #a061d1",
-          backgroundColor: "transparent",
+          color: "white",
+          backgroundColor: "#2e6dff",
           marginBottom: "20px",
           "&:hover": {
-            backgroundColor: "rgba(160, 97, 209, 0.1)",
+            backgroundColor: "#2e6dff",
             transform: "scale(1.05)",
           },
           transition: "transform 0.3s ease",
@@ -100,14 +99,14 @@ const Map = ({ selectedTripId }) => {
         Open route
       </Button>
       <MapContainer
-        center={[37.7749, -122.4194]} // Default center, will be overridden by `fitBounds`
+        center={[37.7749, -122.4194]}
         zoom={10}
         style={{
           width: "100%",
-          height: "900px",
+          height: "400px",
           "&media (max-width: 600px)": {
-            height: "300px",
-          }
+            height: "100px",
+          },
         }}
       >
         <TileLayer

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -7,11 +7,15 @@ import {
   Button,
   Alert,
   AlertTitle,
+  Checkbox,
 } from "@mui/material";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import { TriangleAlert } from "lucide-react";
 import { deleteAccount } from "../../../api/auth";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
+  const [checked, setChecked] = useState(false);
+
+
   const handleDeleteAccount = () => {
     deleteAccount();
     //window.location.reload();
@@ -23,9 +27,9 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
       onClose={onClose}
       sx={{
         "& .MuiDialog-paper": {
-          width: "600px", // Adjust width
-          maxWidth: "90%", // Ensure responsiveness
-          backgroundColor: "#0e0c24", // Background color matches the dialog content
+          width: "600px",
+          maxWidth: "90%",
+          backgroundColor: "#181C1F",
         },
       }}
     >
@@ -33,23 +37,39 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
       <DialogContent style={dialogContentStyle}>
         <Alert
           severity='warning'
-          icon={<WarningAmberIcon fontSize='inherit' />}
+          icon={<TriangleAlert size='24' style={{ color: "red" }} />}
           style={warningAlertStyle}
         >
-          <AlertTitle>Warning</AlertTitle>
+          <AlertTitle style={{ color: "red" }}>Warning</AlertTitle>
           Are you sure you want to delete your account? There's no recovering it
           after.
         </Alert>
       </DialogContent>
+
+      <DialogContent style={dialogContentStyle}>
+        <Checkbox
+          checked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
+          sx={{
+            color: "#fff",
+            "&.Mui-checked": {
+              color: "#704dff",
+            },
+          }}
+        />
+        <span style={{ color: "#fff" }}>
+          Yes, I wish to permanently delete my account
+        </span>
+      </DialogContent>
+
       <DialogActions style={dialogActionsStyle}>
         <Button
           onClick={onClose}
           sx={{
             color: "#ff1400",
-            border: "2px solid #ff1400",
-            backgroundColor: "transparent",
+            border: "1px solid #ff1400",
             "&:hover": {
-              backgroundColor: "rgba(255, 20, 0, 0.1)",
+              backgroundColor: "transparent",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -60,15 +80,17 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
         <Button
           onClick={handleDeleteAccount}
           sx={{
-            color: "#a061d1",
-            border: "2px solid #a061d1",
-            backgroundColor: "transparent",
+            color: "white !important",
+            backgroundColor: "#6369ff",
+            opacity: checked ? 1 : 0.5,
             "&:hover": {
-              backgroundColor: "rgba(160, 97, 209, 0.1)",
-              transform: "scale(1.05)",
+              backgroundColor: checked ? "#6369ff" : "#6369ff",
+              transform: checked ? "scale(1.05)" : "none",
+              cursor: checked ? "pointer" : "default",
             },
             transition: "transform 0.3s ease",
           }}
+          disabled={!checked}
         >
           CONFIRM
         </Button>
@@ -85,18 +107,18 @@ const dialogTitleStyle = {
 };
 
 const dialogContentStyle = {
-  padding: "24px", // Internal padding for spacing
+  padding: "24px",
 };
 
 const dialogActionsStyle = {
   display: "flex",
   justifyContent: "flex-end",
   padding: "16px",
-  gap: "16px", // Space between buttons
-  backgroundColor: "#0e0c24",
+  gap: "16px",
+  backgroundColor: "#181C1F",
 };
 
 const warningAlertStyle = {
-  backgroundColor: "#28273d",
+  backgroundColor: "#26292b",
   color: "#fff",
 };

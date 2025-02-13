@@ -16,13 +16,12 @@ const Router = () => {
   return (
     <AuthContext.Provider value={auth}>
       <Routes>
-        <Route path='/' element={<Navigate to='/login' />} />
-        <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path='/trip/:id' element={<ProtectedRoute><TripDetails /></ProtectedRoute>} />
         <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path='/settings' element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-        <Route path='/login' element={auth.isAuthenticated ? <Navigate to='/home' replace /> : <Login />} />
-        <Route path='/signup' element={auth.isAuthenticated ? <Navigate to='/home' replace /> : <SignUp /> } />
+        <Route path='/login' element={auth.isAuthenticated ? <Navigate to='/' replace /> : <Login />} />
+        <Route path='/signup' element={auth.isAuthenticated ? <Navigate to='/' replace /> : <SignUp /> } />
       </Routes>
     </AuthContext.Provider>
   );

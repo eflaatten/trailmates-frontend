@@ -5,15 +5,10 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  TextField,
-  IconButton,
-  InputAdornment,
-  Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Eye, EyeOff } from "lucide-react";
 import { changePassword } from "../../../api/auth";
-import { toast } from "react-toastify"; // For toast notifications
-import "react-toastify/dist/ReactToastify.css";
+import { toast, toastOptions } from "../../../assets/hotToast";
 
 const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -78,79 +73,100 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
       maxWidth='sm'
       PaperProps={{
         sx: {
-          backgroundColor: "#0e0c24",
+          backgroundColor: "#181C1F",
           padding: "20px",
         },
       }}
     >
       <DialogTitle sx={dialogTitleStyle}>Change Password</DialogTitle>
-      <DialogContent>
-        <Typography variant='body2' color='#CACACC'>
-          Current Password
-        </Typography>
-        <TextField
-          autoFocus
-          margin='dense'
-          type={showCurrentPassword ? "text" : "password"}
-          fullWidth
-          variant='outlined'
-          value={currentPassword}
-          onChange={handleCurrentPasswordChange}
-          sx={textFieldStyle}
-          InputLabelProps={{ style: { color: "#ffffff" } }}
-          InputProps={{
-            style: { color: "#ffffff" },
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton onClick={toggleShowCurrentPassword} edge='end'>
-                  {showCurrentPassword ? (
-                    <VisibilityOff sx={{ color: "white" }} />
-                  ) : (
-                    <Visibility sx={{ color: "white" }} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+      <DialogContent style={{ marginBottom: "20px" }}>
+        <div className='relative mb-4'>
+          <div style={{ position: "relative" }}>
+            <input
+              id='current-password'
+              name='current-password'
+              type={showCurrentPassword ? "text" : "password"}
+              autoComplete='current-password'
+              required
+              className='appearance-none rounded-md relative block w-full px-3 py-2 placeholder-gray-500 text-gray-300 focus:outline-none focus:z-10 sm:text-sm'
+              placeholder='Current Password'
+              style={{
+                backgroundColor: "#0E1113",
+                paddingRight: "2.5rem",
+                pointerEvents: "auto",
+              }}
+              value={currentPassword}
+              onChange={handleCurrentPasswordChange}
+            />
+            <button
+              type='button'
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "10px",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+                zIndex: 10,
+                background: "none",
+                border: "none",
+                padding: 0,
+                pointerEvents: "auto",
+              }}
+              onClick={toggleShowCurrentPassword}
+            >
+              {showCurrentPassword ? (
+                <EyeOff className='h-5 w-5 text-gray-400' />
+              ) : (
+                <Eye className='h-5 w-5 text-gray-400' />
+              )}
+            </button>
+          </div>
+        </div>
 
-        <Typography variant='body2' color='#CACACC' sx={{ mt: 3 }}>
-          New Password
-        </Typography>
-        <TextField
-          margin='dense'
-          type={showNewPassword ? "text" : "password"}
-          fullWidth
-          variant='outlined'
-          value={newPassword}
-          onChange={handleNewPasswordChange}
-          sx={textFieldStyle}
-          InputLabelProps={{ style: { color: "#ffffff" } }}
-          InputProps={{
-            style: { color: "#ffffff" },
-            endAdornment: (
-              <InputAdornment position='end'>
-                <IconButton onClick={toggleShowNewPassword} edge='end'>
-                  {showNewPassword ? (
-                    <VisibilityOff sx={{ color: "white" }} />
-                  ) : (
-                    <Visibility sx={{ color: "white" }} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <div className='relative mb-4'>
+          <input
+            id='new-password'
+            name='new-password'
+            type={showNewPassword ? "text" : "password"}
+            autoComplete='new-password'
+            required
+            className='appearance-none rounded-md relative block w-full px-3 py-2 placeholder-gray-500 text-gray-300 focus:outline-none focus:z-10 sm:text-sm'
+            placeholder='New Password'
+            style={{ backgroundColor: "#0E1113", paddingRight: "2.5rem" }}
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+          />
+          <button
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "10px",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              zIndex: 10,
+              background: "none",
+              border: "none",
+              padding: 0,
+              pointerEvents: "auto",
+            }}
+            onClick={toggleShowNewPassword}
+          >
+            {showNewPassword ? (
+              <EyeOff className='h-5 w-5 text-gray-400' />
+            ) : (
+              <Eye className='h-5 w-5 text-gray-400' />
+            )}
+          </button>
+        </div>
       </DialogContent>
       <DialogActions sx={dialogActionsStyle}>
         <Button
           onClick={onClose}
           sx={{
             color: "#ff1400",
-            border: "2px solid #ff1400",
-            backgroundColor: "transparent",
+            border: "1px solid #ff1400",
             "&:hover": {
-              backgroundColor: "rgba(255, 20, 0, 0.1)",
+              backgroundColor: "transparent",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -161,11 +177,10 @@ const ChangePasswordDialog = ({ open, onClose, onSubmit }) => {
         <Button
           onClick={handleSubmit}
           sx={{
-            color: "#a061d1",
-            border: "2px solid #a061d1",
-            backgroundColor: "transparent",
+            color: "#ffffff",
+            backgroundColor: "#6369ff",
             "&:hover": {
-              backgroundColor: "rgba(160, 97, 209, 0.1)",
+              backgroundColor: "#6369ff",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -188,46 +203,8 @@ const dialogTitleStyle = {
   marginBottom: "10px",
 };
 
-const textFieldStyle = {
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "transparent",
-    },
-    "&:hover fieldset": {
-      borderColor: "transparent",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "transparent",
-    },
-    "&.Mui-focused": {
-      boxShadow: "none",
-    },
-  },
-  backgroundColor: "#28273d",
-  color: "white",
-  width: "100%",
-  borderRadius: 3,
-  mt: 1,
-  mb: 3,
-};
-
 const dialogActionsStyle = {
   display: "flex",
   justifyContent: "flex-end",
   gap: "16px",
-};
-
-const toastOptions = {
-  position: "top-right",
-  height: 80,
-  autoClose: 3200,
-  closeOnClick: true,
-  pauseOnHover: false,
-  draggable: true,
-  progress: undefined,
-  theme: "dark",
-  style: {
-    background: "#121212",
-    color: "#ffffff",
-  },
 };

@@ -22,7 +22,7 @@ const TripDetails = () => {
 
   // Handle back navigation
   const handleBack = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   // Custom link renderer for ReactMarkdown
@@ -80,9 +80,9 @@ const TripDetails = () => {
             padding: 0,
             marginBottom: 3,
             transition: "transform 0.2s",
-            // "&:hover": {
-            //   transform: "translateX(-5px)",
-            // },
+            "&:hover": {
+              transform: "translateX(-5px)",
+            },
             "@media (max-width: 600px)": {
               marginTop: 2,
             },
@@ -104,7 +104,7 @@ const TripDetails = () => {
           <>
             <Box
               sx={{
-                backgroundColor: "#0e0c24",
+                backgroundColor: "#181C1F",
                 padding: 3,
                 borderRadius: 2,
                 boxShadow: 3,

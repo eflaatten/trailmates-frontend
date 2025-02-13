@@ -9,9 +9,7 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import SettingsIcon from '../../assets/icons/gear-fill.svg';
-import ProfileIcon from '../../assets/icons/person-fill.svg';
-import LogoutIcon from '../../assets/icons/box-arrow-right.svg';
+import { Settings2, User, LogOut, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../api/auth";
 import { getProfile } from "../../api/profile";
@@ -64,20 +62,23 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
       }}
       sx={{
         "& .MuiMenu-paper": {
-          backgroundColor: "#2B1747",
-          borderRadius: "12px",
+          backgroundColor: "#181C1F",
+          borderRadius: "15px",
+          width: "16rem",
         },
         "& .MuiDivider-root": {
           backgroundColor: "#ffffff80",
         },
         "& .MuiMenuItem-root": {
-          margin: "0 8px",
-          transition: "0.2s",
+          transition: "0.4s",
+          margin: "5px",
+          borderRadius: "8px",
         },
         "& .MuiMenuItem-root:hover": {
-          backgroundColor: "#080310",
-          transition: "0.2s",
+          backgroundColor: "black",
+          transition: "0.4s",
           borderRadius: "8px",
+          margin: "5px",
         },
       }}
     >
@@ -86,13 +87,34 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         <Avatar
           src={profilePicture}
           alt={username}
-          style={{ width: 55, height: 55, marginBottom: 10 }}
+          style={{ width: 65, height: 65, marginBottom: 10 }}
         />
-        <div style={{ marginLeft: "10px", color: "white" }}>
-          <Typography variant='body1' component='p'>
+        <div
+          style={{
+            marginLeft: "10px",
+            color: "white",
+            maxWidth: "calc(100% - 85px)",
+            overflow: "hidden",
+          }}
+        >
+          <Typography
+            variant='body1'
+            component='p'
+            sx={{
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+            }}
+          >
             <strong>{username}</strong>
           </Typography>
-          <Typography variant='body2' color='white'>
+          <Typography
+            variant='body2'
+            color='white'
+            sx={{
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+            }}
+          >
             <strong>{email}</strong>
           </Typography>
         </div>
@@ -109,34 +131,28 @@ const ProfileMenu = ({ anchorEl, handleClose }) => {
         }}
       >
         <ListItemIcon sx={{ color: "white" }}>
-          <img
-            src={ProfileIcon}
-            alt='Profile Icon'
-            style={{ width: 24, height: 24 }}
-          />
+          <User size={24} />
         </ListItemIcon>
         <ListItemText primary='Profile' />
       </MenuItem>
       <MenuItem onClick={handleNavigateToSettings} sx={{ color: "white" }}>
         <ListItemIcon sx={{ color: "white" }}>
-          <img
-            src={SettingsIcon}
-            alt='Settings Icon'
-            style={{ width: 24, height: 24 }}
-          />
+          <Settings size={24} />
         </ListItemIcon>
         <ListItemText primary='Settings' color='white' />
       </MenuItem>
 
       <Divider />
 
-      <MenuItem onClick={handleLogout} sx={{ color: "white" }}>
+      <MenuItem
+        onClick={handleLogout}
+        className='logout'
+        sx={{
+          color: "white",
+        }}
+      >
         <ListItemIcon sx={{ color: "white" }}>
-          <img
-            src={LogoutIcon}
-            alt='Logout Icon'
-            style={{ width: 24, height: 24 }}
-          />
+          <LogOut size={24} />
         </ListItemIcon>
         <ListItemText primary='Logout' />
       </MenuItem>

@@ -40,17 +40,18 @@ const NavBar = () => {
   }, []);
 
   const handleNavigateToHome = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   return (
     <AppBar
       position='static'
       sx={{
-        backgroundColor: "#13042b",
-        borderRadius: "18px",
-        width: "auto",
-        margin: "20px",
+        //backgroundColor: "#181C1F",
+        backgroundColor: "transparent",
+        boxShadow: "none",
+        padding: "10px",
+        width: "100%",
         "@media (max-width: 600px)": {
           margin: "0px",
           width: "100%",
@@ -77,12 +78,14 @@ const NavBar = () => {
             component='div'
             sx={{
               cursor: "pointer",
-              fontFamily: "inherit",
-              fontSize: "1.2rem",
-              // "&:hover": {
-              //   color: "#2196F3",
-              //   cursor: "pointer",
-              // },
+              fontFamily: "monospace",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              mt: "3px",
+              "&:hover": {
+                color: "#2196F3",
+                cursor: "pointer",
+              },
             }}
             onClick={handleNavigateToHome}
           >
@@ -95,7 +98,7 @@ const NavBar = () => {
           <Avatar
             src={profilePicture}
             alt={user || "User Avatar"}
-            sx={{ width: 30, height: 30 }}
+            sx={{ width: 35, height: 35 }}
           >
             {!profilePicture && <PersonIcon />}
           </Avatar>

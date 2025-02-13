@@ -3,9 +3,10 @@ import { Button, Divider, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTrips } from "../../redux/actions";
-import CreateTripDialog from "../Home/CreateTripDialog";
+import CreateTripDialog from "./Dialogs/CreateTripDialog";
 import TripItem from "../Home/TripItem";
-import SquarePlusIcon from '../../assets/icons/plus-square.svg';
+import SquarePlusIcon from "../../assets/icons/plus-square.svg";
+import { Plus, plus } from "lucide-react";
 
 const TripList = () => {
   const [openCreateTripDialog, setOpenCreateTripDialog] = useState(false);
@@ -36,7 +37,7 @@ const TripList = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#0e0c24",
+        backgroundColor: "#181C1F",
         padding: 4,
         height: "auto",
         display: "flex",
@@ -63,12 +64,12 @@ const TripList = () => {
           variant='text'
           sx={{
             backgroundColor: "transparent",
-            color: "blue",
+            color: "white",
             outline: "none",
             display: "flex",
             alignItems: "center",
             "&:hover": {
-              backgroundColor: "transparent",
+              backgroundColor: "#333D42",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -76,10 +77,10 @@ const TripList = () => {
           }}
           onClick={handleOpenCreateTripDialog}
         >
-          <img
-            src={SquarePlusIcon}
-            alt='Plus Icon'
-            style={{ width: 20, height: 20, marginRight: 9, marginBottom: 1.5 }}
+          <Plus
+            size={22}
+            color='white'
+            style={{ marginRight: "0.3rem", marginBottom: "0.1rem" }}
           />
           Create Trip
         </Button>
@@ -89,7 +90,7 @@ const TripList = () => {
         sx={{
           backgroundColor: "#666",
           width: "100%",
-          height: "1px",
+          height: "0.5px",
           marginBottom: 2,
         }}
       />
@@ -109,10 +110,9 @@ const TripList = () => {
           boxSizing: "border-box",
           marginTop: 2,
           "@media (max-width: 600px)": {
-            marginTop: 2,
-            padding: "25px",
-            height: "auto",
-            borderRadius: 4,
+            padding: "15px",
+            height: "100vh",
+            //borderRadius: 4,
           },
         }}
       >
@@ -152,14 +152,14 @@ const TripList = () => {
           </Typography>
         </Box>
 
-        <Divider
+        {/* <Divider
           sx={{
             backgroundColor: "#666",
             width: "100%",
-            height: "1px",
+            height: "0.5px",
             marginBottom: 2,
           }}
-        />
+        /> */}
 
         {/* Trip Items */}
         {error ? (

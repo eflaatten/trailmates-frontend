@@ -9,8 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import LockIcon from "@mui/icons-material/Lock";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Trash2, ShieldCheck } from "lucide-react";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import DeleteAccountDialog from "./DeleteAccountDialog";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -19,18 +18,18 @@ import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const [openChangePasswordDialog, setOpenChangePasswordDialog] =
-    useState(false);
+  const [openChangePasswordDialog, setOpenChangePasswordDialog] = useState(false);
   const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
 
-  const handleBack = () => navigate("/home");
-  const handleOpenChangePasswordDialog = () =>
-    setOpenChangePasswordDialog(true);
-  const handleCloseChangePasswordDialog = () =>
-    setOpenChangePasswordDialog(false);
+  const handleBack = () => navigate("/");
+
+  const handleOpenChangePasswordDialog = () => setOpenChangePasswordDialog(true);
+
+  const handleCloseChangePasswordDialog = () => setOpenChangePasswordDialog(false);
+
   const handleOpenDeleteAccountDialog = () => setOpenDeleteAccountDialog(true);
-  const handleCloseDeleteAccountDialog = () =>
-    setOpenDeleteAccountDialog(false);
+
+  const handleCloseDeleteAccountDialog = () => setOpenDeleteAccountDialog(false);
 
   return (
     <>
@@ -48,6 +47,14 @@ const Settings = () => {
           onClick={handleBack}
           sx={{
             color: "#CACACC",
+            padding: 0,
+            transition: "transform 0.2s",
+            "&:hover": {
+              transform: "translateX(-5px)",
+            },
+            "@media (max-width: 600px)": {
+              marginTop: 2,
+            },
           }}
         >
           <ArrowBackIosNewIcon />
@@ -70,7 +77,7 @@ const Settings = () => {
             <TransparentButton
               variant='outlined'
               onClick={handleOpenChangePasswordDialog}
-              startIcon={<LockIcon />}
+              startIcon={<ShieldCheck />}
             >
               Change Password
             </TransparentButton>
@@ -90,7 +97,7 @@ const Settings = () => {
             <TransparentButton
               variant='outlined'
               onClick={handleOpenDeleteAccountDialog}
-              startIcon={<DeleteIcon />}
+              startIcon={<Trash2 />}
             >
               Delete Account
             </TransparentButton>
@@ -129,7 +136,7 @@ const CardContainer = styled(Box)(({ theme }) => ({
 
 const StyledCard = styled(Card)(({ theme }) => ({
   flex: 1,
-  backgroundColor: "#1e1b38",
+  backgroundColor: "#181C1F",
   color: "#cccccc",
   borderRadius: 10,
   padding: theme.spacing(3),
@@ -139,14 +146,14 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 const TransparentButton = styled(Button)(({ theme }) => ({
-  border: "2px solid #a061d1",
-  color: "#a061d1",
-  backgroundColor: "transparent",
+  backgroundColor: "#6369ff",
+  color: "#fff",
   fontWeight: "bold",
+  padding: "0.5rem 1rem",
   "&:hover": {
-    backgroundColor: "rgba(160, 97, 209, 0.1)",
-    borderColor: "#7d47a2",
+    backgroundColor: "#6369ff",
+    transform: "scale(1.03)",
   },
   transition: "all 0.3s ease",
-  width: "80%",
+  width: "100%",
 }));

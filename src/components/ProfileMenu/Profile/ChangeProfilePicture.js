@@ -14,18 +14,19 @@ import {
 import { styled } from "@mui/system";
 import { useDropzone } from "react-dropzone";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import { toast, toastOptions } from '../../../assets/hotToast';
 import { changeProfilePicture } from "../../../api/profile";
 
 const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isFileUploaded, setIsFileUploaded] = useState(false);
 
   const onDrop = (acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
     setFile(uploadedFile);
+    setIsFileUploaded(true);
     setIsDragging(false);
   };
 
@@ -40,6 +41,7 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
   const handleRemoveFile = (e) => {
     e.stopPropagation();
     setFile(null);
+    setIsFileUploaded(false);
   };
 
   const handleUploadProfilePicture = async () => {
@@ -50,13 +52,11 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
         await refreshProfilePicture();
         setLoading(false);
         onClose();
-        toast.success("Profile picture uploaded successfully!", { ...toastOptions });
+        toast.success("Profile picture uploaded successfully!", toastOptions);
       } catch (error) {
         console.error("Upload failed:", error);
-        toast.error("Failed to upload profile picture!", { ...toastOptions });
+        toast.error("Failed to upload profile picture!", toastOptions);
       }
-    } else {
-      toast.warn("Please select a file to upload!", { ...toastOptions }); 
     }
   };
 
@@ -71,7 +71,7 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
       open={open}
       onClose={onClose}
       PaperProps={{
-        sx: { backgroundColor: "#0e0c24", color: "#ffffff", width: "400px" },
+        sx: { backgroundColor: "#181C1F", color: "#ffffff", width: "400px" },
       }}
     >
       <DialogTitle>Change Profile Picture</DialogTitle>
@@ -105,11 +105,11 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
             variant='contained'
             component='label'
             sx={{
-              backgroundColor: "#1f1c3b",
+              backgroundColor: "#a5adc1",
               color: "#fff",
               transition: "0.3s",
               "&:hover": {
-                backgroundColor: "#221e42",
+                backgroundColor: "#a5adc1",
                 scale: 1.03,
                 transition: "0.3s",
               },
@@ -129,10 +129,9 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
           onClick={onClose}
           sx={{
             color: "#ff1400",
-            border: "2px solid #ff1400",
-            backgroundColor: "transparent",
+            border: "1px solid #ff1400",
             "&:hover": {
-              backgroundColor: "rgba(255, 20, 0, 0.1)",
+              backgroundColor: "transparent",
               transform: "scale(1.05)",
             },
             transition: "transform 0.3s ease",
@@ -145,15 +144,17 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
           <Button
             onClick={handleUploadProfilePicture}
             sx={{
-              color: "#a061d1",
-              border: "2px solid #a061d1",
-              backgroundColor: "transparent",
+              color: "white !important",
+              backgroundColor: "#6369ff",
+              opacity: isFileUploaded ? 1 : 0.5,
               "&:hover": {
-                backgroundColor: "rgba(160, 97, 209, 0.1)",
-                transform: "scale(1.05)",
+                backgroundColor: "#6369ff",
+                transform: isFileUploaded ? "scale(1.05)" : "none",
+                cursor: isFileUploaded ? "pointer" : "default",
               },
               transition: "transform 0.3s ease",
             }}
+            disabled={!isFileUploaded}
           >
             Upload
           </Button>
@@ -163,17 +164,15 @@ const ChangeProfilePicture = ({ open, onClose, refreshProfilePicture}) => {
             disabled
             sx={{
               color: "#a061d1",
-              border: "2px solid #a061d1",
-              backgroundColor: "transparent",
+              backgroundColor: "#6369ff",
               "&:hover": {
-                backgroundColor: "rgba(160, 97, 209, 0.1)",
-                transform: "scale(1.05)",
+                backgroundColor: "#6369ff",
               },
-              transition: "transform 0.3s ease",
+              gap: "4px",
             }}
           >
-            <CircularProgress size={22} sx={{ color: "#a061d1" }} />
-            <Typography style={{ color: "#a061d1", mr: "2" }}>
+            <CircularProgress size={22} sx={{ color: "#fff" }} />
+            <Typography style={{ color: "#fff", mr: "4" }}>
               Uploading...
             </Typography>
           </Button>
@@ -199,11 +198,11 @@ const DottedCircle = styled(Box, {
   color: isDragging ? "#4caf50" : "#777",
   textAlign: "center",
   cursor: "pointer",
-  backgroundColor: "#1f1c3b",
+  backgroundColor: "#0E1113",
   position: "relative",
   transition: "background-color 0.3s, border-color 0.3s",
   "&:hover": {
-    backgroundColor: "#221e42",
+    backgroundColor: "#181C1F",
     borderColor: "#666",
   },
 }));
@@ -214,24 +213,9 @@ const TrashIconButton = styled(IconButton)({
   right: 8,
   width: 40,
   height: 40,
-  backgroundColor: "#1f1c3b",
+  backgroundColor: "#181C1F",
   color: "red",
   "&:hover": {
-    backgroundColor: "#221e42",
+    backgroundColor: "#222629",
   },
 });
-
-const toastOptions = {
-  position: "top-right",
-  height: 80,
-  autoClose: 3200,
-  closeOnClick: true,
-  pauseOnHover: false,
-  draggable: true,
-  progress: undefined,
-  theme: "dark",
-  style: {
-    background: "#121212",
-    color: "#ffffff",
-  },
-};

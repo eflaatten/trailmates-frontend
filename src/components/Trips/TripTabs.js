@@ -7,30 +7,10 @@ import CommentsIcon from "../../assets/icons/TabIcons/chat-square-text-fill.svg"
 import Overview from "./Tabs/Overview";
 import AISummary from "./Tabs/Summary";
 import MapTab from "./Tabs/Map";
-//import CommentsTab from "./Tabs/Comments";
 
 const Tabs = ({ children, icons }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [lineStyle, setLineStyle] = useState({});
   const tabRefs = useRef([]);
-
-  const updateLineStyle = () => {
-    const activeTabRef = tabRefs.current[activeTab];
-    if (activeTabRef) {
-      setLineStyle({
-        left: activeTabRef.offsetLeft,
-        width: activeTabRef.offsetWidth,
-      });
-    }
-  };
-
-  useEffect(() => {
-    updateLineStyle();
-    window.addEventListener("resize", updateLineStyle);
-    return () => {
-      window.removeEventListener("resize", updateLineStyle);
-    };
-  }, [activeTab]);
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -52,9 +32,17 @@ const Tabs = ({ children, icons }) => {
               alignItems: "center",
               marginRight: 2,
               cursor: "pointer",
-              color: activeTab === index ? "#1971ff" : "inherit",
               paddingBottom: 1,
               position: "relative",
+              backgroundColor: activeTab === index ? "#2C3338" : "inherit",
+              borderRadius: "4px",
+              padding: "8px",
+              transition: '0.2s ease',
+              "&:hover": {
+                //backgroundColor: activeTab === index ? "#2C3338" : "#2C3338",
+                transition: '0.2s ease',
+                transform: "scale(1.02)",
+              },
             }}
           >
             <img
@@ -72,7 +60,6 @@ const Tabs = ({ children, icons }) => {
             height: "2px",
             backgroundColor: "blue",
             transition: "left 0.3s ease, width 0.3s ease",
-            ...lineStyle,
           }}
         />
       </Box>
@@ -93,9 +80,6 @@ const TripTabs = ({ trip, renderLink }) => {
       <Box label='Map'>
         <MapTab selectedTripId={trip.tripId} />
       </Box>
-      {/* <Box label='Comments'>
-        <CommentsTab trip={trip} />
-      </Box> */}
     </Tabs>
   );
 };

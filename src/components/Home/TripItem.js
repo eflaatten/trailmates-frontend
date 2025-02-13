@@ -3,12 +3,11 @@ import { Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteTripConfirmDialog from "./Dialogs/DeleteTripConfirmDialog";
 import { deleteTrip } from "../../redux/actions";
-import { toast } from "react-toastify"; // For toast notifications
-import "react-toastify/dist/ReactToastify.css";
+import { Eye, Trash2 } from "lucide-react";
+import { toast, toastOptions } from "../../assets/hotToast";
 import { useDispatch } from "react-redux";
 const { useNavigate } = require("react-router-dom");
 
-// Function to format the date to a more readable format
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
@@ -25,7 +24,7 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleMenuOpen = (event) => {
-    event.stopPropagation(); // Prevent navigation click
+    event.stopPropagation(); 
     setAnchorEl(event.currentTarget);
   };
 
@@ -41,7 +40,7 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
       event.stopPropagation();
     }
     try {
-      await dispatch(deleteTrip(tripId)); // Dispatch the action
+      await dispatch(deleteTrip(tripId));
       onDelete();
       toast.success("Trip deleted successfully!", toastOptions);
     } catch (error) {
@@ -78,10 +77,10 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr 1fr auto",
           gap: 2,
-          backgroundColor: "#211c3d",
+          borderTop: "1px solid #343b40",
+          borderBottom: "1px solid #343b40",
           padding: 2,
           marginBottom: 2,
-          borderRadius: 3,
           "@media (max-width: 600px)": {
             gridTemplateColumns: "1fr 1fr auto",
           },
@@ -95,13 +94,13 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
         </Typography>
         <Typography
           variant='body1'
-          sx={{ color: "#ccc", display: { xs: "none", sm: "block" } }} // Hide on mobile
+          sx={{ color: "#ccc", display: { xs: "none", sm: "block" } }}
         >
           {formatDate(startDate)}
         </Typography>
         <Typography
           variant='body1'
-          sx={{ color: "#ccc", display: { xs: "none", sm: "block" } }} // Hide on mobile
+          sx={{ color: "#ccc", display: { xs: "none", sm: "block" } }}
         >
           {formatDate(endDate)}
         </Typography>
@@ -110,7 +109,7 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
         <IconButton
           onClick={handleMenuOpen}
           sx={{ color: "#ccc" }}
-          onMouseDown={(e) => e.stopPropagation()} // Prevent click from propagating on mouse down
+          onMouseDown={(e) => e.stopPropagation()}
         >
           <MoreVertIcon />
         </IconButton>
@@ -122,9 +121,11 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           onClose={handleMenuClose}
           PaperProps={{
             sx: {
-              backgroundColor: "#2B1747",
+              backgroundColor: "#181C1F",
               color: "#fff",
               width: "180px",
+              borderRadius: "10px",
+              ml: -8, 
             },
           }}
           onClick={(e) => e.stopPropagation()}
@@ -133,16 +134,18 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           <MenuItem
             onClick={handleViewTrip}
             sx={{
-              margin: "0 8px",
-              transition: "0.2s",
-              borderRadius: "12px",
+              transition: "0.4s",
+              margin: "5px",
+              borderRadius: "8px",
               "&:hover": {
-                backgroundColor: "#080310",
-                transition: "0.2s",
+                backgroundColor: "black",
+                transition: "0.4s",
+                margin: "5px",
+                borderRadius: "8px",
               },
             }}
           >
-            {/* <ViewAgendaIcon sx={{ color: "#fff", marginRight: "8px" }} /> */}
+            {/* <Eye size={19} style={{ marginRight: '0.5rem' }}/> */}
             <Typography sx={{ color: "#fff" }}>View</Typography>
           </MenuItem>
 
@@ -150,16 +153,18 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           <MenuItem
             onClick={handleOpenDeleteConfirmDialog}
             sx={{
-              margin: "0 8px",
-              transition: "0.2s",
-              borderRadius: "12px",
+              transition: "0.4s",
+              margin: "5px",
+              borderRadius: "8px",
               "&:hover": {
-                backgroundColor: "#080310",
-                transition: "0.2s",
+                backgroundColor: "black",
+                transition: "0.4s",
+                margin: "5px",
+                borderRadius: "8px",
               },
             }}
           >
-            {/* <DeleteIcon sx={{ color: "red", marginRight: "8px" }} /> */}
+            {/* <Trash2 size={19} style={{ marginRight: '0.5rem' }}/> */}
             <Typography sx={{ color: "#fff" }}>Delete</Typography>
           </MenuItem>
         </Menu>
@@ -175,18 +180,3 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
 };
 
 export default TripItem;
-
-const toastOptions = {
-  position: "top-right",
-  height: 80, 
-  autoClose: 3200,
-  closeOnClick: true,
-  pauseOnHover: false,
-  draggable: true,
-  progress: undefined,
-  theme: "dark",
-  style: {
-    background: "#121212",
-    color: "#ffffff",
-  },
-};
