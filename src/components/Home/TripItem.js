@@ -111,7 +111,7 @@ const TripItem = ({ tripId, tripName, destination, startDate, endDate, onDelete 
           sx={{ color: "#ccc" }}
           onMouseDown={(e) => e.stopPropagation()}
         >
-          <MoreVertIcon />
+          <MoreVertIcon style={{ transform: "rotate(90deg)" }}/>
         </IconButton>
 
         {/* Menu for actions */}
