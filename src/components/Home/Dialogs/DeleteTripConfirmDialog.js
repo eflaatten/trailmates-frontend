@@ -59,7 +59,7 @@ const DeleteTripConfirmDialog = ({ open, handleClose, handleConfirm }) => {
           }}
         />
         <span style={{ color: "#fff" }}>
-          Yes, I wish to permanently delete my account
+          Yes, I wish to permanently delete this trip.
         </span>
       </DialogContent>
 
